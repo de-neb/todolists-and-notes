@@ -23,6 +23,8 @@ router.post("/", async (req, res) => {
     const newTaskList = new TaskList({
       name: req.body.name,
       items: req.body.items,
+      active: req.body.isActive,
+      done: req.body.isDone,
     });
     await newTaskList.save();
     res.status(201).send();
@@ -40,5 +42,7 @@ router.delete("/:id", async (req, res) => {
     console.log(error.message);
   }
 });
+
+//get items
 
 module.exports = router;
