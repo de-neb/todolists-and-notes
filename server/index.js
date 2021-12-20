@@ -5,6 +5,7 @@ const app = express();
 
 //middleware
 app.use(urlencoded({ extended: true }));
+app.use(express.json({ limit: "1mb" }));
 
 const list = require("./routes/list");
 

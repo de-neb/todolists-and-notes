@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 mongoose.connect(
-  "mongodb+srv://admin-deb:test1234@cluster0.gw36x.mongodb.net/todolistDB?retryWrites=true&w=majority"
+  "mongodb+srv://admin-deb:test1234@cluster0.gw36x.mongodb.net/newTodolistDB?retryWrites=true&w=majority"
 );
 
 //get models
@@ -19,12 +19,26 @@ router.get("/", async (req, res) => {
 
 //create list
 router.post("/", async (req, res) => {
-  const newTaskList = new TaskList({
-    name: req.body.name,
-    items: req.body.items,
-  });
-  await newTaskList.save();
-  res.status(201).send();
+  try {
+    const newTaskList = new TaskList({
+      name: req.body.name,
+      items: req.body.items,
+    });
+    await newTaskList.save();
+    res.status(201).send();
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//delete list
+router.delete("/:id", async (req, res) => {
+  try {
+    await TaskList.deleteOne({ _id: req.params.id });
+    res.status(200).send();
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 module.exports = router;
