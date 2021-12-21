@@ -15,15 +15,15 @@
           <ul class="task-list">
             <li
               class="task-names"
-              v-for="(list, index) in lists"
+              v-for="list in lists"
               :class="{ active: list.active }"
               :key="list._id"
             >
               <a
                 class="task-name-link"
                 :class="{ 'notes-tag': list.active }"
-                :href="'#list' + taskListId"
-                @click.self="changeList(index)"
+                href="#"
+                @click.self="selectList(list._id)"
                 :contenteditable="list.isEditable"
               >
                 {{ list.name.toUpperCase() }}
@@ -33,7 +33,7 @@
               }}</span>
               <span
                 type="button"
-                @click.self="deleteList(index)"
+                @click.self="deleteList(list._id)"
                 class="material-icons material-icons-outlined x-icon"
                 >clear</span
               >
@@ -58,10 +58,11 @@
 </template>
 
 <script>
-import ReqService from "../ReqService";
-
 export default {
   name: "SideMenu",
+  props: {
+    lists: Array,
+  },
   data() {
     return {
       title: "TO-DO LIST",
@@ -97,7 +98,7 @@ export default {
       seconds: null,
       period: null,
       menuActive: false,
-      lists: [],
+      // lists: [],
       listName: "",
     };
   },
@@ -107,6 +108,9 @@ export default {
     },
     setPeriod(hour) {
       return hour < 12 ? "AM" : "PM";
+    },
+    selectList(id) {
+      this.$emit("activeList", id);
     },
   },
   mounted() {
@@ -122,16 +126,9 @@ export default {
       this.period = this.setPeriod(d.getHours());
     }, 900);
   },
-  async created() {
-    const result = await ReqService.getList();
-    const data = await result;
-
-    this.lists = [...data];
-    console.log(this.lists);
-  },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 </style>
