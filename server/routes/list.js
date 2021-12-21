@@ -59,4 +59,29 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//add items
+router.post("/:id", async (req, res) => {
+  try {
+    const newItem = new Item({
+      title: req.body.title,
+      priority: req.body.priority,
+      details: req.body.details,
+      done: req.body.done,
+      expandedItem: req.body.expandedItem,
+      date: req.body.date,
+    });
+    TaskList.findByIdAndUpdate(
+      req.params.id,
+      { $push: { items: newItem } },
+      (err, doc) => {
+        if (!err) {
+          res.status(200).send();
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 module.exports = router;
