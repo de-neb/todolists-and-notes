@@ -49,9 +49,11 @@ router.delete("/:id/delete", async (req, res) => {
 //get items
 router.get("/:id", async (req, res) => {
   try {
-    const foundList = await TaskList.findById(req.params.id);
-
-    res.send(foundList);
+    const id = req.params.id;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      const foundList = await TaskList.findById(req.params.id).exec();
+      res.send(foundList);
+    }
   } catch (error) {
     console.log(error.message);
   }
