@@ -4,7 +4,7 @@ const itemSchema = require("./itemSchema");
 const taskListSchema = new mongoose.Schema({
   name: { type: String, required: true },
   items: [itemSchema],
-  active: { type: Boolean, default: true },
+  active: { type: Boolean, default: false },
   done: { type: Boolean, default: false },
 });
 

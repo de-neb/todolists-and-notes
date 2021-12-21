@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 //delete list
-router.delete("/:id", async (req, res) => {
+router.delete("/:id/delete", async (req, res) => {
   try {
     await TaskList.deleteOne({ _id: req.params.id });
     res.status(200).send();
@@ -47,5 +47,14 @@ router.delete("/:id", async (req, res) => {
 });
 
 //get items
+router.get("/:id", async (req, res) => {
+  try {
+    const foundList = await TaskList.findById(req.params.id);
+
+    res.send(foundList);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 
 module.exports = router;
