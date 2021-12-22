@@ -19,7 +19,7 @@
       </h1>
     </div>
 
-       
+    <div class="todos-cont">
       <div
         v-for="todoItem in items"
         :key="todoItem"
@@ -37,7 +37,7 @@
           />
           <span :class="{ check: todoItem.done }" class="no-check"></span>
           <input type="text" class="item" v-model="todoItem.title" />
-          <button class="expand" @click="expandItem(todoItem.title)">
+          <button class="expand" @click="expandItem(todoItem._id)">
             <div :class="{ rotating: todoItem.expandedItem }">
               <span class="material-icons material-icons-outlined">
                 expand_more
@@ -83,7 +83,10 @@
           </div>
 
           <div class="btn-save-del">
-            <button class="del" @click="deleteTodoItem(todoItem.title)">
+            <button
+              class="del"
+              @click="deleteItem(todoItem._id, todoItem.title)"
+            >
               <span class="material-icons material-icons-outlined">
                 delete
               </span>
@@ -93,24 +96,25 @@
         </div>
       </div>
     </div>
+
     <div class="add-item" v-if="lists.length">
       <div class="add-item-cont">
         <span
           class="material-icons material-icons-outlined"
           @click="
-            addTodoItem();
+            addItem();
             appearItem();
           "
           >add</span
         >
         <input
           type="text"
-          name="todo-item"
+          name="itemTitle"
           :id="'todo-' + lists[taskListId]"
           maxlength="55"
-          v-model="itemName"
+          v-model="itemTitle"
           @keydown.enter="
-            addTodoItem();
+            addItem();
             appearItem();
           "
           placeholder="Type your 'to-do' here"
@@ -118,7 +122,8 @@
       </div>
     </div>
 
-    <div class="clear" v-if="todoTitles.length">
+    <!-- delete/ clear item actions -->
+    <div class="clear" v-if="lists.length">
       <button class="clear-done" @click="clearDoneItems">
         <span class="material-icons material-icons-outlined">
           cleaning_services
@@ -157,20 +162,55 @@ export default {
     return {
       menuActive: false,
       items: null,
+      itemTitle: "",
+      expandChecker: false,
     };
   },
-  async beforeUpdate() {
-    //check if prop list is loaded
-    // console.log("temp", this.lists);
-    const result = await ReqService.getItems(this.activeListId);
-    const data = await result;
-    this.items = data.items;
+  methods: {
+    async fetchItems() {
+      const result = await ReqService.getItems(this.activeListId);
+      const data = await result;
+      this.items = data.items;
+    },
+    async addItem() {
+      await ReqService.addItem(this.activeListId, this.itemTitle);
+      this.fetchItems();
+      this.itemTitle = "";
+    },
+    appearItem() {},
+    async deleteItem(itemId, title) {
+      this.animationDelete(title);
+      await ReqService.deleteItem(this.activeListId, itemId);
+      this.fetchItems();
+    },
+    animationDelete(title) {
+      const itemBar = document.getElementById("todo-" + title);
+      const itemDet = document.getElementById("expanded-cont-" + title);
+      const itemCont = document.getElementById("item-cont-" + title);
+      itemBar.classList.add("deleting");
+      itemDet.classList.add("deleting");
+      itemCont.classList.add("shrink");
+    },
+    expandItem(itemId) {
+      this.items.forEach((item) => {
+        if (item._id === itemId && !item.expandedItem) {
+          item.expandedItem = !this.expandChecker;
+        } else {
+          item.expandedItem = this.expandChecker;
+        }
+      });
+    },
   },
-  async created() {
-    // const result = await ReqService.getItems(this.activeListId);
-    // const data = await result;
-    // this.items = data;
-    // console.log("items", data);
+
+  watch: {
+    activeListId: {
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        console.log("lists updated: ", newVal, "| was", oldVal);
+        this.fetchItems();
+      },
+      deep: true,
+    },
   },
 };
 </script>
