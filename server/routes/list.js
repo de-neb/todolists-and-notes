@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 //delete list
-router.delete("/:id/deleteList", async (req, res) => {
+router.delete("/:id/delete-list", async (req, res) => {
   try {
     await TaskList.deleteOne({ _id: req.params.id });
     res.status(200).send();
@@ -82,11 +82,25 @@ router.post("/:id", (req, res) => {
 });
 
 //delete item
-router.delete("/:id/deleteId", (req, res) => {
+router.delete("/:id/delete-item", (req, res) => {
   const itemId = req.body.itemId;
   TaskList.findByIdAndUpdate(
     req.params.id,
     { $pull: { items: { _id: itemId } } },
+    (err, doc) => {
+      if (!err) {
+        res.status(200).send();
+      }
+    }
+  );
+});
+
+//update items arr
+router.put("/:id/update-items", (req, res) => {
+  const updatedItems = req.body.items;
+  TaskList.findByIdAndUpdate(
+    req.params.id,
+    { $set: { items: updatedItems } },
     (err, doc) => {
       if (!err) {
         res.status(200).send();
