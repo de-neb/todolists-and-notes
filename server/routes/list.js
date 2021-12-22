@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 //delete list
-router.delete("/:id/delete", async (req, res) => {
+router.delete("/:id/deleteList", async (req, res) => {
   try {
     await TaskList.deleteOne({ _id: req.params.id });
     res.status(200).send();
@@ -47,11 +47,12 @@ router.delete("/:id/delete", async (req, res) => {
 });
 
 //get items
+
 router.get("/:id", async (req, res) => {
+  const id = req.params.id;
   try {
-    const id = req.params.id;
     if (mongoose.Types.ObjectId.isValid(id)) {
-      const foundList = await TaskList.findById(req.params.id).exec();
+      const foundList = await TaskList.findById(id).exec();
       res.send(foundList);
     }
   } catch (error) {
@@ -60,28 +61,38 @@ router.get("/:id", async (req, res) => {
 });
 
 //add items
-router.post("/:id", async (req, res) => {
-  try {
-    const newItem = new Item({
-      title: req.body.title,
-      priority: req.body.priority,
-      details: req.body.details,
-      done: req.body.done,
-      expandedItem: req.body.expandedItem,
-      date: req.body.date,
-    });
-    TaskList.findByIdAndUpdate(
-      req.params.id,
-      { $push: { items: newItem } },
-      (err, doc) => {
-        if (!err) {
-          res.status(200).send();
-        }
+router.post("/:id", (req, res) => {
+  const newItem = new Item({
+    title: req.body.itemTitle,
+    priority: req.body.priority,
+    details: req.body.details,
+    done: req.body.done,
+    expandedItem: req.body.expandedItem,
+    date: req.body.date,
+  });
+  TaskList.findByIdAndUpdate(
+    req.params.id,
+    { $push: { items: newItem } },
+    (err, doc) => {
+      if (!err) {
+        res.status(200).send();
       }
-    );
-  } catch (error) {
-    console.log(error.message);
-  }
+    }
+  );
+});
+
+//delete item
+router.delete("/:id/deleteId", (req, res) => {
+  const itemId = req.body.itemId;
+  TaskList.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { items: { _id: itemId } } },
+    (err, doc) => {
+      if (!err) {
+        res.status(200).send();
+      }
+    }
+  );
 });
 
 module.exports = router;
