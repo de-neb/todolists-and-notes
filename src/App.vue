@@ -5,6 +5,7 @@
       v-if="lists"
       :lists="lists"
       :activeListId="activeListId"
+      :activeListName="activeListName"
     ></MainContent>
   </div>
 </template>
@@ -23,12 +24,14 @@ export default {
   data() {
     return {
       lists: [],
-      activeListId: null,
+      activeListId: "",
+      activeListName: "",
     };
   },
   methods: {
-    passActiveListId(id) {
+    passActiveListId({ id, name }) {
       this.activeListId = id;
+      this.activeListName = name;
       console.log("passed");
     },
   },

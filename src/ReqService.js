@@ -29,7 +29,12 @@ class ReqService {
 
   //delete item
   static deleteItem(listId, itemId) {
-    return axios.delete(`${url}${listId}/deleteId`, { data: { itemId } });
+    return axios.delete(`${url}${listId}/delete-item`, { data: { itemId } });
+  }
+
+  //update items arr
+  static updateItems(listId, items) {
+    return axios.put(`${url}${listId}/update-items`, { items });
   }
 
   //item actions end//

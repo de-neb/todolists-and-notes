@@ -15,7 +15,7 @@
         </div>
       </div>
       <h1 class="title" id="title">
-        {{ lists.length ? title : "TO-DO LIST" }}
+        {{ lists.length ? activeListName : "TO-DO LIST" }}
       </h1>
     </div>
 
@@ -157,11 +157,12 @@ export default {
   props: {
     lists: Array,
     activeListId: String,
+    activeListName: String,
   },
   data() {
     return {
       menuActive: false,
-      items: null,
+      items: [],
       itemTitle: "",
       expandChecker: false,
     };
@@ -177,10 +178,13 @@ export default {
       this.fetchItems();
       this.itemTitle = "";
     },
-    appearItem() {},
     async deleteItem(itemId, title) {
       this.animationDelete(title);
       await ReqService.deleteItem(this.activeListId, itemId);
+      this.fetchItems();
+    },
+    async updateItems() {
+      await ReqService.updateItems(this.activeListId, this.items);
       this.fetchItems();
     },
     animationDelete(title) {
@@ -200,6 +204,7 @@ export default {
         }
       });
     },
+    appearItem() {},
   },
 
   watch: {
@@ -211,7 +216,15 @@ export default {
       },
       deep: true,
     },
+    items: {
+      immediate: true,
+      handler: function () {
+        console.log("change made");
+      },
+      deep: true,
+    },
   },
+  updated() {},
 };
 </script>
 

@@ -23,7 +23,7 @@
                 class="task-name-link"
                 :class="{ 'notes-tag': list.active }"
                 href="#"
-                @click.self="selectList(list._id)"
+                @click.self="selectList(list._id, list.name)"
                 :contenteditable="list.isEditable"
               >
                 {{ list.name.toUpperCase() }}
@@ -109,8 +109,8 @@ export default {
     setPeriod(hour) {
       return hour < 12 ? "AM" : "PM";
     },
-    selectList(id) {
-      this.$emit("activeList", id);
+    selectList(id, name) {
+      this.$emit("activeList", { id, name });
     },
   },
   mounted() {
