@@ -24,7 +24,8 @@
         v-for="todoItem in items"
         :key="todoItem"
         class="item-cont"
-        :id="'item-cont-' + todoItem.title"
+        :class="{ appear: toAppear }"
+        :id="'item-cont-' + todoItem._id"
       >
         <div class="top" :id="'todo-' + todoItem.title">
           <div class="priority-flag" :class="todoItem.priority"></div>
@@ -103,12 +104,7 @@
 
     <div class="add-item" v-if="lists.length">
       <div class="add-item-cont">
-        <span
-          class="material-icons material-icons-outlined"
-          @click="
-            addItem();
-            appearItem();
-          "
+        <span class="material-icons material-icons-outlined" @click="addItem()"
           >add</span
         >
         <input
@@ -117,10 +113,7 @@
           :id="'todo-' + lists[taskListId]"
           maxlength="55"
           v-model="itemTitle"
-          @keydown.enter="
-            addItem();
-            appearItem();
-          "
+          @keydown.enter="addItem()"
           placeholder="Type your 'to-do' here"
         />
       </div>
@@ -169,6 +162,7 @@ export default {
       items: [],
       itemTitle: "",
       expandChecker: false,
+      toAppear: false,
     };
   },
   methods: {
@@ -180,10 +174,11 @@ export default {
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
       this.fetchItems();
+      this.appearItem();
       this.itemTitle = "";
     },
     async deleteItem(itemId, title) {
-      this.animationDelete(title);
+      this.animationDelete(title, itemId);
       await ReqService.deleteItem(this.activeListId, itemId);
       this.fetchItems();
     },
@@ -192,10 +187,10 @@ export default {
       this.fetchItems();
       console.log("result", this.items);
     },
-    animationDelete(title) {
+    animationDelete(title, itemId) {
       const itemBar = document.getElementById("todo-" + title);
       const itemDet = document.getElementById("expanded-cont-" + title);
-      const itemCont = document.getElementById("item-cont-" + title);
+      const itemCont = document.getElementById("item-cont-" + itemId);
       itemBar.classList.add("deleting");
       itemDet.classList.add("deleting");
       itemCont.classList.add("shrink");
@@ -209,33 +204,30 @@ export default {
         }
       });
     },
-    appearItem() {},
+    appearItem() {
+      console.log("bool", !this.items.includes(this.itemTitle));
+      if (!this.items.includes(this.itemTitle)) {
+        setTimeout(() => {
+          const itemCont = document.getElementById(
+            "item-cont-" + this.items[this.items.length]._id
+          );
+          itemCont.classList.add("appear");
+          console.log("itemcont", itemCont);
+          // this.toAppear = true;
+          console.log("appear toggle");
+        }, 20);
+      }
+    },
   },
 
   watch: {
     activeListId: {
       immediate: true,
-      handler: function (newVal, oldVal) {
-        console.log("lists updated: ", newVal, "| was", oldVal);
+      handler: function () {
         this.fetchItems();
       },
       deep: true,
     },
-    // items: {
-    //   immediate: true,
-    //   handler: function (newVal, oldVal) {
-    //     const itemsJson = JSON.stringify(newVal);
-    //     if (JSON.stringify(oldVal) !== itemsJson) {
-    //       this.fetchItems();
-    //       console.log("check", JSON.stringify(oldVal) === itemsJson);
-    //     } else {
-    //       alert("yo");
-    //       this.updateItems(this.activeListId, this.items);
-    //       console.log(this.items);
-    //     }
-    //   },
-    //   deep: true,
-    // },
   },
   updated() {},
 };
