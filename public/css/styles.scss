@@ -1,0 +1,1186 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400&family=Saira+Condensed:wght@300&family=Rajdhani:wght@300&display=swap");
+
+// variables
+$main-color: #edeef7;
+$side-color: #7868e6;
+$light-color: #ffff;
+$task-name-color: #f6f6f6;
+$bar: $light-color;
+$todo: $side-color;
+$danger: #e7305b;
+$success: #61b15a;
+$low: #2978b5;
+$warning: #f57b51;
+$clear: #07689f;
+$add: #428b46;
+$notepad: #ffe268;
+$main-font: "Saira Condensed", sans-serif;
+$time-font: "Rajdhani", sans-serif;
+$task-font: "Nunito", sans-serif;
+$side-width: 23%;
+$main-width: 100%;
+$todo-width: 60%;
+$timing: cubic-bezier(0.39, 0.97, 0, 0.97);
+// variables-end
+
+// functions
+@mixin flex($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+}
+// functions-end
+body,
+html {
+  margin: 0;
+  text-align: center;
+  overflow-x: hidden;
+  min-height: 100%;
+  padding: 0;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+#app,
+.pseudo-cont {
+  @include flex(stretch, stretch);
+  height: 100%;
+  width: 100%;
+  position: relative !important;
+  overflow-y: hidden;
+}
+.main {
+  background: $main-color;
+  width: $main-width;
+  padding: 20px 0 60px;
+  box-sizing: border-box;
+  font-family: $task-font;
+  min-height: 100vh;
+
+  .title-cont {
+    .menu {
+      display: none;
+    }
+    .title {
+      font-family: $main-font !important;
+      font-size: 70px;
+      line-height: 60px;
+      text-align: left;
+      color: $side-color;
+      margin: 0 20px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
+  hr {
+    border: none;
+    border-bottom: 1px solid $side-color;
+    margin: 3px 0 0 20px;
+  }
+
+  .no-task-item {
+    margin: 250px auto;
+    width: 80%;
+    h2 {
+      font-weight: bold;
+      font-size: 1.8rem;
+      color: $side-color;
+    }
+    .sub-text {
+      font-size: 1.3rem;
+      margin: 0;
+      opacity: 0.5;
+    }
+  }
+  .no-todo-item {
+    @extend .no-task-item;
+
+    .create-todo {
+      padding: 15px 20px;
+      border-width: 2px;
+      border-color: $side-color;
+      border-radius: 2px;
+      background: none;
+      outline: none;
+      color: $side-color;
+      font-size: 2rem;
+      font-family: $task-font;
+      text-transform: uppercase;
+      cursor: pointer;
+      &:hover {
+        background: $side-color;
+        color: $task-name-color;
+      }
+    }
+  }
+  .add-item {
+    @include flex(center, center);
+    width: 100%;
+    margin: auto;
+    .add-item-cont {
+      width: $todo-width;
+      background: $bar;
+      padding: 15px;
+      border-radius: 5px;
+      color: $todo;
+      margin-top: 20px;
+      position: relative;
+      box-sizing: border-box;
+      @include flex(center, space-around);
+
+      span.material-icons {
+        cursor: pointer;
+
+        margin: 0 5px 0 0;
+        &:hover {
+          border-radius: 50%;
+          background: $side-color;
+          color: $main-color;
+        }
+      }
+
+      input[type="text"] {
+        font-family: inherit;
+        background: none;
+        border: none;
+        font-size: 20px;
+        outline: none;
+        flex-grow: 12;
+      }
+    }
+  }
+
+  .sort {
+    width: 60%;
+    height: 40px;
+    text-align: center;
+    margin: auto;
+    color: $side-color;
+    font-size: 1.3rem;
+    @include flex(center, flex-end);
+    select {
+      margin-left: 5px;
+      background: #b8b5ff;
+      border: none;
+      height: 24px;
+      padding: 3px 5px;
+      border-radius: 3px;
+      font-size: 16px;
+      color: $main-color;
+      option {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .todos-cont {
+    font-family: $task-font;
+    @include flex(center, center);
+    flex-direction: column;
+    height: auto;
+    margin-top: 10px;
+    .item-cont {
+      width: $todo-width;
+      &:hover .top,
+      &:hover .expanded-cont {
+        box-shadow: 5px 5px 0 rgba(63, 63, 68, 0.3);
+        transform: scale(1.01);
+        transition: 0.5s ease;
+      }
+      .top {
+        background: $bar;
+        padding: 15px;
+        color: $todo;
+        margin-top: 20px;
+        @include flex(center, space-around);
+        box-shadow: none;
+        width: 100%;
+        height: 60px;
+        justify-content: space-between;
+        margin-bottom: 0;
+        border-radius: 3px 3px 0 0;
+        position: relative;
+        input[type="text"] {
+          font-family: inherit;
+          background: none;
+          border: none;
+          font-size: 20px;
+          outline: none;
+          width: 100%;
+        }
+        .priority-flag {
+          height: 60px;
+          width: 7px;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        label {
+          width: 18px;
+          height: 18px;
+          position: relative;
+          z-index: 2;
+          cursor: pointer;
+          margin-right: 10px;
+        }
+        .checkbox {
+          position: absolute;
+          opacity: 0;
+          z-index: -1;
+          &:not(:checked) ~ .no-check {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid $success;
+            border-radius: 3px;
+            box-sizing: border-box;
+          }
+          &:checked ~ .check {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            box-sizing: border-box;
+            background: $success;
+            @include flex(center, center);
+            &::after {
+              content: "✔";
+              font-size: 1.3rem;
+              color: $light-color;
+            }
+          }
+          &:checked ~ .check ~ .item {
+            text-decoration: line-through;
+          }
+        }
+        .item {
+          margin: 0;
+          font-size: 20px;
+          color: $todo;
+          font-weight: 400;
+        }
+        button.expand {
+          margin-left: auto;
+          background: none;
+          outline: none;
+          border: none;
+          height: 30px;
+          @include flex(center, center);
+          border-radius: 3px;
+
+          &:hover {
+            background: $main-color;
+          }
+          div {
+            width: 24px;
+            height: 24px;
+            transform: rotate(0);
+            transition: transform 0.5s;
+          }
+        }
+      }
+      .expanded-cont {
+        width: 100%;
+        display: grid;
+        grid-template-rows: 5% 70% 20%;
+        grid-template-columns: 2.5% 30% 5% 60% 2.5%;
+        position: relative;
+        background: $bar;
+        color: $todo;
+        border-radius: 0 0 3px 3px;
+        border-top: 1px solid #bbbb;
+        opacity: 0;
+        height: 0;
+        visibility: hidden;
+        transition: opacity 0.3s 0.26s, visibility 0.3s 0.26s, height 0.3s 0.25s;
+        transition-timing-function: $timing;
+
+        .date-priority-cont {
+          grid-column: 2/3;
+          grid-row: 2/3;
+          @include flex(flex-start, flex-start);
+          flex-direction: column;
+          width: 100%;
+          .date-cont {
+            width: 100%;
+            height: 100%;
+            @include flex(flex-start, flex-start);
+            flex-direction: column;
+            label {
+              font-size: 16px;
+              font-weight: bold;
+            }
+            input[type="date"],
+            .date {
+              width: 100%;
+              height: 30px;
+              border: none;
+              border-radius: 5px;
+              background: #edeef7;
+              outline: none;
+              font-size: 16px;
+              color: $side-color;
+              margin-bottom: 20px;
+            }
+          }
+          .priority-cont {
+            @extend .date-cont;
+
+            select {
+              @extend .date;
+              // height: auto !important;
+            }
+          }
+        }
+        .details-cont {
+          grid-column: 4/5;
+          grid-row: 2/3;
+          width: 100%;
+          @include flex(flex-start, center);
+          flex-direction: column;
+
+          label {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          textarea {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            resize: none;
+            background: #edeef7;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+          }
+        }
+        .btn-save-del {
+          grid-column: 2/5;
+          grid-row: 3/4;
+          flex: 0 1 100%;
+          @include flex(center, flex-end);
+          .del {
+            align-self: flex-end;
+            @include flex(center, center);
+            padding: 7px 15px;
+            margin-right: 0;
+            background: none;
+            border: 1px solid $danger;
+            outline: none;
+            font-family: inherit;
+            border-radius: 100px;
+            color: $danger;
+
+            &:hover {
+              background: $danger;
+              color: $task-name-color;
+            }
+            span {
+              font-size: 18px;
+            }
+          }
+          .save {
+            @extend .del;
+            color: $success;
+            border: 1px solid $success;
+            margin-right: 10px;
+            &:hover {
+              background: $success;
+            }
+          }
+        }
+      }
+    }
+
+    // expanded
+  }
+  .clear {
+    margin: 30px 0 0 0;
+    .clear-done {
+      padding: 7px 30px;
+      border-radius: 100px;
+      border: 1px solid $clear;
+      background: none;
+      color: $clear;
+      outline: none;
+      transform: scale(1);
+      transition: transform 0.5s ease;
+      position: relative;
+      cursor: pointer;
+      .tooltip-text {
+        visibility: hidden;
+        background: $side-color;
+        padding: 5px;
+        border-radius: 3px;
+        width: 100%;
+        position: absolute;
+        top: 125%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          margin-left: -6px;
+          border-width: 6px;
+          border-style: solid;
+          border-color: transparent transparent $side-color transparent;
+        }
+      }
+      &:hover {
+        background: $clear;
+        color: $main-color;
+        transform: scale(1.05);
+        transition: transform 0.5s ease;
+        & .tooltip-text {
+          visibility: visible;
+        }
+      }
+    }
+    .delete-all {
+      @extend .clear-done;
+      margin-left: 20px;
+      border-color: $danger;
+      color: $danger;
+
+      &:hover {
+        background: $danger;
+      }
+    }
+  }
+}
+// side clock
+.side-menu {
+  min-height: 100vh;
+  background: $side-color;
+  padding: 20px 0;
+  color: $main-color;
+  font-family: $time-font;
+  width: $side-width;
+
+  .time-container {
+    padding: 0 10px;
+    @include flex(center, flex-end);
+    flex-direction: column;
+    .time {
+      @include flex(inherit, inherit);
+      h1 {
+        display: inline-block;
+        font-size: 80px;
+        text-transform: uppercase;
+        margin: 0;
+        line-height: 70px;
+        font-weight: 300;
+      }
+      span {
+        align-self: flex-start;
+        display: inline-block;
+        font-size: 40px;
+        line-height: 40px;
+      }
+    }
+    h2 {
+      font-size: 35px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    h3 {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 30px;
+      margin: 0;
+    }
+  }
+}
+
+.side-nav {
+  margin: 50px 0 0 0;
+  position: relative;
+  right: 0;
+  ul {
+    @include flex(center, center);
+    flex-direction: column;
+    padding: 0;
+    li {
+      list-style-type: none;
+      width: 100%;
+      margin: 0 0 20px 0;
+      text-align: left;
+      padding: 5px 0 5px 10px;
+      box-sizing: content-box;
+      &:hover {
+        background: $main-color;
+
+        a {
+          color: $side-color;
+        }
+      }
+
+      &:first-child,
+      &:nth-child(3) {
+        font-size: 30px;
+        line-height: 30px;
+        font-weight: bold;
+
+        &:hover {
+          color: $side-color;
+          background: #b8b5ff;
+        }
+      }
+
+      a {
+        text-decoration: none;
+        display: inline-block;
+        font-size: 30px;
+        color: $main-color;
+        font-weight: bold;
+        line-height: 30px;
+        width: 100%;
+      }
+    }
+
+    .task-list-cont {
+      textarea {
+        font-size: 23px;
+        font-family: $task-font;
+        overflow: hidden;
+        height: 25px;
+        width: 85%;
+        outline: none;
+        border: none;
+        border-bottom: 2px solid $main-color;
+        background: none;
+        color: $task-name-color;
+        margin: 15px 0 20px 0;
+        resize: none;
+        &::placeholder {
+          color: $light-color;
+          opacity: 0.7;
+          font-family: inherit;
+        }
+      }
+      ul.task-list {
+        margin: 0;
+        padding: 0;
+
+        li.task-names {
+          padding: 0 10px 0 0;
+          width: 90%;
+          border-radius: 5px;
+          list-style-type: none;
+          margin: 0;
+          font-size: 1.2vmax;
+          font-family: $task-font;
+          font-weight: 200;
+          color: $task-name-color;
+          margin-bottom: 5px;
+          position: relative;
+          @include flex(center, space-around);
+          a.task-name-link {
+            text-decoration: none;
+            font-size: 23px;
+            font-weight: 400;
+            color: $task-name-color;
+            display: inline-block;
+            width: 80%;
+            order: 2;
+          }
+          &:hover {
+            background: $task-name-color;
+            color: $side-color;
+            width: 90%;
+            a {
+              color: $side-color;
+            }
+
+            span.x-icon {
+              visibility: visible;
+              opacity: 0.5;
+              font-weight: bold;
+              cursor: pointer;
+              &:hover {
+                opacity: 1;
+              }
+            }
+            span.fa-pencil-alt {
+              @extend span.x-icon;
+              // left: 15%;
+            }
+          }
+          span.x-icon {
+            visibility: hidden;
+            order: 1;
+          }
+          .todo-num {
+            font-size: 13px;
+            order: 3;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}
+
+.notes {
+  @extend .main;
+  padding: 20px 0;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  .note-main-title {
+    font-family: $main-font;
+    font-size: 80px;
+    line-height: 70px;
+    text-align: left;
+    color: $side-color;
+    margin: 0 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .create-note {
+    @include flex(center, center);
+    margin-top: 50px;
+    button {
+      @include flex(center, center);
+      padding: 7px 15px;
+      border-radius: 100px;
+      border: 1px solid $clear;
+      background: $clear;
+      color: $light-color;
+      outline: none;
+      font-size: 1rem;
+      cursor: pointer;
+      &:hover {
+        background: #065380;
+      }
+    }
+  }
+  .main-container {
+    .grid-container {
+      height: 70vh;
+      margin: 40px;
+      overflow-y: scroll;
+      @include flex(flex-start, space-evenly);
+      flex-wrap: wrap;
+      align-content: flex-start;
+      .col {
+        min-width: 30%;
+        flex-shrink: 1;
+      }
+
+      .col-0 {
+        @include flex(center, stretch);
+        flex-flow: column wrap;
+      }
+      .col-1 {
+        @include flex(center, stretch);
+        flex-flow: column wrap;
+      }
+      .col-2 {
+        @include flex(center, stretch);
+        flex-flow: column wrap;
+      }
+    }
+  }
+}
+//separated so that it can be applied
+.note-cont {
+  width: 100%;
+  word-wrap: break-word;
+  position: relative;
+  background: $notepad;
+  padding: 25px 20px 20px;
+  margin-top: 30px;
+  font-size: 1.3vmax;
+  color: $side-color;
+  transition: 0.5s ease;
+  &:hover {
+    box-shadow: 7px 7px 4px rgba(63, 63, 68, 0.4);
+    transform: scale(1.05);
+    transition: 0.5s ease;
+  }
+  .delete-note {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    span {
+      transform: rotate(-35deg) translate(5px, -10px);
+      font-size: 40px !important;
+      color: $danger;
+      cursor: pointer;
+      &:hover {
+        transform: rotate(-35deg) translate(5px, -20px);
+        transition: 0.5s ease;
+      }
+    }
+  }
+  .note-title {
+    text-align: left;
+    outline: none;
+    min-height: 28px;
+    display: inline-block;
+    width: 100%;
+  }
+  .note-details {
+    @extend .note-title;
+    margin-top: 20px;
+  }
+}
+
+//scrollbar
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $side-color;
+  border-radius: 100px;
+}
+
+// modal
+.bg-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  background: rgba(63, 63, 68, 0.5);
+  .modal {
+    @include flex(flex-start, flex-start);
+    flex-direction: column;
+    width: 50%;
+    border-radius: 5px;
+    background: $light-color;
+    margin: auto;
+    padding: 45px 45px 20px 45px;
+    position: relative;
+    box-shadow: 10px 10px 4px rgba(63, 63, 68, 0.6);
+    .exit {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 10px;
+      button {
+        border: none;
+        background: none;
+        font-weight: bold;
+        color: $danger;
+        transform: scale(1);
+        outline: none;
+        cursor: pointer;
+        &:hover span {
+          transform: scale(1.1);
+          transition: transform 0.5s ease;
+        }
+      }
+    }
+    .save {
+      width: 100%;
+      margin-top: 10px;
+
+      button {
+        margin: auto;
+        background: none;
+        border: 1px solid $add;
+        color: $add;
+        border-radius: 100px;
+        padding: 5px 10px;
+        outline: none;
+        font-size: 1vmax;
+        cursor: pointer;
+        @include flex(center, center);
+        &:hover {
+          background: $add;
+          color: $light-color;
+          transform: scale(1.05);
+        }
+      }
+    }
+    .modal-note-title {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 20px;
+      @include flex(flex-start, space-between);
+      border-bottom: 1px solid $main-color;
+
+      input[type="text"] {
+        width: 100%;
+        outline: none;
+        border: none;
+        background: none;
+        font-family: $task-font;
+        font-size: 1.2vmax;
+        padding: 5px 0;
+      }
+    }
+    .modal-note-details {
+      width: 100%;
+      textarea {
+        width: 100%;
+        resize: none;
+        box-sizing: border-box;
+        background: none;
+        outline: none;
+        font-family: $task-font;
+        font-size: 1.2vmax;
+        border: none;
+        padding: 5px 0;
+      }
+    }
+  }
+}
+
+//additional classes
+.active {
+  background: #b8b5ff;
+  color: $side-color !important;
+}
+
+.notes-tag {
+  color: $side-color !important;
+}
+
+.Low {
+  background: $low;
+}
+
+.Medium {
+  background: $warning;
+}
+
+.High {
+  background: $danger;
+}
+
+//animation classes
+.show-menu {
+  top: 10vh !important;
+  width: 300px !important;
+  opacity: 1 !important;
+  transition: opacity 0.5s $timing, width 0.5s $timing !important;
+}
+
+.expanding {
+  opacity: 1 !important;
+  visibility: visible !important;
+  height: 267px !important;
+}
+
+.rotating {
+  transform: rotate(180deg) !important;
+}
+
+.deleting {
+  animation: deleting 0.3s $timing forwards !important;
+  // -moz-animation: deleting 0.1s $timing forwards;
+}
+
+.appear {
+  animation: appear 0.5s $timing forwards !important;
+}
+
+.done {
+  animation: done 0.5s $timing forwards !important;
+}
+
+.shrink {
+  animation: shrink 0.3s $timing forwards !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visibility {
+  visibility: hidden;
+  transform: scale(0);
+}
+
+.show-note {
+  animation: show 0.5s $timing forwards;
+}
+
+.remove-note {
+  animation: hide 0.3s $timing forwards;
+}
+
+// keyframes
+
+@keyframes show {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hide {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes shrink {
+  from {
+    height: 347px;
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes appear {
+  from {
+    transform: translate(0, 30px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes deleting {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes done {
+  0% {
+    height: 81px;
+  }
+  100% {
+    height: 0px;
+  }
+}
+
+@keyframes down {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+  100% {
+    transform: translateY(9px) rotate(45deg);
+  }
+}
+
+@keyframes up {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+  100% {
+    transform: translateY(-9px) rotate(135deg);
+  }
+}
+
+@keyframes gone {
+  100% {
+    transform: scale(0);
+  }
+}
+
+// unchecked
+@keyframes rev-up {
+  0% {
+    transform: translateY(9px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes rev-down {
+  0% {
+    transform: translateY(-9px) rotate(135deg);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes rev-appear {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// media queries
+@media (max-width: 1200px) {
+  .main {
+    width: 74%;
+  }
+  .side-menu {
+    width: 26%;
+  }
+  .item-cont,
+  .add-item-cont {
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    width: 100%;
+  }
+  label,
+  option,
+  select,
+  input[type="date"],
+  .details-cont textarea,
+  .note-title,
+  .note-details {
+    font-size: 18px !important;
+  }
+
+  h4 {
+    opacity: 1 !important;
+    color: rgba(63, 63, 68, 0.6) !important;
+  }
+
+  .task-list-cont textarea {
+    font-size: 1.2rem !important;
+    padding: 10px;
+  }
+
+  .notes-tag,
+  .task-name-link {
+    font-size: 1.6rem !important;
+    line-height: 2rem !important;
+  }
+
+  .side-menu {
+    opacity: 0;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: $side-color;
+    transition: opacity 0.5s $timing, width 0.5s $timing, top 0.1s 0.4s $timing;
+  }
+  .main {
+    padding-top: 0;
+    hr {
+      display: none;
+    }
+    .title-cont {
+      background: $side-color;
+      height: 10vh;
+      width: 100%;
+      position: relative;
+      padding-left: 20px;
+      @include flex(center, flex-start);
+      .menu {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        position: relative;
+        z-index: 100;
+        .burger-check {
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          left: 0;
+          width: inherit;
+          height: inherit;
+          margin: 0;
+          opacity: 0;
+          outline: none;
+          cursor: pointer;
+          &:checked {
+            & ~ .burger div:nth-child(1) {
+              animation: down 0.5s $timing forwards;
+            }
+            & ~ .burger div:nth-child(2) {
+              animation: gone 0.5s $timing forwards;
+            }
+            & ~ .burger div:nth-child(3) {
+              animation: up 0.5s $timing forwards;
+            }
+          }
+
+          &:not(:checked) {
+            & ~ .burger div:nth-child(1) {
+              animation: rev-up 0.5s $timing forwards;
+            }
+            & ~ .burger div:nth-child(2) {
+              animation: rev-appear 0.5s $timing forwards;
+            }
+            & ~ .burger div:nth-child(3) {
+              animation: rev-down 0.5s $timing forwards;
+            }
+          }
+        }
+        .burger {
+          .bar {
+            width: 30px;
+            height: 4px;
+            position: relative;
+            margin: 5px auto 0;
+            border-radius: 50px;
+            background: $main-color;
+          }
+        }
+      }
+      h1.title,
+      h1.note-main-title {
+        display: inline-block;
+        color: $main-color;
+        font-size: 4rem;
+      }
+    }
+  }
+
+  .grid-container {
+    justify-content: space-between !important;
+    padding-right: 20px;
+    .col {
+      width: 47%;
+    }
+  }
+
+  .item-cont,
+  .add-item-cont {
+    width: 85% !important;
+  }
+}

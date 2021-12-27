@@ -83,6 +83,10 @@
           </div>
 
           <div class="btn-save-del">
+            <button class="save" @click="updateItems()">
+              <span class="material-icons material-icons-outlined"> save </span>
+              &nbsp; Save
+            </button>
             <button
               class="del"
               @click="deleteItem(todoItem._id, todoItem.title)"
@@ -186,6 +190,7 @@ export default {
     async updateItems() {
       await ReqService.updateItems(this.activeListId, this.items);
       this.fetchItems();
+      console.log("result", this.items);
     },
     animationDelete(title) {
       const itemBar = document.getElementById("todo-" + title);
@@ -216,13 +221,21 @@ export default {
       },
       deep: true,
     },
-    items: {
-      immediate: true,
-      handler: function () {
-        console.log("change made");
-      },
-      deep: true,
-    },
+    // items: {
+    //   immediate: true,
+    //   handler: function (newVal, oldVal) {
+    //     const itemsJson = JSON.stringify(newVal);
+    //     if (JSON.stringify(oldVal) !== itemsJson) {
+    //       this.fetchItems();
+    //       console.log("check", JSON.stringify(oldVal) === itemsJson);
+    //     } else {
+    //       alert("yo");
+    //       this.updateItems(this.activeListId, this.items);
+    //       console.log(this.items);
+    //     }
+    //   },
+    //   deep: true,
+    // },
   },
   updated() {},
 };
