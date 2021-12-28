@@ -1,6 +1,10 @@
 <template>
   <div class="pseudo-cont">
-    <SideMenu :lists="lists" @activeList="passActiveListId"></SideMenu>
+    <SideMenu
+      :lists="lists"
+      @activeList="passActiveListId"
+      @updateLists="updateLists"
+    ></SideMenu>
     <MainContent
       v-if="lists"
       :lists="lists"
@@ -29,19 +33,27 @@ export default {
     };
   },
   methods: {
+    async fetchList() {
+      const result = await ReqService.getList();
+      const data = await result;
+
+      this.lists = [...data];
+
+      console.log("fetched", this.lists);
+    },
     passActiveListId({ id, name }) {
       this.activeListId = id;
       this.activeListName = name;
       console.log("passed");
     },
+    async updateLists(newList) {
+      await ReqService.createList(newList).then(() => this.fetchList());
+
+      console.log("update lists");
+    },
   },
-  async created() {
-    const result = await ReqService.getList();
-    const data = await result;
-
-    this.lists = [...data];
-
-    console.log(this.lists);
+  created() {
+    this.fetchList();
   },
 };
 </script>

@@ -46,7 +46,7 @@
             placeholder="Enter task list name"
             maxlength="15"
             v-model="listName"
-            @keydown.prevent.enter="addTask"
+            @keydown.prevent.enter="addList"
           ></textarea>
         </div>
         <li id="notes-list" class="">
@@ -111,6 +111,10 @@ export default {
     },
     selectList(id, name) {
       this.$emit("activeList", { id, name });
+    },
+    addList() {
+      this.$emit("updateLists", this.listName);
+      this.listName = "";
     },
   },
   mounted() {

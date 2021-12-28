@@ -24,7 +24,6 @@
         v-for="todoItem in items"
         :key="todoItem"
         class="item-cont"
-        :class="{ appear: toAppear }"
         :id="'item-cont-' + todoItem._id"
       >
         <div class="top" :id="'todo-' + todoItem.title">
@@ -84,7 +83,7 @@
           </div>
 
           <div class="btn-save-del">
-            <button class="save" @click="updateItems()">
+            <button class="save" @click="updateItems(todoItem._id)">
               <span class="material-icons material-icons-outlined"> save </span>
               &nbsp; Save
             </button>
@@ -162,7 +161,6 @@ export default {
       items: [],
       itemTitle: "",
       expandChecker: false,
-      toAppear: false,
     };
   },
   methods: {
@@ -173,8 +171,7 @@ export default {
     },
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
-      this.fetchItems();
-      this.appearItem();
+      this.fetchItems().then(() => this.appearItem());
       this.itemTitle = "";
     },
     async deleteItem(itemId, title) {
@@ -182,10 +179,16 @@ export default {
       await ReqService.deleteItem(this.activeListId, itemId);
       this.fetchItems();
     },
-    async updateItems() {
+    async updateItems(itemId) {
+      //minimize item after clicking "save"
+      this.items.forEach((item) => {
+        if (item._id === itemId && item.expandedItem) {
+          item.expandedItem = this.expandChecker;
+        }
+      });
+      //upates item in db
       await ReqService.updateItems(this.activeListId, this.items);
       this.fetchItems();
-      console.log("result", this.items);
     },
     animationDelete(title, itemId) {
       const itemBar = document.getElementById("todo-" + title);
@@ -205,16 +208,13 @@ export default {
       });
     },
     appearItem() {
-      console.log("bool", !this.items.includes(this.itemTitle));
+      //animation for adding item
       if (!this.items.includes(this.itemTitle)) {
         setTimeout(() => {
           const itemCont = document.getElementById(
-            "item-cont-" + this.items[this.items.length]._id
+            "item-cont-" + this.items[this.items.length - 1]._id
           );
           itemCont.classList.add("appear");
-          console.log("itemcont", itemCont);
-          // this.toAppear = true;
-          console.log("appear toggle");
         }, 20);
       }
     },
