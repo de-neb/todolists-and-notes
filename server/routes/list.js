@@ -49,7 +49,16 @@ router.post("/", async (req, res) => {
 router.delete("/:id/delete-list", async (req, res) => {
   try {
     await TaskList.deleteOne({ _id: req.params.id });
-    res.status(200).send();
+    //set last list as active
+    TaskList.findOne()
+      .sort({ field: "asc", _id: -1 })
+      .exec(async (err, list) => {
+        if (!err) {
+          list.active = true;
+          await list.save();
+        }
+        res.status(200).send();
+      });
   } catch (error) {
     console.log(error.message);
   }
@@ -60,8 +69,17 @@ router.put("/:id/update-active-list", async (req, res) => {
   const id = req.params.id;
   try {
     await TaskList.updateMany({ _id: { $ne: id } }, { active: false });
-    await TaskList.findOneAndUpdate({ _id: id }, { active: true });
-    res.status(200).send();
+    TaskList.findOneAndUpdate(
+      { _id: id },
+      { active: true },
+      { new: true },
+      (err, list) => {
+        if (!err) {
+          // console.log(`list: ${list.name}, active: ${list.active}`);
+          res.status(200).send();
+        }
+      }
+    );
   } catch (error) {
     console.log(error.message);
   }
