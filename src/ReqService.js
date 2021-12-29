@@ -18,6 +18,16 @@ class ReqService {
     });
   }
 
+  //delete list
+  static async deleteList(listId) {
+    return axios.delete(`${url}${listId}/delete-list`);
+  }
+
+  //update active list
+  static async updateActiveList(listId) {
+    return axios.put(`${url}${listId}/update-active-list`);
+  }
+
   //list actions end//
 
   //item actions start//

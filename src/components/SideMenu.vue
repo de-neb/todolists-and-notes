@@ -100,6 +100,7 @@ export default {
       menuActive: false,
       // lists: [],
       listName: "",
+      activeListId: "",
     };
   },
   methods: {
@@ -110,11 +111,18 @@ export default {
       return hour < 12 ? "AM" : "PM";
     },
     selectList(id, name) {
+      this.activeListId = id;
       this.$emit("activeList", { id, name });
+      const active = this.lists.filter((list) => list.active);
+      console.log("active", active);
     },
     addList() {
-      this.$emit("updateLists", this.listName);
+      //problem id not captured
+      this.$emit("addList", this.listName);
       this.listName = "";
+    },
+    deleteList(id) {
+      this.$emit("deleteList", id);
     },
   },
   mounted() {

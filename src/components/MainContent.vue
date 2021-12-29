@@ -1,11 +1,11 @@
 <template>
-  <div class="main" :id="'#list' + taskListId">
+  <div class="main" :id="'#list' + activeListId">
     <div class="title-cont">
       <div class="menu">
         <input
           type="checkbox"
           class="burger-check"
-          :id="'menu-list' + taskListId"
+          :id="'menu-list' + activeListId"
           v-model="menuActive"
         />
         <div class="burger">
@@ -109,7 +109,7 @@
         <input
           type="text"
           name="itemTitle"
-          :id="'todo-' + lists[taskListId]"
+          :id="'todo-' + lists[activeListId]"
           maxlength="55"
           v-model="itemTitle"
           @keydown.enter="addItem()"
@@ -172,6 +172,7 @@ export default {
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
       this.fetchItems().then(() => this.appearItem());
+
       this.itemTitle = "";
     },
     async deleteItem(itemId, title) {
