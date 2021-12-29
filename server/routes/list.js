@@ -14,9 +14,17 @@ mongoose.connect(
 const Item = require("../modules/item");
 const TaskList = require("../modules/taskList");
 
+//default list
+const defaultList = require("../modules/defaultList");
+
 //get list
 router.get("/", async (req, res) => {
   const listCollection = await TaskList.find({});
+
+  if (!listCollection.length) {
+    await defaultList.save();
+    console.log("empty");
+  }
   res.send(listCollection);
 });
 
@@ -29,6 +37,7 @@ router.post("/", async (req, res) => {
       active: req.body.isActive,
       done: req.body.isDone,
     });
+    await TaskList.updateMany({}, { active: false });
     await newTaskList.save();
     res.status(201).send();
   } catch (error) {
@@ -40,6 +49,18 @@ router.post("/", async (req, res) => {
 router.delete("/:id/delete-list", async (req, res) => {
   try {
     await TaskList.deleteOne({ _id: req.params.id });
+    res.status(200).send();
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//update list
+router.put("/:id/update-active-list", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await TaskList.updateMany({ _id: { $ne: id } }, { active: false });
+    await TaskList.findOneAndUpdate({ _id: id }, { active: true });
     res.status(200).send();
   } catch (error) {
     console.log(error.message);
