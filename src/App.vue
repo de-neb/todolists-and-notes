@@ -67,7 +67,12 @@ export default {
       console.log("list:", this.lists);
     },
     async deleteList(id) {
-      await ReqService.deleteList(id).then(() => this.fetchList());
+      await ReqService.deleteList(id);
+      this.fetchList().then(() => {
+        const listsLen = this.lists.length;
+        this.activeListId = this.lists[listsLen - 1]._id;
+        this.activeListName = this.lists[listsLen - 1].name;
+      });
       console.log("deleted");
     },
   },
@@ -78,6 +83,9 @@ export default {
         this.activeListId = this.lists[0]._id;
         this.activeListName = this.lists[0].name;
       } else {
+        console.log("else trigerred from app.vue");
+        const activeList = this.lists.filter((el) => el.active);
+        console.log("active list", activeList);
         this.lists.forEach((list) => {
           if (list.active) {
             this.activeListId = list._id;
