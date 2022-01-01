@@ -126,7 +126,7 @@
         </span>
         <span class="tooltip-text">Clear done items</span>
       </button>
-      <button class="delete-all" @click="deleteAllItems">
+      <button class="delete-all" @click="deleteAllItems()">
         <span class="material-icons material-icons-outlined">
           delete_sweep
         </span>
@@ -161,6 +161,7 @@ export default {
       items: [],
       itemTitle: "",
       expandChecker: false,
+      showModal: false,
     };
   },
   methods: {
@@ -172,7 +173,6 @@ export default {
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
       this.fetchItems().then(() => this.appearItem());
-
       this.itemTitle = "";
     },
     async deleteItem(itemId, title) {
@@ -218,6 +218,13 @@ export default {
           itemCont.classList.add("appear");
         }, 20);
       }
+    },
+    async deleteAllItems() {
+      await ReqService.deleteAllItems(this.activeListId);
+      this.fetchItems();
+      console.log("emit modal");
+      this.showModal = true;
+      this.$emit("showModal", this.showModal);
     },
   },
 

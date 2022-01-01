@@ -113,8 +113,6 @@ export default {
     selectList(id, name) {
       this.activeListId = id;
       this.$emit("activeList", { id, name });
-      const active = this.lists.filter((list) => list.active);
-      console.log("active", active);
     },
     addList() {
       //problem id not captured

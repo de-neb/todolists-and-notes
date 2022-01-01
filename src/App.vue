@@ -12,7 +12,9 @@
       :activeListId="activeListId"
       :activeListName="activeListName"
       :firstPageLanding="firstPageLanding"
+      @showModal="showConfirmModal"
     ></MainContent>
+    <ConfirmModal :class="{ show: showModal }"></ConfirmModal>
   </div>
 </template>
 
@@ -20,12 +22,14 @@
 import ReqService from "./ReqService";
 import SideMenu from "./components/SideMenu.vue";
 import MainContent from "./components/MainContent.vue";
+import ConfirmModal from "./components/ConfirmModal.vue";
 
 export default {
   name: "App",
   components: {
     SideMenu,
     MainContent,
+    ConfirmModal,
   },
   data() {
     return {
@@ -33,6 +37,7 @@ export default {
       activeListId: "",
       activeListName: "",
       firstPageLanding: false,
+      showModal: "",
     };
   },
   methods: {
@@ -75,6 +80,9 @@ export default {
       });
       console.log("deleted");
     },
+    showConfirmModal(showModal) {
+      this.showModal = showModal;
+    },
   },
   created() {
     this.fetchList().then(() => {
@@ -98,5 +106,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.show {
+  display: block !important;
+}
 </style>
