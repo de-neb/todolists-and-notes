@@ -120,12 +120,25 @@ router.post("/:id", (req, res) => {
   );
 });
 
-//delete item
+//delete single item
 router.delete("/:id/delete-item", (req, res) => {
   const itemId = req.body.itemId;
   TaskList.findByIdAndUpdate(
     req.params.id,
     { $pull: { items: { _id: itemId } } },
+    (err, doc) => {
+      if (!err) {
+        res.status(200).send();
+      }
+    }
+  );
+});
+
+//delete all items
+router.delete("/:id/delete-items", (req, res) => {
+  TaskList.findByIdAndUpdate(
+    req.params.id,
+    { $set: { items: [] } },
     (err, doc) => {
       if (!err) {
         res.status(200).send();
