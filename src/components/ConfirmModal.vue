@@ -1,9 +1,13 @@
 <template>
   <div class="modal">
-    <h2>Delete all items in this list?</h2>
+    <h2>Delete all items in {{ activeListName.toUpperCase() }}?</h2>
     <div class="modal-btns">
-      <button class="yes">Yes</button>
-      <button class="no">No</button>
+      <button class="yes" value="true" @click="confirmDeletion($event)">
+        Yes
+      </button>
+      <button class="no" value="false" @click="confirmDeletion($event)">
+        No
+      </button>
     </div>
   </div>
 </template>
@@ -11,10 +15,15 @@
 <script>
 export default {
   name: "ConfirmModal",
+  props: { activeListName: String },
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    confirmDeletion(e) {
+      this.$emit("confirmDeletion", e.target.value);
+    },
+  },
 };
 </script>
 
@@ -28,11 +37,10 @@ h2 {
   width: 400px;
   position: absolute;
   background: #edeef7;
-  border: 1px solid black;
+  border-radius: 5px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;

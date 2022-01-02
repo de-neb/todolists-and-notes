@@ -1,20 +1,29 @@
 <template>
-  <div class="pseudo-cont">
-    <SideMenu
-      :lists="lists"
-      @activeList="passActiveListId"
-      @addList="addList"
-      @deleteList="deleteList"
-    ></SideMenu>
-    <MainContent
-      v-if="lists"
-      :lists="lists"
-      :activeListId="activeListId"
+  <div class="container">
+    <div class="pseudo-cont">
+      <SideMenu
+        :lists="lists"
+        @activeList="passActiveListId"
+        @addList="addList"
+        @deleteList="deleteList"
+      ></SideMenu>
+      <MainContent
+        v-if="lists"
+        :lists="lists"
+        :activeListId="activeListId"
+        :activeListName="activeListName"
+        :firstPageLanding="firstPageLanding"
+        :toDeleteItems="toDeleteItems"
+        @showModal="showConfirmModal"
+        @changeToFalse="(bool) => (toDeleteItems = bool)"
+      ></MainContent>
+    </div>
+    <div :class="{ 'blur-bg': showModal }"></div>
+    <ConfirmModal
+      :class="{ show: showModal }"
       :activeListName="activeListName"
-      :firstPageLanding="firstPageLanding"
-      @showModal="showConfirmModal"
-    ></MainContent>
-    <ConfirmModal :class="{ show: showModal }"></ConfirmModal>
+      @confirmDeletion="confirmDeletion"
+    ></ConfirmModal>
   </div>
 </template>
 
@@ -38,6 +47,7 @@ export default {
       activeListName: "",
       firstPageLanding: false,
       showModal: "",
+      toDeleteItems: null,
     };
   },
   methods: {
@@ -83,7 +93,14 @@ export default {
     showConfirmModal(showModal) {
       this.showModal = showModal;
     },
+    confirmDeletion(bool) {
+      this.toDeleteItems = bool;
+      if (bool === "false") {
+        this.showModal = false;
+      }
+    },
   },
+
   created() {
     this.fetchList().then(() => {
       // this.firstPageLanding = true;
@@ -108,6 +125,17 @@ export default {
 
 <style scoped>
 .show {
-  display: block !important;
+  display: flex !important;
+}
+
+.blur-bg {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
 }
 </style>

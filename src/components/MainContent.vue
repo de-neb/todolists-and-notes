@@ -154,6 +154,7 @@ export default {
     lists: Array,
     activeListId: String,
     activeListName: String,
+    toDeleteItems: Boolean,
   },
   data() {
     return {
@@ -220,9 +221,6 @@ export default {
       }
     },
     async deleteAllItems() {
-      await ReqService.deleteAllItems(this.activeListId);
-      this.fetchItems();
-      console.log("emit modal");
       this.showModal = true;
       this.$emit("showModal", this.showModal);
     },
@@ -235,6 +233,20 @@ export default {
         this.fetchItems();
       },
       deep: true,
+    },
+    toDeleteItems: {
+      immediate: true,
+      handler: async function (newVal) {
+        if (newVal === "true") {
+          await ReqService.deleteAllItems(this.activeListId);
+          this.fetchItems();
+          this.$emit("changeToFalse", "false");
+          console.log("all items deleted");
+        }
+        this.showModal = false;
+        this.$emit("showModal", this.showModal);
+      },
+      deep: false,
     },
   },
   updated() {},

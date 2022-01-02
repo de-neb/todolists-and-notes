@@ -7,6 +7,7 @@ html {
   overflow-x: hidden;
   min-height: 100%;
   padding: 0;
+  position: relative;
 }
 
 div {
@@ -15,7 +16,8 @@ div {
 }
 
 #app,
-.pseudo-cont {
+.pseudo-cont,
+.container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -37,6 +37,7 @@ html {
   overflow-x: hidden;
   min-height: 100%;
   padding: 0;
+  position: relative;
 }
 
 div {
@@ -44,7 +45,8 @@ div {
 }
 
 #app,
-.pseudo-cont {
+.pseudo-cont,
+.container {
   @include flex(stretch, stretch);
   height: 100%;
   width: 100%;
