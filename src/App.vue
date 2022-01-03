@@ -54,8 +54,8 @@ export default {
     async fetchList() {
       const result = await ReqService.getList();
       const data = await result;
-
       this.lists = [...data];
+      return this.lists;
     },
     async passActiveListId({ id, name }) {
       this.activeListId = id;
@@ -73,22 +73,19 @@ export default {
     },
     async addList(listName) {
       await ReqService.createList(listName);
-      this.fetchList().then(() => {
-        const listsLen = this.lists.length;
-        this.activeListId = this.lists[listsLen - 1]._id;
-        this.activeListName = this.lists[listsLen - 1].name;
-      });
-
-      console.log("list:", this.lists);
+      await this.fetchList();
+      const listsLen = this.lists.length;
+      this.activeListId = this.lists[listsLen - 1]._id;
+      this.activeListName = this.lists[listsLen - 1].name;
     },
     async deleteList(id) {
-      await ReqService.deleteList(id);
-      this.fetchList().then(() => {
-        const listsLen = this.lists.length;
-        this.activeListId = this.lists[listsLen - 1]._id;
-        this.activeListName = this.lists[listsLen - 1].name;
-      });
-      console.log("deleted");
+      const updatedList = await ReqService.deleteList(id);
+      this.lists = await updatedList;
+
+      const listsLen = this.lists.length;
+
+      this.activeListId = this.lists[listsLen - 1]._id;
+      this.activeListName = this.lists[listsLen - 1].name;
     },
     showConfirmModal(showModal) {
       this.showModal = showModal;
@@ -103,14 +100,10 @@ export default {
 
   created() {
     this.fetchList().then(() => {
-      // this.firstPageLanding = true;
       if (this.lists.length === 1) {
         this.activeListId = this.lists[0]._id;
         this.activeListName = this.lists[0].name;
       } else {
-        console.log("else trigerred from app.vue");
-        const activeList = this.lists.filter((el) => el.active);
-        console.log("active list", activeList);
         this.lists.forEach((list) => {
           if (list.active) {
             this.activeListId = list._id;
@@ -119,6 +112,19 @@ export default {
         });
       }
     });
+
+    // this.fetchList();
+    // if (this.lists.length === 1) {
+    //   this.activeListId = this.lists[0]._id;
+    //   this.activeListName = this.lists[0].name;
+    // } else {
+    //   this.lists.forEach((list) => {
+    //     if (list.active) {
+    //       this.activeListId = list._id;
+    //       this.activeListName = list.name;
+    //     }
+    //   });
+    // }
   },
 };
 </script>

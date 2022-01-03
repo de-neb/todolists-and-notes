@@ -28,9 +28,7 @@
               >
                 {{ list.name.toUpperCase() }}
               </a>
-              <span class="todo-num">{{
-                list.items.filter((el) => !el.deleted).length
-              }}</span>
+              <span class="todo-num">{{ list.items.length }}</span>
               <span
                 type="button"
                 @click.self="deleteList(list._id)"
@@ -101,6 +99,7 @@ export default {
       // lists: [],
       listName: "",
       activeListId: "",
+      itemsLen: null,
     };
   },
   methods: {
@@ -123,6 +122,7 @@ export default {
       this.$emit("deleteList", id);
     },
   },
+
   mounted() {
     //set live date and time
     setInterval(() => {

@@ -20,7 +20,9 @@ class ReqService {
 
   //delete list
   static async deleteList(listId) {
-    return axios.delete(`${url}${listId}/delete-list`);
+    const res = await axios.delete(`${url}${listId}/delete-list`);
+    const data = await res.data;
+    return data;
   }
 
   //update active list

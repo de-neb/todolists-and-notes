@@ -28,10 +28,10 @@
       >
         <div class="top" :id="'todo-' + todoItem.title">
           <div class="priority-flag" :class="todoItem.priority"></div>
-          <label :for="'check-' + todoItem.title"></label>
+          <label :for="'check-' + todoItem._id"></label>
           <input
             type="checkbox"
-            :id="'check-' + todoItem.title"
+            :id="'check-' + todoItem._id"
             class="checkbox"
             v-model="todoItem.done"
           />
@@ -126,7 +126,7 @@
         </span>
         <span class="tooltip-text">Clear done items</span>
       </button>
-      <button class="delete-all" @click="deleteAllItems()">
+      <button class="delete-all" @click="deleteAllItems">
         <span class="material-icons material-icons-outlined">
           delete_sweep
         </span>
@@ -173,6 +173,7 @@ export default {
     },
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
+      //animation wont play if not inside .then
       this.fetchItems().then(() => this.appearItem());
       this.itemTitle = "";
     },
@@ -223,6 +224,12 @@ export default {
     async deleteAllItems() {
       this.showModal = true;
       this.$emit("showModal", this.showModal);
+    },
+    async clearDoneItems() {
+      const filteredDoneItems = this.items.filter((item) => !item.done);
+      await ReqService.updateItems(this.activeListId, filteredDoneItems);
+      this.fetchItems();
+      console.log("clearing done items done");
     },
   },
 
