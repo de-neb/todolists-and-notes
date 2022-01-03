@@ -19,13 +19,19 @@ const defaultList = require("../modules/defaultList");
 
 //get list
 router.get("/", async (req, res) => {
-  const listCollection = await TaskList.find({});
+  try {
+    const listCollection = await TaskList.find({});
+    const defaultTaskExists = await TaskList.exists({ name: "My Task" });
 
-  if (!listCollection.length) {
-    await defaultList.save();
-    console.log("empty");
+    if (listCollection.length === 0 && !defaultTaskExists) {
+      //default list
+      console.log("here ");
+      await defaultList.save();
+    }
+    res.send(listCollection);
+  } catch (error) {
+    console.log(error.message);
   }
-  res.send(listCollection);
 });
 
 //create list
@@ -48,17 +54,31 @@ router.post("/", async (req, res) => {
 //delete list
 router.delete("/:id/delete-list", async (req, res) => {
   try {
-    await TaskList.deleteOne({ _id: req.params.id });
-    //set last list as active
-    TaskList.findOne()
-      .sort({ field: "asc", _id: -1 })
-      .exec(async (err, list) => {
-        if (!err) {
-          list.active = true;
-          await list.save();
+    const listExists = await TaskList.exists({ _id: req.params.id });
+
+    if (listExists) {
+      await TaskList.deleteOne({ _id: req.params.id });
+      //set last list as active
+      TaskList.countDocuments({}, (err, c) => {
+        if (c > 0) {
+          TaskList.findOne()
+            .sort({ field: "asc", _id: -1 })
+            .exec(async (err, list) => {
+              if (!err) {
+                list.active = true;
+                await list.save();
+                //sending updated list instead
+                const updatedList = await TaskList.find({});
+                res.send(updatedList);
+              }
+            });
+        } else {
+          res.send([]);
         }
-        res.status(200).send();
       });
+    } else {
+      res.send([]);
+    }
   } catch (error) {
     console.log(error.message);
   }
