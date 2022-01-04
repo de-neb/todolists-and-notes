@@ -182,7 +182,7 @@ div {
     @include flex(center, center);
     flex-direction: column;
     height: auto;
-    margin-top: 10px;
+    margin-top: 5vh;
     .item-cont {
       width: $todo-width;
       &:hover .top,
@@ -873,7 +873,7 @@ div {
 
 //animation classes
 .show-menu {
-  top: 10vh !important;
+  top: 0 !important;
   width: 300px !important;
   opacity: 1 !important;
   transition: opacity 0.5s $timing, width 0.5s $timing !important;
@@ -1096,6 +1096,7 @@ div {
     position: absolute;
     top: 0;
     left: 0;
+    padding-top: 70px;
     z-index: 3;
     background: $side-color;
     transition: opacity 0.5s $timing, width 0.5s $timing, top 0.1s 0.4s $timing;
@@ -1107,10 +1108,11 @@ div {
     }
     .title-cont {
       background: $side-color;
-      height: 10vh;
+      height: 70px;
       width: 100%;
       position: relative;
       padding-left: 20px;
+      box-shadow: 0px 3px 0px #675f905d;
       @include flex(center, flex-start);
       .menu {
         display: inline-block;

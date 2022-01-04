@@ -1,25 +1,12 @@
 <template>
   <div class="main" :id="'#list' + activeListId">
-    <div class="title-cont">
-      <div class="menu">
-        <input
-          type="checkbox"
-          class="burger-check"
-          :id="'menu-list' + activeListId"
-          v-model="menuActive"
-        />
-        <div class="burger">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-      </div>
-      <h1 class="title" id="title">
-        {{ lists.length ? activeListName : "TO-DO LIST" }}
-      </h1>
-    </div>
+    <TopBar
+      :activeListName="activeListName"
+      :listsLen="lists.length"
+      @burgerClick="burgerClick"
+    ></TopBar>
 
-    <div class="todos-cont">
+    <div class="todos-cont" v-if="lists.length">
       <div
         v-for="todoItem in items"
         :key="todoItem"
@@ -147,6 +134,7 @@
 
 <script>
 import ReqService from "../ReqService";
+import TopBar from "./TopBar.vue";
 
 export default {
   name: "MainContent",
@@ -155,6 +143,9 @@ export default {
     activeListId: String,
     activeListName: String,
     toDeleteItems: Boolean,
+  },
+  components: {
+    TopBar,
   },
   data() {
     return {
@@ -230,6 +221,9 @@ export default {
       await ReqService.updateItems(this.activeListId, filteredDoneItems);
       this.fetchItems();
       console.log("clearing done items done");
+    },
+    burgerClick(menuActive) {
+      this.$emit("burgerClick", menuActive);
     },
   },
 

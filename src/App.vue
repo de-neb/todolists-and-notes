@@ -3,6 +3,7 @@
     <div class="pseudo-cont">
       <SideMenu
         :lists="lists"
+        :menuActive="menuActive"
         @activeList="passActiveListId"
         @addList="addList"
         @deleteList="deleteList"
@@ -16,6 +17,7 @@
         :toDeleteItems="toDeleteItems"
         @showModal="showConfirmModal"
         @changeToFalse="(bool) => (toDeleteItems = bool)"
+        @burgerClick="(bool) => (menuActive = !bool)"
       ></MainContent>
     </div>
     <div :class="{ 'blur-bg': showModal }"></div>
@@ -48,6 +50,7 @@ export default {
       firstPageLanding: false,
       showModal: "",
       toDeleteItems: null,
+      menuActive: false,
     };
   },
   methods: {
@@ -112,19 +115,6 @@ export default {
         });
       }
     });
-
-    // this.fetchList();
-    // if (this.lists.length === 1) {
-    //   this.activeListId = this.lists[0]._id;
-    //   this.activeListName = this.lists[0].name;
-    // } else {
-    //   this.lists.forEach((list) => {
-    //     if (list.active) {
-    //       this.activeListId = list._id;
-    //       this.activeListName = list.name;
-    //     }
-    //   });
-    // }
   },
 };
 </script>

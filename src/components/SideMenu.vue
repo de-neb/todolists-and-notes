@@ -60,6 +60,7 @@ export default {
   name: "SideMenu",
   props: {
     lists: Array,
+    menuActive: Boolean,
   },
   data() {
     return {
@@ -95,7 +96,6 @@ export default {
       minutes: null,
       seconds: null,
       period: null,
-      menuActive: false,
       // lists: [],
       listName: "",
       activeListId: "",

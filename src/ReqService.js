@@ -4,6 +4,7 @@ const url = "http://localhost:5000/api/list/";
 
 class ReqService {
   //list actions start//
+
   //get List
   static async getList() {
     const res = await axios.get(url);
