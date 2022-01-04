@@ -8,6 +8,7 @@
         @addList="addList"
         @deleteList="deleteList"
       ></SideMenu>
+      <div :class="{ 'blur-bg': menuActive, 'z-index-2': menuActive }"></div>
       <MainContent
         v-if="lists"
         :lists="lists"
@@ -133,5 +134,9 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
+}
+
+.z-index-2 {
+  z-index: 2;
 }
 </style>
