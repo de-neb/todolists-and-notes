@@ -14,20 +14,11 @@ mongoose.connect(
 const Item = require("../modules/item");
 const TaskList = require("../modules/taskList");
 
-//default list
-const defaultList = require("../modules/defaultList");
-
 //get list
 router.get("/", async (req, res) => {
   try {
-    const listCollection = await TaskList.find({});
-    const defaultTaskExists = await TaskList.exists({ name: "My Task" });
+    const listCollection = await TaskList.find({}).exec();
 
-    if (listCollection.length === 0 && !defaultTaskExists) {
-      //default list
-      console.log("here ");
-      await defaultList.save();
-    }
     res.send(listCollection);
   } catch (error) {
     console.log(error.message);
@@ -64,20 +55,16 @@ router.delete("/:id/delete-list", async (req, res) => {
           TaskList.findOne()
             .sort({ field: "asc", _id: -1 })
             .exec(async (err, list) => {
-              if (!err) {
-                list.active = true;
-                await list.save();
-                //sending updated list instead
-                const updatedList = await TaskList.find({});
-                res.send(updatedList);
-              }
+              list.active = true;
+              await list.save();
+              //sending updated list instead
+              const updatedList = await TaskList.find({});
+              res.send(updatedList);
             });
         } else {
           res.send([]);
         }
       });
-    } else {
-      res.send([]);
     }
   } catch (error) {
     console.log(error.message);
