@@ -10,8 +10,10 @@ app.use(express.json({ limit: "1mb" }));
 app.use(cors());
 
 const list = require("./routes/list");
+const notes = require("./routes/notes");
 
 app.use("/api/list", list);
+app.use("/api/notes", notes);
 
 const port = process.env.PORT || 5000;
 

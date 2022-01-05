@@ -93,7 +93,6 @@ router.put("/:id/update-active-list", async (req, res) => {
 });
 
 //get items
-
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {

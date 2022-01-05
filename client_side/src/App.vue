@@ -10,8 +10,8 @@
       ></SideMenu>
       <div
         :class="{
-          'blur-bg': menuActive && addBlur,
-          'z-index-2': menuActive && addBlur,
+          'blur-bg': menuActive || addBlur,
+          'z-index-2': menuActive || addBlur,
         }"
       ></div>
       <MainContent
@@ -25,7 +25,6 @@
         @changeToFalse="(bool) => (toDeleteItems = bool)"
         @burgerClick="(bool) => (menuActive = !bool)"
       ></MainContent>
-
       <!-- <Notes></Notes> -->
     </div>
     <div :class="{ 'blur-bg': showModal }"></div>
@@ -60,7 +59,6 @@ export default {
       showModal: "",
       toDeleteItems: null,
       menuActive: false,
-      updateMenuActive: "",
       addBlur: "",
     };
   },
@@ -110,13 +108,6 @@ export default {
         this.showModal = false;
       }
     },
-    checkWindowSize(e) {
-      if (e.currentTarget.innerWidth >= 800) {
-        this.addBlur = false;
-      } else if (e.currentTarget.innerWidth < 800) {
-        this.addBlur = true;
-      }
-    },
   },
 
   created() {
@@ -133,12 +124,6 @@ export default {
         });
       }
     });
-
-    //add event listener when resizing window
-    window.addEventListener("resize", this.checkWindowSize);
-  },
-  unmounted() {
-    window.removeEventListener("resize", this.checkWindowSize);
   },
 };
 </script>

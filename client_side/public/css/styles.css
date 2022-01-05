@@ -631,6 +631,9 @@ div {
   color: #edeef7;
   font-family: "Rajdhani", sans-serif;
   width: 23%;
+  -webkit-box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
+          box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
+  z-index: 2;
 }
 
 .side-menu .time-container {
