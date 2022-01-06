@@ -7,11 +7,13 @@ const routes = [
     path: "/",
     name: "TodoList",
     component: TodoList,
+    props: true,
   },
   {
     path: "/notes",
     name: "Notes",
     component: Notes,
+    props: true,
   },
 ];
 
