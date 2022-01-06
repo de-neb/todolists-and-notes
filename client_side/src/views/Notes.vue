@@ -19,8 +19,8 @@
     <!-- <hr /> -->
     <div class="create-note">
       <button @click="addNote">
-        <span class="material-icons material-icons-outlined"> create </span>
-        &nbsp;Create note
+        <span class="material-icons material-icons-outlined"> add </span>
+        &nbsp;New Note
       </button>
     </div>
     <div class="main-container">
@@ -32,44 +32,44 @@
         <div class="col col-0">
           <div
             class="note-cont"
-            v-for="note0 in notes0"
-            :key="note0"
-            :id="'group0-note' + note0.notesIndex"
-            :class="{ visibility: note0.hidden }"
+            v-for="note in group1"
+            :key="note._id"
+            :id="'note-' + note._id"
+            :class="{ visibility: note.visibility }"
           >
             <div class="delete-note">
               <span
                 class="material-icons md-25 material-icons-outlined"
-                @click="deleteNote(note0.notesIndex, 0)"
+                @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
             </div>
             <div
               class="note-title"
-              v-html="note0.title"
+              v-html="note.title"
               contenteditable="true"
-              @focusout="handleInput($event, note0.notesIndex, 0, 'title')"
+              @focusout="handleInput($event, note.notesIndex, 0, 'title')"
             ></div>
             <div
               class="note-details"
-              v-html="note0.details"
+              v-html="note.details"
               contenteditable="true"
-              @focusout="handleInput($event, note0.notesIndex, 0, 'details')"
+              @focusout="handleInput($event, note.notesIndex, 0, 'details')"
             ></div>
           </div>
         </div>
         <div class="col col-1">
           <div
             class="note-cont"
-            v-for="note1 in notes1"
-            :key="note1"
-            :id="'group1-note' + note1.notesIndex"
+            v-for="note in group2"
+            :key="note._id"
+            :id="'note-' + note._id"
           >
             <div class="delete-note">
               <span
                 class="material-icons md-25 material-icons-outlined"
-                @click="deleteNote(note1.notesIndex, 1)"
+                @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
@@ -77,28 +77,28 @@
             <div
               class="note-title"
               contenteditable="true"
-              v-html="note1.title"
-              @focusout="handleInput($event, note1.notesIndex, 1, 'title')"
+              v-html="note.title"
+              @focusout="handleInput($event, note.notesIndex, 1, 'title')"
             ></div>
             <div
               class="note-details"
               contenteditable="true"
-              v-html="note1.details"
-              @focusout="handleInput($event, note1.notesIndex, 1, 'details')"
+              v-html="note.details"
+              @focusout="handleInput($event, note.notesIndex, 1, 'details')"
             ></div>
           </div>
         </div>
         <div class="col col-2">
           <div
             class="note-cont"
-            v-for="note2 in notes2"
-            :key="note2"
-            :id="'group2-note' + note2.notesIndex"
+            v-for="note in group3"
+            :key="note._id"
+            :id="'note-' + note._id"
           >
             <div class="delete-note">
               <span
                 class="material-icons md-25 material-icons-outlined"
-                @click="deleteNote(note2.notesIndex, 2)"
+                @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
@@ -106,14 +106,14 @@
             <div
               class="note-title"
               contenteditable="true"
-              v-html="note2.title"
-              @focusout="handleInput($event, note2.notesIndex, 2, 'title')"
+              v-html="note.title"
+              @focusout="handleInput($event, note.notesIndex, 2, 'title')"
             ></div>
             <div
               class="note-details"
               contenteditable="true"
-              v-html="note2.details"
-              @focusout="handleInput($event, note2.notesIndex, 2, 'details')"
+              v-html="note.details"
+              @focusout="handleInput($event, note.notesIndex, 2, 'details')"
             ></div>
           </div>
         </div>
@@ -129,30 +129,51 @@ export default {
   data() {
     return {
       notes: [],
+      title: "",
+      details: "",
     };
   },
   methods: {
     async getNotes() {
       const data = await ReqService.getNotes();
-      return data;
+      this.notes = [...data];
+      return this.notes;
+    },
+    async addNote() {
+      console.log("started");
+      await ReqService.createNote(this.title);
+      this.getNotes().then(() => {
+        setTimeout(() => {
+          //always index 0 at column 0
+          this.addNoteAnimation(this.notes[this.notes.length - 1]._id);
+          console.log("notes length after: ", this.notes.length);
+        }, 10);
+      });
+    },
+    async deleteNote(id) {
+      await ReqService.deleteNote(id);
+      this.getNotes();
+      console.log("delete length", this.notes.length);
+    },
+    addNoteAnimation(id) {
+      const newNote = document.getElementById(`note-${id}`);
+      newNote.classList.add("show-note");
     },
   },
   computed: {
-    notes0: function () {
-      return this.notes.filter((el, i) => i % 3 == 0);
+    group1: function () {
+      return this.notes.filter((el, i) => i % 3 === 0);
     },
-    notes1: function () {
+    group2: function () {
       return this.notes.filter((el, i) => i % 3 === 1);
     },
-
-    notes2: function () {
+    group3: function () {
       return this.notes.filter((el, i) => i % 3 === 2);
     },
   },
   created() {
     this.getNotes().then((data) => {
-      this.notes = [...data];
-      console.log("notes fetched", this.notes);
+      console.log("notes fetched", data);
     });
   },
 };

@@ -37,13 +37,10 @@ router.post("/", async (req, res) => {
 });
 
 //delete note
-router.delete("/:id/delete", (req, res) => {
+router.delete("/:id/delete", async (req, res) => {
   try {
-    Note.findByIdAndDelete(req.params.id, (err, doc) => {
-      if (!err) {
-        res.send(doc);
-      }
-    });
+    await Note.deleteOne({ _id: req.params.id });
+    res.status(200).send();
   } catch (error) {
     console.log(error.message);
   }

@@ -79,10 +79,8 @@ class ReqService {
     });
   }
 
-  static async deleteNote(noteId) {
-    const res = await axios.delete(`${urlNotes}${noteId}/delete`);
-    const data = await res.data;
-    return data;
+  static deleteNote(noteId) {
+    return axios.delete(`${urlNotes}${noteId}/delete`);
   }
 }
 
