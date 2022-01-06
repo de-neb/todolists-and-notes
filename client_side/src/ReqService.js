@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const url = "http://localhost:5000/api/list/";
+const urlNotes = "http://localhost:5000/api/notes/";
 
 class ReqService {
   //list actions start//
@@ -64,6 +65,25 @@ class ReqService {
   }
 
   //item actions end//
+
+  //notes actions start//
+  static async getNotes() {
+    const res = await axios.get(urlNotes);
+    const data = await res.data;
+    return data;
+  }
+
+  static createNote(title) {
+    return axios.post(urlNotes, {
+      title,
+    });
+  }
+
+  static async deleteNote(noteId) {
+    const res = await axios.delete(`${urlNotes}${noteId}/delete`);
+    const data = await res.data;
+    return data;
+  }
 }
 
 export default ReqService;

@@ -14,18 +14,13 @@
           'z-index-2': menuActive || addBlur,
         }"
       ></div>
-      <MainContent
+      <router-view
         v-if="lists"
-        :lists="lists"
-        :activeListId="activeListId"
-        :activeListName="activeListName"
-        :firstPageLanding="firstPageLanding"
-        :toDeleteItems="toDeleteItems"
+        v-bind="todoListProps"
         @showModal="showConfirmModal"
         @changeToFalse="(bool) => (toDeleteItems = bool)"
         @burgerClick="(bool) => (menuActive = !bool)"
-      ></MainContent>
-      <!-- <Notes></Notes> -->
+      ></router-view>
     </div>
     <div :class="{ 'blur-bg': showModal }"></div>
     <ConfirmModal
@@ -39,15 +34,12 @@
 <script>
 import ReqService from "./ReqService";
 import SideMenu from "./components/SideMenu.vue";
-import MainContent from "./components/MainContent.vue";
 import ConfirmModal from "./components/ConfirmModal.vue";
-// import Notes from "./components/Notes.vue";
 
 export default {
   name: "App",
   components: {
     SideMenu,
-    MainContent,
     ConfirmModal,
   },
   data() {
@@ -107,6 +99,17 @@ export default {
       if (bool === "false") {
         this.showModal = false;
       }
+    },
+  },
+  computed: {
+    todoListProps() {
+      return {
+        lists: this.lists,
+        activeListId: this.activeListId,
+        activeListName: this.activeListName,
+        firstPageLanding: this.firstPageLanding,
+        toDeleteItems: this.toDeleteItems,
+      };
     },
   },
 

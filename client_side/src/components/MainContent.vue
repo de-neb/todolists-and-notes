@@ -1,5 +1,5 @@
 <template>
-  <div class="main" :id="'#list' + activeListId">
+  <div class="main">
     <!-- top bar -->
     <TopBar
       :activeListName="activeListName"

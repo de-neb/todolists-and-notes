@@ -36,4 +36,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+//delete note
+router.delete("/:id/delete", (req, res) => {
+  try {
+    Note.findByIdAndDelete(req.params.id, (err, doc) => {
+      if (!err) {
+        res.send(doc);
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 module.exports = router;

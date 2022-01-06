@@ -20,15 +20,15 @@
               :class="{ active: list.active }"
               :key="list._id"
             >
-              <a
+              <router-link
+                to="/"
                 class="task-name-link"
                 :class="{ 'notes-tag': list.active }"
-                href="#"
                 @click.self="selectList(list._id, list.name)"
                 :contenteditable="list.isEditable"
               >
                 {{ list.name.toUpperCase() }}
-              </a>
+              </router-link>
               <span class="todo-num">{{ list.items.length }}</span>
               <span
                 type="button"
@@ -49,7 +49,7 @@
           ></textarea>
         </div>
         <li id="notes-list" class="">
-          <a @click="showNotes" id="notes-tag">NOTES</a>
+          <router-link to="/notes" id="notes-tag">NOTES</router-link>
         </li>
       </ul>
     </nav>
@@ -97,7 +97,6 @@ export default {
       minutes: null,
       seconds: null,
       period: null,
-      // lists: [],
       listName: "",
       activeListId: "",
       itemsLen: null,
