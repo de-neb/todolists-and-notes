@@ -668,13 +668,15 @@ div {
     .grid-container {
       height: 70vh;
       margin: 40px;
+      overflow-x: hidden;
+      overflow-y: scroll;
       padding-top: 10px;
       @include flex(flex-start, flex-start);
       flex-wrap: wrap;
       align-content: flex-start;
       gap: 5px;
       .col {
-        flex: 1 1 30%;
+        flex: 1 0 32%;
         width: 300px;
       }
 

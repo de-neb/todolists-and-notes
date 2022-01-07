@@ -1,22 +1,9 @@
 <template>
   <div class="notes" id="notes">
-    <!-- <div class="title-cont">
-      <div class="menu">
-        <input
-          type="checkbox"
-          class="burger-check"
-          id="menu-notes"
-          v-model="menuActive"
-        />
-        <div class="burger">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-      </div>
-      <h1 class="note-main-title">NOTES</h1>
-    </div> -->
-    <!-- <hr /> -->
+    <!-- menu -->
+    <TopBar :routeName="name" @burgerClick="burgerClick"></TopBar>
+    <!-- menu -->
+
     <div class="create-note">
       <button @click="addNote">
         <span class="material-icons material-icons-outlined"> add </span>
@@ -123,8 +110,12 @@
 
 <script>
 import ReqService from "../ReqService";
+import TopBar from "../components/TopBar.vue";
 export default {
   name: "Notes",
+  components: {
+    TopBar,
+  },
   data() {
     return {
       notes: [],
@@ -132,6 +123,7 @@ export default {
       details: "",
       isVisible: true,
       removeGroup2: false,
+      name: "Notes",
     };
   },
   methods: {
@@ -141,7 +133,6 @@ export default {
       return this.notes;
     },
     async addNote() {
-      console.log("started");
       await ReqService.createNote(this.title);
       this.getNotes().then(() => {
         this.addNoteAnimation(this.notes[this.notes.length - 1]._id);
@@ -160,12 +151,14 @@ export default {
       newNote.classList.add("show-note");
     },
     getWindowSize(e) {
-      if (e.currentTarget.innerWidth <= 1000) {
+      if (e.currentTarget.innerWidth <= 1200) {
         this.removeGroup2 = true;
-        console.log("innerwitdh less than 1000");
       } else {
         this.removeGroup2 = false;
       }
+    },
+    burgerClick(menuActive) {
+      this.$emit("burgerClick", menuActive);
     },
   },
   computed: {
@@ -188,15 +181,13 @@ export default {
     },
   },
   created() {
-    this.getNotes().then((data) => {
-      console.log("notes fetched", data);
-    });
+    this.getNotes();
 
     //when browser is resized
     window.addEventListener("resize", this.getWindowSize);
 
     //at reload
-    if (window.innerWidth <= 1000) {
+    if (window.innerWidth <= 1200) {
       this.removeGroup2 = true;
     } else {
       this.removeGroup2 = false;

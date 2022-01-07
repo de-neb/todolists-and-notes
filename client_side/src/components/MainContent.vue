@@ -4,6 +4,7 @@
     <TopBar
       :activeListName="activeListName"
       :listsLen="lists.length"
+      :routeName="name"
       @burgerClick="burgerClick"
     ></TopBar>
 
@@ -155,6 +156,7 @@ export default {
       itemTitle: "",
       expandChecker: false,
       showModal: false,
+      name: "To-do List",
     };
   },
   methods: {

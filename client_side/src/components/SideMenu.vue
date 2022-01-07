@@ -17,13 +17,13 @@
             <li
               class="task-names"
               v-for="list in lists"
-              :class="{ active: list.active }"
+              :class="{ active: list.active && !noteActive }"
               :key="list._id"
             >
               <router-link
                 to="/"
                 class="task-name-link"
-                :class="{ 'notes-tag': list.active }"
+                :class="{ 'notes-tag': list.active && !noteActive }"
                 @click.self="selectList(list._id, list.name)"
                 :contenteditable="list.isEditable"
               >
@@ -48,7 +48,7 @@
             @keydown.prevent.enter="addList"
           ></textarea>
         </div>
-        <li id="notes-list" class="">
+        <li id="notes-list" :class="{ active: noteActive }">
           <router-link to="/notes" id="notes-tag">NOTES</router-link>
         </li>
       </ul>
@@ -62,6 +62,7 @@ export default {
   props: {
     lists: Array,
     menuActive: Boolean,
+    noteActive: Boolean,
   },
   data() {
     return {

@@ -4,6 +4,7 @@
       <SideMenu
         :lists="lists"
         :menuActive="menuActive"
+        :noteActive="noteActive"
         @activeList="passActiveListId"
         @addList="addList"
         @deleteList="deleteList"
@@ -52,6 +53,7 @@ export default {
       toDeleteItems: null,
       menuActive: false,
       addBlur: "",
+      noteActive: false,
     };
   },
   methods: {
@@ -110,6 +112,21 @@ export default {
         firstPageLanding: this.firstPageLanding,
         toDeleteItems: this.toDeleteItems,
       };
+    },
+  },
+  watch: {
+    $route() {
+      if (this.menuActive) {
+        this.menuActive = false;
+      } else {
+        this.menuActive = true;
+      }
+
+      if (this.$route.name == "Notes") {
+        this.noteActive = true;
+      } else {
+        this.noteActive = false;
+      }
     },
   },
 

@@ -14,7 +14,7 @@
       </div>
     </div>
     <h1 class="title" id="title">
-      {{ listsLen ? activeListName : "TO-DO LIST" }}
+      {{ listsLen ? activeListName : routeName }}
     </h1>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
   props: {
     activeListName: String,
     listsLen: Number,
+    routeName: String,
   },
   data() {
     return {
@@ -33,7 +34,6 @@ export default {
   },
   methods: {
     burgerClicked() {
-      console.log("is active", this.menuActive);
       this.$emit("burgerClick", this.menuActive);
     },
   },
