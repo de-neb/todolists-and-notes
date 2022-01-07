@@ -144,6 +144,13 @@ export default {
         });
       }
     });
+
+    //to prevent blur background and inactive burger icon after page reload
+    if (this.menuActive) {
+      this.menuActive = false;
+    } else {
+      this.menuActive = true;
+    }
   },
 };
 </script>

@@ -251,9 +251,6 @@ export default {
       deep: false,
     },
   },
-  mounted() {
-    console.log("props passed", this.prop);
-  },
 };
 </script>
 
