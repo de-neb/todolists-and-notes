@@ -58,7 +58,7 @@
             ></div>
           </div>
         </div>
-        <div class="col col-1">
+        <div class="col col-1" :class="{ hidden: removeGroup2 }">
           <div
             class="note-cont"
             v-for="note in group2"
@@ -131,6 +131,7 @@ export default {
       title: "",
       details: "",
       isVisible: true,
+      removeGroup2: false,
     };
   },
   methods: {
@@ -158,22 +159,51 @@ export default {
       const newNote = document.getElementById(`note-${id}`);
       newNote.classList.add("show-note");
     },
+    getWindowSize(e) {
+      if (e.currentTarget.innerWidth <= 1000) {
+        this.removeGroup2 = true;
+        console.log("innerwitdh less than 1000");
+      } else {
+        this.removeGroup2 = false;
+      }
+    },
   },
   computed: {
     group1: function () {
-      return this.notes.filter((el, i) => i % 3 === 0);
+      if (this.removeGroup2) {
+        return this.notes.filter((el, i) => i % 2 === 0);
+      } else {
+        return this.notes.filter((el, i) => i % 3 === 0);
+      }
     },
     group2: function () {
       return this.notes.filter((el, i) => i % 3 === 1);
     },
     group3: function () {
-      return this.notes.filter((el, i) => i % 3 === 2);
+      if (this.removeGroup2) {
+        return this.notes.filter((el, i) => i % 2 === 1);
+      } else {
+        return this.notes.filter((el, i) => i % 3 === 2);
+      }
     },
   },
   created() {
     this.getNotes().then((data) => {
       console.log("notes fetched", data);
     });
+
+    //when browser is resized
+    window.addEventListener("resize", this.getWindowSize);
+
+    //at reload
+    if (window.innerWidth <= 1000) {
+      this.removeGroup2 = true;
+    } else {
+      this.removeGroup2 = false;
+    }
+  },
+  unmount() {
+    window.removeEventListener("resize", this.getWindowSize);
   },
 };
 </script>
