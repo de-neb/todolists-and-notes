@@ -35,7 +35,6 @@
             v-for="note in group1"
             :key="note._id"
             :id="'note-' + note._id"
-            :class="{ visibility: note.visibility }"
           >
             <div class="delete-note">
               <span
@@ -131,6 +130,7 @@ export default {
       notes: [],
       title: "",
       details: "",
+      isVisible: true,
     };
   },
   methods: {
@@ -143,17 +143,16 @@ export default {
       console.log("started");
       await ReqService.createNote(this.title);
       this.getNotes().then(() => {
-        setTimeout(() => {
-          //always index 0 at column 0
-          this.addNoteAnimation(this.notes[this.notes.length - 1]._id);
-          console.log("notes length after: ", this.notes.length);
-        }, 10);
+        this.addNoteAnimation(this.notes[this.notes.length - 1]._id);
       });
     },
     async deleteNote(id) {
       await ReqService.deleteNote(id);
-      this.getNotes();
-      console.log("delete length", this.notes.length);
+      const note = document.getElementById(`note-${id}`);
+      note.classList.add("remove-note");
+      setTimeout(() => {
+        this.getNotes();
+      }, 300);
     },
     addNoteAnimation(id) {
       const newNote = document.getElementById(`note-${id}`);

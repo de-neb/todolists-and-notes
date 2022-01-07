@@ -911,17 +911,17 @@ div {
   display: none !important;
 }
 
-.visibility {
+.visibility-hidden {
   visibility: hidden;
   transform: scale(0);
 }
 
 .show-note {
-  animation: show 0.5s $timing forwards;
+  animation: show 0.4s $timing forwards;
 }
 
 .remove-note {
-  animation: hide 0.3s $timing forwards;
+  animation: hide 0.4s $timing forwards;
 }
 
 // keyframes

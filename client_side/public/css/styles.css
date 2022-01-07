@@ -1276,20 +1276,20 @@ div {
   display: none !important;
 }
 
-.visibility {
+.visibility-hidden {
   visibility: hidden;
   -webkit-transform: scale(0);
           transform: scale(0);
 }
 
 .show-note {
-  -webkit-animation: show 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
-          animation: show 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
+  -webkit-animation: show 0.4s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
+          animation: show 0.4s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
 }
 
 .remove-note {
-  -webkit-animation: hide 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
-          animation: hide 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
+  -webkit-animation: hide 0.4s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
+          animation: hide 0.4s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
 }
 
 @-webkit-keyframes show {
