@@ -11,8 +11,8 @@
       ></SideMenu>
       <div
         :class="{
-          'blur-bg': menuActive || addBlur,
-          'z-index-2': menuActive || addBlur,
+          'blur-bg': menuActive,
+          'z-index-2': menuActive,
         }"
       ></div>
       <router-view
@@ -52,7 +52,6 @@ export default {
       showModal: "",
       toDeleteItems: null,
       menuActive: false,
-      addBlur: "",
       noteActive: false,
     };
   },
@@ -127,6 +126,7 @@ export default {
       } else {
         this.noteActive = false;
       }
+      console.log("mrenu", this.menuActive);
     },
   },
 
@@ -160,18 +160,20 @@ export default {
   display: flex !important;
 }
 
-.blur-bg {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-}
+@media (max-width: 800px) {
+  .blur-bg {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+  }
 
-.z-index-2 {
-  z-index: 2;
+  .z-index-2 {
+    z-index: 2;
+  }
 }
 </style>
