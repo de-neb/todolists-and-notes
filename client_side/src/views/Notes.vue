@@ -10,6 +10,20 @@
         &nbsp;New Note
       </button>
     </div>
+
+    <!-- new note modal start-->
+    <div :class="{ 'blur-modal-bg': showNoteModal }"></div>
+    <NewNote
+      v-if="showNoteModal"
+      @exitModal="
+        (bool) => {
+          showNoteModal = bool;
+        }
+      "
+      @saveNote="saveNewNote"
+    ></NewNote>
+    <!-- new note modal end -->
+
     <div class="main-container">
       <div v-if="!notes.length" class="no-todo-item">
         <h2>You don't have any notes added yet :(</h2>
@@ -25,24 +39,14 @@
           >
             <div class="delete-note">
               <span
-                class="material-icons md-25 material-icons-outlined"
+                class="material-icons md-25 material-icons-outlined delete"
                 @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
             </div>
-            <div
-              class="note-title"
-              v-html="note.title"
-              contenteditable="true"
-              @focusout="handleInput($event, note.notesIndex, 0, 'title')"
-            ></div>
-            <div
-              class="note-details"
-              v-html="note.details"
-              contenteditable="true"
-              @focusout="handleInput($event, note.notesIndex, 0, 'details')"
-            ></div>
+            <div class="note-title" v-html="note.title"></div>
+            <div class="note-details" v-html="note.details"></div>
           </div>
         </div>
         <div class="col col-1" :class="{ hidden: removeGroup2 }">
@@ -54,24 +58,14 @@
           >
             <div class="delete-note">
               <span
-                class="material-icons md-25 material-icons-outlined"
+                class="material-icons md-25 material-icons-outlined delete"
                 @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
             </div>
-            <div
-              class="note-title"
-              contenteditable="true"
-              v-html="note.title"
-              @focusout="handleInput($event, note.notesIndex, 1, 'title')"
-            ></div>
-            <div
-              class="note-details"
-              contenteditable="true"
-              v-html="note.details"
-              @focusout="handleInput($event, note.notesIndex, 1, 'details')"
-            ></div>
+            <div class="note-title" v-html="note.title"></div>
+            <div class="note-details" v-html="note.details"></div>
           </div>
         </div>
         <div class="col col-2">
@@ -83,24 +77,14 @@
           >
             <div class="delete-note">
               <span
-                class="material-icons md-25 material-icons-outlined"
+                class="material-icons md-25 material-icons-outlined delete"
                 @click="deleteNote(note._id)"
               >
                 push_pin
               </span>
             </div>
-            <div
-              class="note-title"
-              contenteditable="true"
-              v-html="note.title"
-              @focusout="handleInput($event, note.notesIndex, 2, 'title')"
-            ></div>
-            <div
-              class="note-details"
-              contenteditable="true"
-              v-html="note.details"
-              @focusout="handleInput($event, note.notesIndex, 2, 'details')"
-            ></div>
+            <div class="note-title" v-html="note.title"></div>
+            <div class="note-details" v-html="note.details"></div>
           </div>
         </div>
       </div>
@@ -111,10 +95,12 @@
 <script>
 import ReqService from "../ReqService";
 import TopBar from "../components/TopBar.vue";
+import NewNote from "../components/NewNote.vue";
 export default {
   name: "Notes",
   components: {
     TopBar,
+    NewNote,
   },
   data() {
     return {
@@ -123,6 +109,7 @@ export default {
       details: "",
       isVisible: true,
       removeGroup2: false,
+      showNoteModal: false,
       name: "Notes",
     };
   },
@@ -132,11 +119,19 @@ export default {
       this.notes = [...data];
       return this.notes;
     },
-    async addNote() {
-      await ReqService.createNote(this.title);
-      this.getNotes().then(() => {
-        this.addNoteAnimation(this.notes[this.notes.length - 1]._id);
+    async saveNewNote({ title, details, bgColor, txtColor }) {
+      await ReqService.createNote(title, details, bgColor, txtColor);
+
+      await this.getNotes().then(() => {
+        const newNoteId = this.notes[this.notes.length - 1]._id;
+        //add animation
+
+        this.addNoteAnimation(newNoteId);
       });
+      this.showNoteModal = false;
+    },
+    addNote() {
+      this.showNoteModal = true;
     },
     async deleteNote(id) {
       await ReqService.deleteNote(id);
@@ -179,6 +174,15 @@ export default {
         return this.notes.filter((el, i) => i % 3 === 2);
       }
     },
+  },
+  updated() {
+    //set color for all note
+    if (this.notes.length)
+      this.notes.forEach((note) => {
+        document.getElementById(`note-${note._id}`).style.background =
+          note.bgColor;
+        document.getElementById(`note-${note._id}`).style.color = note.txtColor;
+      });
   },
   created() {
     this.getNotes();

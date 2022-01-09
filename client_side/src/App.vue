@@ -23,7 +23,7 @@
         @burgerClick="(bool) => (menuActive = !bool)"
       ></router-view>
     </div>
-    <div :class="{ 'blur-bg': showModal }"></div>
+    <div :class="{ 'blur-modal-bg': showModal }"></div>
     <ConfirmModal
       :class="{ show: showModal }"
       :activeListName="activeListName"
@@ -126,7 +126,6 @@ export default {
       } else {
         this.noteActive = false;
       }
-      console.log("mrenu", this.menuActive);
     },
   },
 

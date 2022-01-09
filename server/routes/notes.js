@@ -28,6 +28,8 @@ router.post("/", async (req, res) => {
     const newNote = new Note({
       title: req.body.title,
       details: req.body.details,
+      bgColor: req.body.bgColor,
+      txtColor: req.body.txtColor,
     });
     await newNote.save();
     res.status(201).send();

@@ -73,9 +73,12 @@ class ReqService {
     return data;
   }
 
-  static createNote(title) {
+  static createNote(title, details, bgColor, txtColor) {
     return axios.post(urlNotes, {
       title,
+      details,
+      bgColor,
+      txtColor,
     });
   }
 
