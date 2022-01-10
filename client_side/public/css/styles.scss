@@ -690,10 +690,11 @@ div {
       @include flex(flex-start, flex-start);
       flex-wrap: wrap;
       align-content: flex-start;
-      gap: 5px;
+      gap: 10px;
       .col {
         flex: 1 0 32%;
         width: 300px;
+        gap: 10px;
       }
 
       .col-0 {
@@ -713,7 +714,7 @@ div {
 }
 //separated so that it can be applied
 .note-cont {
-  width: 100%;
+  width: 95%;
   word-wrap: break-word;
   position: relative;
   background: $notepad;
@@ -734,13 +735,13 @@ div {
     width: 100%;
     height: 24px;
     span.delete {
-      transform: rotate(-35deg) translate(5px, -10px);
+      transform: rotate(0deg) translate(5px, -10px);
       font-size: 30px !important;
-      color: $danger;
       cursor: pointer;
+      -webkit-text-stroke: $side-color 1px;
       &:hover {
         transform: rotate(-35deg) translate(5px, -20px);
-        transition: 0.5s ease;
+        transition: 0.3s ease;
       }
     }
   }

@@ -4,20 +4,37 @@
       <input
         type="text"
         name="title"
-        id=""
+        v-if="editContent"
         placeholder="Title.."
-        v-model="noteTitle"
+        :value="title"
+        ref="title"
+      />
+      <input
+        type="text"
+        name="title"
+        v-else
+        placeholder="Title.."
+        v-model="newTitle"
       />
     </div>
 
     <div class="details">
       <textarea
         name="details"
-        id=""
         cols="30"
         rows="10"
         placeholder="Details..."
-        v-model="noteDetails"
+        v-if="editContent"
+        :value="details"
+        ref="details"
+      ></textarea>
+      <textarea
+        name="details"
+        cols="30"
+        rows="10"
+        placeholder="Details..."
+        v-else
+        v-model="newDetails"
       ></textarea>
     </div>
     <div class="btn-save-del c-height note-margin">
@@ -26,6 +43,15 @@
         <input
           type="color"
           name="bgColor"
+          v-if="editContent"
+          id="note-bg-color"
+          :value="editBgColor"
+          ref="bgColor"
+        />
+        <input
+          type="color"
+          name="bgColor"
+          v-else
           id="note-bg-color"
           v-model="bgColor"
         />
@@ -35,6 +61,15 @@
           type="color"
           name="txtColor"
           id="note-txt-color"
+          v-if="editContent"
+          :value="editTxtColor"
+          ref="txtColor"
+        />
+        <input
+          type="color"
+          name="txtColor"
+          id="note-txt-color"
+          v-else
           v-model="txtColor"
         />
       </div>
@@ -49,7 +84,14 @@
 <script>
 export default {
   name: "NewNote",
-  props: {},
+  props: {
+    title: String,
+    details: String,
+    noteId: String,
+    editContent: Boolean,
+    editBgColor: String,
+    editTxtColor: String,
+  },
   data() {
     return {
       noteTitle: "",
@@ -63,12 +105,22 @@ export default {
       this.$emit("exitModal", false);
     },
     saveNote() {
-      this.$emit("saveNote", {
-        title: this.noteTitle,
-        details: this.noteDetails,
-        bgColor: this.bgColor,
-        txtColor: this.txtColor,
-      });
+      if (this.editContent) {
+        this.$emit("updateNote", {
+          id: this.noteId,
+          title: this.$refs.title.value,
+          details: this.$refs.details.value,
+          bgColor: this.$refs.bgColor.value,
+          txtColor: this.$refs.txtColor.value,
+        });
+      } else {
+        this.$emit("saveNote", {
+          title: this.newTitle,
+          details: this.newDetails,
+          bgColor: this.bgColor,
+          txtColor: this.txtColor,
+        });
+      }
     },
   },
 };
@@ -100,7 +152,7 @@ export default {
 
 .justify-end {
   justify-content: end;
-  gap: 20px;
+  gap: 3%;
 }
 
 .justify-end button {
@@ -123,7 +175,7 @@ export default {
 }
 
 .color-picker {
-  width: 60%;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -132,8 +184,11 @@ export default {
 .color-picker label {
   color: rgb(116, 116, 116);
 }
-/* div.row1,
-div.row2 {
-  text-align: start;
-} */
+
+@media only screen and (max-width: 800px) {
+  .new-note {
+    width: 90%;
+    height: 55%;
+  }
+}
 </style>

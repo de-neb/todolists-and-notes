@@ -14,13 +14,20 @@
     <!-- new note modal start-->
     <div :class="{ 'blur-modal-bg': showNoteModal }"></div>
     <NewNote
+      :title="title"
+      :details="details"
+      :noteId="noteId"
+      :editContent="editContent"
+      :editBgColor="editBgColor"
+      :editTxtColor="editTxtColor"
       v-if="showNoteModal"
+      @saveNote="saveNewNote"
+      @updateNote="updateCurrentNote"
       @exitModal="
         (bool) => {
           showNoteModal = bool;
         }
       "
-      @saveNote="saveNewNote"
     ></NewNote>
     <!-- new note modal end -->
 
@@ -34,6 +41,7 @@
           <div
             class="note-cont"
             v-for="note in group1"
+            :style="{ background: note.bgColor, color: note.txtColor }"
             :key="note._id"
             :id="'note-' + note._id"
           >
@@ -44,15 +52,30 @@
               >
                 push_pin
               </span>
+              <span
+                class="material-icons edit"
+                @click="
+                  editNote(
+                    note._id,
+                    note.title,
+                    note.details,
+                    note.bgColor,
+                    note.txtColor
+                  )
+                "
+              >
+                edit
+              </span>
             </div>
             <div class="note-title" v-html="note.title"></div>
             <div class="note-details" v-html="note.details"></div>
           </div>
         </div>
-        <div class="col col-1" :class="{ hidden: removeGroup2 }">
+        <div class="col col-1 hide-group2">
           <div
             class="note-cont"
             v-for="note in group2"
+            :style="{ background: note.bgColor, color: note.txtColor }"
             :key="note._id"
             :id="'note-' + note._id"
           >
@@ -62,6 +85,20 @@
                 @click="deleteNote(note._id)"
               >
                 push_pin
+              </span>
+              <span
+                class="material-icons edit"
+                @click="
+                  editNote(
+                    note._id,
+                    note.title,
+                    note.details,
+                    note.bgColor,
+                    note.txtColor
+                  )
+                "
+              >
+                edit
               </span>
             </div>
             <div class="note-title" v-html="note.title"></div>
@@ -72,6 +109,7 @@
           <div
             class="note-cont"
             v-for="note in group3"
+            :style="{ background: note.bgColor, color: note.txtColor }"
             :key="note._id"
             :id="'note-' + note._id"
           >
@@ -81,6 +119,20 @@
                 @click="deleteNote(note._id)"
               >
                 push_pin
+              </span>
+              <span
+                class="material-icons edit"
+                @click="
+                  editNote(
+                    note._id,
+                    note.title,
+                    note.details,
+                    note.bgColor,
+                    note.txtColor
+                  )
+                "
+              >
+                edit
               </span>
             </div>
             <div class="note-title" v-html="note.title"></div>
@@ -107,6 +159,10 @@ export default {
       notes: [],
       title: "",
       details: "",
+      editBgColor: "",
+      editTxtColor: "",
+      editContent: false,
+      noteId: "",
       isVisible: true,
       removeGroup2: false,
       showNoteModal: false,
@@ -130,8 +186,24 @@ export default {
       });
       this.showNoteModal = false;
     },
+    async editNote(id, title, details, bgColor, txtColor) {
+      this.showNoteModal = true;
+      this.title = title;
+      this.details = details;
+      this.noteId = id;
+      this.editBgColor = bgColor;
+      this.editTxtColor = txtColor;
+      this.editContent = true;
+    },
+    async updateCurrentNote({ id, title, details, bgColor, txtColor }) {
+      await ReqService.udpateNote(id, title, details, bgColor, txtColor);
+      this.getNotes().then(() => {
+        this.showNoteModal = false;
+      });
+    },
     addNote() {
       this.showNoteModal = true;
+      this.editContent = false;
     },
     async deleteNote(id) {
       await ReqService.deleteNote(id);
@@ -148,8 +220,10 @@ export default {
     getWindowSize(e) {
       if (e.currentTarget.innerWidth <= 1200) {
         this.removeGroup2 = true;
+        return true;
       } else {
         this.removeGroup2 = false;
+        return false;
       }
     },
     burgerClick(menuActive) {
@@ -175,19 +249,11 @@ export default {
       }
     },
   },
-  updated() {
-    //set color for all note
-    if (this.notes.length)
-      this.notes.forEach((note) => {
-        document.getElementById(`note-${note._id}`).style.background =
-          note.bgColor;
-        document.getElementById(`note-${note._id}`).style.color = note.txtColor;
-      });
-  },
+
   created() {
     this.getNotes();
 
-    //when browser is resized
+    // //when browser is resized
     window.addEventListener("resize", this.getWindowSize);
 
     //at reload
@@ -204,4 +270,20 @@ export default {
 </script>
 
 <style>
+span.edit {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+}
+
+span.edit:hover {
+  mix-blend-mode: soft-light;
+}
+
+@media (max-width: 1200px) {
+  .hide-group2 {
+    display: none !important;
+  }
+}
 </style>

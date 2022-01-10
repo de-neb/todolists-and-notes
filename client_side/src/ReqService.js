@@ -82,6 +82,15 @@ class ReqService {
     });
   }
 
+  static udpateNote(id, title, details, bgColor, txtColor) {
+    return axios.put(`${urlNotes}${id}`, {
+      title,
+      details,
+      bgColor,
+      txtColor,
+    });
+  }
+
   static deleteNote(noteId) {
     return axios.delete(`${urlNotes}${noteId}/delete`);
   }
