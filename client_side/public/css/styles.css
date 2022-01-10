@@ -940,8 +940,14 @@ div {
   background: #065380;
 }
 
-.notes .main-container .grid-container {
+.notes .main-container {
+  position: relative;
   height: 70vh;
+  width: 100%;
+}
+
+.notes .main-container .grid-container {
+  height: inherit;
   margin: 40px;
   overflow-x: hidden;
   overflow-y: scroll;

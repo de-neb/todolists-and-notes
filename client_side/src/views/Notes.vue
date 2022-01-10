@@ -32,7 +32,8 @@
     <!-- new note modal end -->
 
     <div class="main-container">
-      <div v-if="!notes.length" class="no-todo-item">
+      <Loader v-if="loading" class="scale"></Loader>
+      <div v-else-if="!notes.length && !loading" class="no-todo-item">
         <h2>You don't have any notes added yet :(</h2>
         <h4>Click button above to create one!</h4>
       </div>
@@ -148,11 +149,14 @@
 import ReqService from "../ReqService";
 import TopBar from "../components/TopBar.vue";
 import NewNote from "../components/NewNote.vue";
+import Loader from "../components/Loader.vue";
+
 export default {
   name: "Notes",
   components: {
     TopBar,
     NewNote,
+    Loader,
   },
   data() {
     return {
@@ -166,13 +170,16 @@ export default {
       isVisible: true,
       removeGroup2: false,
       showNoteModal: false,
+      loading: false,
       name: "Notes",
     };
   },
   methods: {
     async getNotes() {
+      this.loading = true;
       const data = await ReqService.getNotes();
-      this.notes = [...data];
+      this.notes = [...(await data)];
+      this.loading = false;
       return this.notes;
     },
     async saveNewNote({ title, details, bgColor, txtColor }) {
@@ -279,6 +286,10 @@ span.edit {
 
 span.edit:hover {
   mix-blend-mode: soft-light;
+}
+
+.pos-relative {
+  position: relative;
 }
 
 @media (max-width: 1200px) {
