@@ -34,7 +34,7 @@ svg circle {
   stroke-dasharray: 95;
   stroke-dashoffset: 0;
   fill: none;
-  animation: dash 1s linear infinite;
+  animation: dash 0.5s linear infinite;
 }
 
 @keyframes dash {

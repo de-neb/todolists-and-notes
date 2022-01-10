@@ -41,6 +41,7 @@ div {
           box-sizing: border-box;
   font-family: "Nunito", sans-serif;
   min-height: 100vh;
+  position: relative;
 }
 
 .main .title-cont .menu, .notes .title-cont .menu {
@@ -1277,8 +1278,9 @@ div {
 }
 
 .deleting {
-  -webkit-animation: deleting 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
-          animation: deleting 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
+  opacity: 0 !important;
+  -webkit-animation: deleting 0.2s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
+          animation: deleting 0.2s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
 }
 
 .appear {
@@ -1292,8 +1294,8 @@ div {
 }
 
 .shrink {
-  -webkit-animation: shrink 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
-          animation: shrink 0.3s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
+  -webkit-animation: shrink 0.5s 0.2s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
+          animation: shrink 0.5s 0.2s cubic-bezier(0.39, 0.97, 0, 0.97) forwards !important;
 }
 
 .hidden {

@@ -4,17 +4,18 @@
     <TopBar
       :activeListName="activeListName"
       :listsLen="lists.length"
+      :routeName="name"
       @burgerClick="burgerClick"
     ></TopBar>
 
-    <div class="todos-cont" v-if="lists.length">
+    <div class="todos-cont" v-if="lists.length && !loading">
       <div
         v-for="todoItem in items"
         :key="todoItem"
         class="item-cont"
         :id="'item-cont-' + todoItem._id"
       >
-        <div class="top" :id="'todo-' + todoItem.title">
+        <div class="top" :id="'todo-' + todoItem._id">
           <div class="priority-flag" :class="todoItem.priority"></div>
           <label :for="'check-' + todoItem._id"></label>
           <input
@@ -35,7 +36,7 @@
         </div>
         <div
           class="expanded-cont"
-          :id="'expanded-cont-' + todoItem.title"
+          :id="'expanded-cont-' + todoItem._id"
           :class="{ expanding: todoItem.expandedItem }"
         >
           <div class="date-priority-cont">
@@ -89,7 +90,7 @@
       </div>
     </div>
 
-    <div class="add-item" v-if="lists.length">
+    <div class="add-item" v-if="lists.length && !loading">
       <div class="add-item-cont">
         <span class="material-icons material-icons-outlined" @click="addItem()"
           >add</span
@@ -107,7 +108,7 @@
     </div>
 
     <!-- delete/ clear item actions -->
-    <div class="clear" v-if="lists.length">
+    <div class="clear" v-if="lists.length && !loading">
       <button class="clear-done" @click="clearDoneItems">
         <span class="material-icons material-icons-outlined">
           cleaning_services
@@ -122,11 +123,12 @@
       </button>
     </div>
 
-    <div v-if="!lists.length" class="no-task-item">
+    <Loader v-if="loading"></Loader>
+    <div v-else-if="!lists.length && !loading" class="no-task-item">
       <h2>You don't have any list added to your task list! :(</h2>
       <h4 class="sub-text">Enter a list name on the side to create one!</h4>
     </div>
-    <div v-else-if="items && !items.length" class="no-todo-item">
+    <div v-else-if="items && !items.length && !loading" class="no-todo-item">
       <h2>This task list seems to be empty :(</h2>
       <h4 class="sub-text">To add an item, type a to-do then hit enter!</h4>
     </div>
@@ -136,9 +138,9 @@
 <script>
 import ReqService from "../ReqService";
 import TopBar from "../components/TopBar.vue";
-
+import Loader from "../components/Loader.vue";
 export default {
-  name: "MainContent",
+  name: "TodoList",
   props: {
     lists: Array,
     activeListId: String,
@@ -147,6 +149,7 @@ export default {
   },
   components: {
     TopBar,
+    Loader,
   },
   data() {
     return {
@@ -155,13 +158,14 @@ export default {
       itemTitle: "",
       expandChecker: false,
       showModal: false,
+      loading: false,
+      name: "To-do List",
     };
   },
   methods: {
     async fetchItems() {
       const result = await ReqService.getItems(this.activeListId);
-      const data = await result;
-      this.items = data.items;
+      this.items = await result.items;
     },
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
@@ -169,10 +173,12 @@ export default {
       this.fetchItems().then(() => this.appearItem());
       this.itemTitle = "";
     },
-    async deleteItem(itemId, title) {
-      this.animationDelete(title, itemId);
+    async deleteItem(itemId) {
       await ReqService.deleteItem(this.activeListId, itemId);
-      this.fetchItems();
+      this.animationDelete(itemId);
+      setTimeout(() => {
+        this.fetchItems();
+      }, 700);
     },
     async updateItems(itemId) {
       //minimize item after clicking "save"
@@ -185,9 +191,9 @@ export default {
       await ReqService.updateItems(this.activeListId, this.items);
       this.fetchItems();
     },
-    animationDelete(title, itemId) {
-      const itemBar = document.getElementById("todo-" + title);
-      const itemDet = document.getElementById("expanded-cont-" + title);
+    animationDelete(itemId) {
+      const itemBar = document.getElementById("todo-" + itemId);
+      const itemDet = document.getElementById("expanded-cont-" + itemId);
       const itemCont = document.getElementById("item-cont-" + itemId);
       itemBar.classList.add("deleting");
       itemDet.classList.add("deleting");

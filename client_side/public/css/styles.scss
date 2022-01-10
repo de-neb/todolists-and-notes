@@ -60,7 +60,7 @@ div {
   box-sizing: border-box;
   font-family: $task-font;
   min-height: 100vh;
-
+  position: relative;
   .title-cont {
     .menu {
       display: none;
@@ -914,8 +914,8 @@ div {
 }
 
 .deleting {
-  animation: deleting 0.3s $timing forwards !important;
-  // -moz-animation: deleting 0.1s $timing forwards;
+  opacity: 0 !important;
+  animation: deleting 0.2s $timing forwards !important;
 }
 
 .appear {
@@ -927,7 +927,7 @@ div {
 }
 
 .shrink {
-  animation: shrink 0.3s $timing forwards !important;
+  animation: shrink 0.5s 0.2s $timing forwards !important;
 }
 
 .hidden {
