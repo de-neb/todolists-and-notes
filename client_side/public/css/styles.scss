@@ -67,9 +67,9 @@ div {
     }
     .title {
       font-family: $main-font !important;
-      font-size: 70px;
-      line-height: 60px;
-      text-align: left;
+      font-size: 60px;
+      line-height: 70px;
+      text-align: center;
       color: $side-color;
       margin: 0 20px;
       font-weight: 500;
@@ -83,7 +83,7 @@ div {
   }
 
   .no-task-item {
-    margin: 250px auto;
+    margin: 20vh auto;
     width: 80%;
     h2 {
       font-weight: bold;
@@ -1194,7 +1194,6 @@ div {
       h1.note-main-title {
         display: inline-block;
         color: $main-color;
-        font-size: 3.5rem;
       }
     }
   }

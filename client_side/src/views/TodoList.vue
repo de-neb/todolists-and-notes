@@ -158,15 +158,18 @@ export default {
       itemTitle: "",
       expandChecker: false,
       showModal: false,
-      loading: false,
       name: "To-do List",
+      loading: false,
+      fetchedItems: false,
     };
   },
   methods: {
     async fetchItems() {
       const result = await ReqService.getItems(this.activeListId);
+      this.loading = false;
       this.items = await result.items;
     },
+
     async addItem() {
       await ReqService.addItem(this.activeListId, this.itemTitle);
       //animation wont play if not inside .then
@@ -219,13 +222,14 @@ export default {
         }, 20);
       }
     },
-    async deleteAllItems() {
+    deleteAllItems() {
       this.showModal = true;
       this.$emit("showModal", this.showModal);
     },
     async clearDoneItems() {
       const filteredDoneItems = this.items.filter((item) => !item.done);
       await ReqService.updateItems(this.activeListId, filteredDoneItems);
+      this.loading = true;
       this.fetchItems();
       console.log("clearing done items done");
     },
@@ -238,6 +242,7 @@ export default {
     activeListId: {
       immediate: true,
       handler: function () {
+        this.loading = true;
         this.fetchItems();
       },
       deep: true,
@@ -247,6 +252,7 @@ export default {
       handler: async function (newVal) {
         if (newVal === "true") {
           await ReqService.deleteAllItems(this.activeListId);
+          this.loading = true;
           this.fetchItems();
           this.$emit("changeToFalse", "false");
           console.log("all items deleted");
