@@ -29,7 +29,7 @@
               >
                 {{ list.name.toUpperCase() }}
               </router-link>
-              <span class="todo-num">{{ list.items.length }}</span>
+              <span v-if="list.active" class="todo-num">{{ listLenRT }}</span>
               <span
                 type="button"
                 @click.self="deleteList(list._id)"
@@ -63,6 +63,7 @@ export default {
     lists: Array,
     menuActive: Boolean,
     noteActive: Boolean,
+    listLenRT: Number,
   },
   data() {
     return {

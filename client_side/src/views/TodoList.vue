@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     <!-- top bar -->
-    <TopBar
+    <!-- <TopBar
       :activeListName="activeListName"
       :listsLen="lists.length"
       :routeName="name"
       @burgerClick="burgerClick"
-    ></TopBar>
+    ></TopBar> -->
 
     <div class="todos-cont" v-if="lists.length && !loading">
       <div
@@ -261,6 +261,13 @@ export default {
         this.$emit("showModal", this.showModal);
       },
       deep: false,
+    },
+    "items.length": {
+      immediate: true,
+      handler: function (newVal) {
+        this.$emit("listLen", newVal);
+      },
+      deep: true,
     },
   },
 };

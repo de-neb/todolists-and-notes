@@ -5,6 +5,7 @@
         :lists="lists"
         :menuActive="menuActive"
         :noteActive="noteActive"
+        :listLenRT="listLenRT"
         @activeList="passActiveListId"
         @addList="addList"
         @deleteList="deleteList"
@@ -21,6 +22,7 @@
         @showModal="showConfirmModal"
         @changeToFalse="(bool) => (toDeleteItems = bool)"
         @burgerClick="(bool) => (menuActive = !bool)"
+        @listLen="(len) => (listLenRT = len)"
       ></router-view>
     </div>
     <div :class="{ 'blur-modal-bg': showModal }"></div>
@@ -53,6 +55,7 @@ export default {
       toDeleteItems: null,
       menuActive: false,
       noteActive: false,
+      listLenRT: 0,
     };
   },
   methods: {
@@ -73,6 +76,7 @@ export default {
           list.active = false;
         }
       });
+
       //update active list in db when selected
       await ReqService.updateActiveList(id);
     },
@@ -126,6 +130,9 @@ export default {
       } else {
         this.noteActive = false;
       }
+    },
+    activeListId() {
+      console.log("list chnaged");
     },
   },
 
