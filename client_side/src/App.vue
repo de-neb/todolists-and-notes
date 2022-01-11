@@ -34,7 +34,7 @@
           </div>
           <h1 class="title" id="title">
             {{
-              listsLen && currentRoute == "TodoList"
+              lists.length && currentRoute == "TodoList"
                 ? activeListName
                 : currentRoute
             }}
@@ -156,7 +156,6 @@ export default {
       }
     },
   },
-
   created() {
     this.fetchList().then(() => {
       if (this.lists.length === 1) {
@@ -178,6 +177,8 @@ export default {
 <style scoped>
 .bar-route-container {
   width: inherit;
+  height: inherit;
+  position: relative;
 }
 
 .show {

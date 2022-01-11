@@ -40,7 +40,7 @@ div {
           box-sizing: border-box;
   font-family: "Nunito", sans-serif;
   min-height: 90vh;
-  position: relative;
+  padding-bottom: 30px;
 }
 
 .main hr, .notes hr {
@@ -50,7 +50,7 @@ div {
 }
 
 .main .no-task-item, .notes .no-task-item, .main .no-todo-item, .notes .no-todo-item {
-  margin: 20vh auto;
+  margin: 0 auto;
   width: 80%;
 }
 
@@ -58,6 +58,7 @@ div {
   font-weight: bold;
   font-size: 1.8rem;
   color: #7868e6;
+  margin: 0;
 }
 
 .main .no-task-item .sub-text, .notes .no-task-item .sub-text, .main .no-todo-item .sub-text, .notes .no-todo-item .sub-text {
@@ -190,6 +191,7 @@ div {
       -ms-flex-direction: column;
           flex-direction: column;
   height: auto;
+  padding-top: 3%;
 }
 
 .main .todos-cont .item-cont, .notes .todos-cont .item-cont {
@@ -477,7 +479,7 @@ div {
 }
 
 .main .clear, .notes .clear {
-  margin: 30px 0 0 0;
+  margin: 30px 0;
 }
 
 .main .clear .clear-done, .notes .clear .clear-done, .main .clear .delete-all, .notes .clear .delete-all {
@@ -487,12 +489,6 @@ div {
   background: none;
   color: #07689f;
   outline: none;
-  -webkit-transform: scale(1);
-          transform: scale(1);
-  -webkit-transition: -webkit-transform 0.5s ease;
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   position: relative;
   cursor: pointer;
 }
@@ -524,12 +520,6 @@ div {
 .main .clear .clear-done:hover, .notes .clear .clear-done:hover, .main .clear .delete-all:hover, .notes .clear .delete-all:hover {
   background: #07689f;
   color: #edeef7;
-  -webkit-transform: scale(1.05);
-          transform: scale(1.05);
-  -webkit-transition: -webkit-transform 0.5s ease;
-  transition: -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease;
-  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
 }
 
 .main .clear .clear-done:hover .tooltip-text, .notes .clear .clear-done:hover .tooltip-text, .main .clear .delete-all:hover .tooltip-text, .notes .clear .delete-all:hover .tooltip-text {
@@ -558,6 +548,7 @@ div {
 .title-cont .title {
   font-family: "Saira Condensed", sans-serif !important;
   font-size: 60px;
+  font-weight: 500;
   text-align: center;
   color: #7868e6;
   margin: 0 20px;
@@ -888,9 +879,6 @@ div {
 }
 
 .notes {
-  padding: 20px 0;
-  height: 100vh;
-  min-height: 0;
   overflow: hidden;
 }
 
@@ -915,7 +903,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-top: 50px;
+  margin-top: 3%;
 }
 
 .notes .create-note button {
@@ -1612,7 +1600,8 @@ div {
 @media (max-width: 800px) {
   .main, .notes {
     width: 100%;
-    height: 93vh;
+    min-height: 92vh;
+    padding: 10% 0;
   }
   label,
   option,
@@ -1666,11 +1655,11 @@ div {
     width: 85% !important;
   }
   .todos-cont {
-    padding-top: 7%;
+    padding-top: 7% !important;
   }
   .title-cont {
     background: #7868e6;
-    height: 7vh;
+    height: 8vh;
     width: 100%;
     position: relative;
     padding-left: 20px;
@@ -1731,9 +1720,9 @@ div {
   }
   .title-cont .menu .burger .bar {
     width: 30px;
-    height: 4px;
+    height: 3px;
     position: relative;
-    margin: 5px auto 0;
+    margin: 6px auto 0;
     border-radius: 50px;
     background: #edeef7;
   }
@@ -1752,6 +1741,9 @@ div {
     -webkit-box-flex: 1 !important;
         -ms-flex: 1 0 auto !important;
             flex: 1 0 auto !important;
+  }
+  h1.title {
+    font-size: 3rem !important;
   }
 }
 /*# sourceMappingURL=styles.css.map */

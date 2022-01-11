@@ -1,12 +1,8 @@
 <template>
   <div class="main">
-    <!-- top bar -->
-    <!-- <TopBar
-      :activeListName="activeListName"
-      :listsLen="lists.length"
-      :routeName="name"
-      @burgerClick="burgerClick"
-    ></TopBar> -->
+    <div class="sort-container">
+      <span class="material-icons"> sort </span>
+    </div>
 
     <div class="todos-cont" v-if="lists.length && !loading">
       <div
@@ -137,7 +133,6 @@
 
 <script>
 import ReqService from "../ReqService";
-// import TopBar from "../components/TopBar.vue";
 import Loader from "../components/Loader.vue";
 export default {
   name: "TodoList",
@@ -148,7 +143,6 @@ export default {
     toDeleteItems: Boolean,
   },
   components: {
-    // TopBar,
     Loader,
   },
   data() {
