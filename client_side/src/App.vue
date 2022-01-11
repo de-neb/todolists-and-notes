@@ -16,14 +16,40 @@
           'z-index-2': menuActive,
         }"
       ></div>
-      <router-view
-        v-if="lists"
-        v-bind="todoListProps"
-        @showModal="showConfirmModal"
-        @changeToFalse="(bool) => (toDeleteItems = bool)"
-        @burgerClick="(bool) => (menuActive = !bool)"
-        @listLen="(len) => (listLenRT = len)"
-      ></router-view>
+      <div class="bar-route-container">
+        <!-- top bar -->
+        <div class="title-cont">
+          <div class="menu">
+            <input
+              type="checkbox"
+              class="burger-check"
+              v-model="menuActive"
+              @click="burgerClicked"
+            />
+            <div class="burger">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+          <h1 class="title" id="title">
+            {{
+              listsLen && currentRoute == "TodoList"
+                ? activeListName
+                : currentRoute
+            }}
+          </h1>
+        </div>
+        <!-- top bar -->
+
+        <router-view
+          v-if="lists"
+          v-bind="todoListProps"
+          @showModal="showConfirmModal"
+          @changeToFalse="(bool) => (toDeleteItems = bool)"
+          @listLen="(len) => (listLenRT = len)"
+        ></router-view>
+      </div>
     </div>
     <div :class="{ 'blur-modal-bg': showModal }"></div>
     <ConfirmModal
@@ -38,7 +64,6 @@
 import ReqService from "./ReqService";
 import SideMenu from "./components/SideMenu.vue";
 import ConfirmModal from "./components/ConfirmModal.vue";
-
 export default {
   name: "App",
   components: {
@@ -56,6 +81,7 @@ export default {
       menuActive: false,
       noteActive: false,
       listLenRT: 0,
+      currentRoute: "",
     };
   },
   methods: {
@@ -68,6 +94,7 @@ export default {
     async passActiveListId({ id, name }) {
       this.activeListId = id;
       this.activeListName = name;
+      this.menuActive = !this.menuActive;
       //set active list
       this.lists.forEach((list) => {
         if (list._id === id) {
@@ -76,7 +103,6 @@ export default {
           list.active = false;
         }
       });
-
       //update active list in db when selected
       await ReqService.updateActiveList(id);
     },
@@ -118,21 +144,16 @@ export default {
     },
   },
   watch: {
-    $route() {
-      if (this.menuActive) {
-        this.menuActive = false;
-      } else {
-        this.menuActive = true;
-      }
+    $route(newVal) {
+      this.currentRoute = newVal.name;
+      // this.menuActive = !this.menuActive;
 
-      if (this.$route.name == "Notes") {
+      if (newVal.name == "Notes") {
+        this.menuActive = false;
         this.noteActive = true;
       } else {
         this.noteActive = false;
       }
-    },
-    activeListId() {
-      console.log("list chnaged");
     },
   },
 
@@ -150,18 +171,15 @@ export default {
         });
       }
     });
-
-    //to prevent blur background and inactive burger icon after page reload
-    if (this.menuActive) {
-      this.menuActive = false;
-    } else {
-      this.menuActive = true;
-    }
   },
 };
 </script>
 
 <style scoped>
+.bar-route-container {
+  width: inherit;
+}
+
 .show {
   display: flex !important;
 }

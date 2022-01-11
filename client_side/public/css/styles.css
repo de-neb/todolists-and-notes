@@ -5,7 +5,7 @@ html {
   margin: 0;
   text-align: center;
   overflow-x: hidden;
-  min-height: 100%;
+  min-height: 100vh;
   padding: 0;
   position: relative;
 }
@@ -36,27 +36,11 @@ div {
 .main, .notes {
   background: #edeef7;
   width: 100%;
-  padding: 20px 0 60px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: "Nunito", sans-serif;
-  min-height: 100vh;
+  min-height: 90vh;
   position: relative;
-}
-
-.main .title-cont .menu, .notes .title-cont .menu {
-  display: none;
-}
-
-.main .title-cont .title, .notes .title-cont .title {
-  font-family: "Saira Condensed", sans-serif !important;
-  font-size: 60px;
-  line-height: 70px;
-  text-align: center;
-  color: #7868e6;
-  margin: 0 20px;
-  font-weight: 500;
-  text-transform: uppercase;
 }
 
 .main hr, .notes hr {
@@ -116,7 +100,7 @@ div {
 }
 
 .main .add-item .add-item-cont, .notes .add-item .add-item-cont {
-  width: 60%;
+  width: 55%;
   background: #ffff;
   padding: 15px;
   border-radius: 5px;
@@ -206,11 +190,10 @@ div {
       -ms-flex-direction: column;
           flex-direction: column;
   height: auto;
-  margin-top: 5vh;
 }
 
 .main .todos-cont .item-cont, .notes .todos-cont .item-cont {
-  width: 60%;
+  width: 55%;
 }
 
 .main .todos-cont .item-cont:hover .top, .notes .todos-cont .item-cont:hover .top,
@@ -561,6 +544,24 @@ div {
 
 .main .clear .delete-all:hover, .notes .clear .delete-all:hover {
   background: #e7305b;
+}
+
+.title-cont {
+  height: 10vh;
+  background-color: #edeef7;
+}
+
+.title-cont .menu {
+  display: none;
+}
+
+.title-cont .title {
+  font-family: "Saira Condensed", sans-serif !important;
+  font-size: 60px;
+  text-align: center;
+  color: #7868e6;
+  margin: 0 20px;
+  text-transform: uppercase;
 }
 
 .btn-save-del {
@@ -1599,11 +1600,8 @@ div {
 }
 
 @media (max-width: 1200px) {
-  .main, .notes {
-    width: 74%;
-  }
   .side-menu {
-    width: 26%;
+    width: 35%;
   }
   .item-cont,
   .add-item-cont {
@@ -1614,6 +1612,7 @@ div {
 @media (max-width: 800px) {
   .main, .notes {
     width: 100%;
+    height: 93vh;
   }
   label,
   option,
@@ -1657,9 +1656,21 @@ div {
   .main hr, .notes hr {
     display: none;
   }
-  .main .title-cont, .notes .title-cont {
+  .grid-container {
+    -webkit-box-pack: justify !important;
+        -ms-flex-pack: justify !important;
+            justify-content: space-between !important;
+  }
+  .item-cont,
+  .add-item-cont {
+    width: 85% !important;
+  }
+  .todos-cont {
+    padding-top: 7%;
+  }
+  .title-cont {
     background: #7868e6;
-    height: 70px;
+    height: 7vh;
     width: 100%;
     position: relative;
     padding-left: 20px;
@@ -1675,14 +1686,14 @@ div {
         -ms-flex-pack: start;
             justify-content: flex-start;
   }
-  .main .title-cont .menu, .notes .title-cont .menu {
+  .title-cont .menu {
     display: inline-block;
     width: 30px;
     height: 30px;
     position: relative;
     z-index: 100;
   }
-  .main .title-cont .menu .burger-check, .notes .title-cont .menu .burger-check {
+  .title-cont .menu .burger-check {
     position: absolute;
     z-index: 2;
     top: 0;
@@ -1694,31 +1705,31 @@ div {
     outline: none;
     cursor: pointer;
   }
-  .main .title-cont .menu .burger-check:checked ~ .burger div:nth-child(1), .notes .title-cont .menu .burger-check:checked ~ .burger div:nth-child(1) {
+  .title-cont .menu .burger-check:checked ~ .burger div:nth-child(1) {
     -webkit-animation: down 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: down 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger-check:checked ~ .burger div:nth-child(2), .notes .title-cont .menu .burger-check:checked ~ .burger div:nth-child(2) {
+  .title-cont .menu .burger-check:checked ~ .burger div:nth-child(2) {
     -webkit-animation: gone 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: gone 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger-check:checked ~ .burger div:nth-child(3), .notes .title-cont .menu .burger-check:checked ~ .burger div:nth-child(3) {
+  .title-cont .menu .burger-check:checked ~ .burger div:nth-child(3) {
     -webkit-animation: up 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: up 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(1), .notes .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(1) {
+  .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(1) {
     -webkit-animation: rev-up 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: rev-up 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(2), .notes .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(2) {
+  .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(2) {
     -webkit-animation: rev-appear 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: rev-appear 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(3), .notes .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(3) {
+  .title-cont .menu .burger-check:not(:checked) ~ .burger div:nth-child(3) {
     -webkit-animation: rev-down 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
             animation: rev-down 0.5s cubic-bezier(0.39, 0.97, 0, 0.97) forwards;
   }
-  .main .title-cont .menu .burger .bar, .notes .title-cont .menu .burger .bar {
+  .title-cont .menu .burger .bar {
     width: 30px;
     height: 4px;
     position: relative;
@@ -1726,20 +1737,10 @@ div {
     border-radius: 50px;
     background: #edeef7;
   }
-  .main .title-cont h1.title, .notes .title-cont h1.title,
-  .main .title-cont h1.note-main-title,
-  .notes .title-cont h1.note-main-title {
+  .title-cont h1.title,
+  .title-cont h1.note-main-title {
     display: inline-block;
     color: #edeef7;
-  }
-  .grid-container {
-    -webkit-box-pack: justify !important;
-        -ms-flex-pack: justify !important;
-            justify-content: space-between !important;
-  }
-  .item-cont,
-  .add-item-cont {
-    width: 85% !important;
   }
 }
 

@@ -1,9 +1,5 @@
 <template>
   <div class="notes" id="notes">
-    <!-- menu -->
-    <TopBar :routeName="name" @burgerClick="burgerClick"></TopBar>
-    <!-- menu -->
-
     <div class="create-note">
       <button @click="addNote">
         <span class="material-icons material-icons-outlined"> add </span>
@@ -147,14 +143,12 @@
 
 <script>
 import ReqService from "../ReqService";
-import TopBar from "../components/TopBar.vue";
 import NewNote from "../components/NewNote.vue";
 import Loader from "../components/Loader.vue";
 
 export default {
   name: "Notes",
   components: {
-    TopBar,
     NewNote,
     Loader,
   },

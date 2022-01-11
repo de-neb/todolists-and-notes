@@ -137,7 +137,7 @@
 
 <script>
 import ReqService from "../ReqService";
-import TopBar from "../components/TopBar.vue";
+// import TopBar from "../components/TopBar.vue";
 import Loader from "../components/Loader.vue";
 export default {
   name: "TodoList",
@@ -148,7 +148,7 @@ export default {
     toDeleteItems: Boolean,
   },
   components: {
-    TopBar,
+    // TopBar,
     Loader,
   },
   data() {
