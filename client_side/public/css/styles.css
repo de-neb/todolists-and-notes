@@ -506,6 +506,10 @@ div {
   margin-bottom: 20px;
 }
 
+.main .todos-cont .item-cont .expanded-cont .date-priority-cont .priority-cont option[value="None"][disabled] {
+  display: none;
+}
+
 .main .todos-cont .item-cont .expanded-cont .details-cont {
   -ms-grid-column: 4;
   -ms-grid-column-span: 1;

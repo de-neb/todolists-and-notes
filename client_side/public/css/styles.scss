@@ -379,7 +379,11 @@ div {
 
             select {
               @extend .date;
-              // height: auto !important;
+            }
+            option {
+              &[value="None"][disabled] {
+                display: none;
+              }
             }
           }
         }

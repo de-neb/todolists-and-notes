@@ -3,14 +3,14 @@
     <div class="sort-container">
       <div class="sort-col">
         <span class="material-icons sort"> sort </span>
-        <select name="sort" id="sort-by" required>
+        <select name="sort" id="sort-by" v-model="sortBy" required>
           <option value="" disabled selected hidden>Sort by</option>
           <option value="Priority">Priority</option>
           <option value="Date">Date</option>
         </select>
       </div>
       <div class="sort-col">
-        <input type="checkbox" name="order" id="order" />
+        <input type="checkbox" name="order" id="order" v-model="order" />
         <span class="material-icons arrow"> south </span>
       </div>
     </div>
@@ -62,8 +62,12 @@
                 name="priority"
                 :id="'priority-' + todoItem.title"
                 v-model="todoItem.priority"
+                required
               >
-                <option value="Low" selected="selected">Low</option>
+                <option value="None" disabled selected hidden>
+                  Set Priority...
+                </option>
+                <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
               </select>
@@ -166,6 +170,8 @@ export default {
       name: "To-do List",
       loading: false,
       fetchedItems: false,
+      sortBy: "",
+      order: "",
     };
   },
   methods: {
@@ -273,6 +279,27 @@ export default {
         this.$emit("listLen", newVal);
       },
       deep: true,
+    },
+    sortBy: {
+      immediate: true,
+      handler: function (newVal) {
+        if (newVal === "Date") {
+          this.items = this.items.sort((a, b) => {
+            if (!a.date) {
+              return -1;
+            } else {
+              return new Date(a.date) - new Date(b.date);
+            }
+          });
+        } else if (newVal === "Priority") {
+          this.items = this.items.sort((a, b) => {
+            const val = { None: -1, Low: 1, Medium: 2, High: 3 };
+
+            return val[a.priority] - val[b.priority];
+          });
+        }
+        console.log(newVal);
+      },
     },
   },
 };
