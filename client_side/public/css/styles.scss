@@ -3,6 +3,7 @@
 // variables
 $main-color: #edeef7;
 $side-color: #7868e6;
+$light-purple: #d7d2f8;
 $light-color: #ffff;
 $task-name-color: #f6f6f6;
 $bar: $light-color;
@@ -19,7 +20,7 @@ $time-font: "Rajdhani", sans-serif;
 $task-font: "Nunito", sans-serif;
 $side-width: 22%;
 $main-width: 100%;
-$todo-width: 55%;
+$todo-width: 100%;
 $timing: cubic-bezier(0.39, 0.97, 0, 0.97);
 // variables-end
 
@@ -59,16 +60,98 @@ div {
   box-sizing: border-box;
   font-family: $task-font;
   min-height: 90vh;
-  padding-bottom: 30px;
-  hr {
-    border: none;
-    border-bottom: 1px solid $side-color;
-    margin: 3px 0 0 20px;
+  display: grid;
+  grid-template-columns: 20% auto 20%;
+  grid-auto-rows: minmax(min-content, max-content);
+  gap: 20px 0;
+  padding: 50px 0;
+  .sort-container {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    text-align: end;
+    height: 35px;
+    .sort-col {
+      display: inline-block;
+      height: 100%;
+      font-size: 1.2rem;
+      font-family: inherit;
+      vertical-align: middle;
+      color: $side-color;
+      position: relative;
+      margin-left: 10px;
+      span {
+        font-size: 25px;
+        border-radius: 50%;
+        background: $light-purple;
+        padding: 3px;
+        vertical-align: middle;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      span.sort {
+        height: 35px;
+        width: 35px;
+        margin: 0;
+        border-radius: 100px 0 0 100px !important;
+        position: absolute;
+        left: -30px;
+      }
+      select {
+        height: inherit;
+        width: 110px;
+        font-size: inherit;
+        font-family: inherit;
+        outline: none;
+        border: none;
+        background: $light-purple;
+        border-radius: 0 100px 100px 0;
+        padding: 5px;
+        color: $side-color;
+        &:required:invalid {
+          color: rgb(126, 126, 126) !important;
+        }
+      }
+      option {
+        background: $main-color;
+        font-size: inherit;
+        font-family: inherit;
+        color: $side-color;
+        &[value=""][disabled] {
+          display: none;
+        }
+      }
+      input[type="checkbox"] {
+        height: 30px;
+        width: 30px;
+        box-sizing: border-box;
+        opacity: 0;
+        cursor: pointer;
+        position: relative;
+        z-index: 3;
+        &:checked ~ span.arrow {
+          transform: rotate(180deg);
+        }
+      }
+      span.arrow {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        height: 35px;
+        width: 35px;
+        background: $light-purple;
+        padding: 3px;
+        transform: rotate(0);
+        transition: transform 0.3s;
+      }
+    }
   }
 
   .no-task-item {
-    margin: 0 auto;
-    width: 80%;
+    margin: 10% auto;
+    width: 100%;
+    grid-column: 2/3;
+    grid-row: 2/3;
     h2 {
       font-weight: bold;
       font-size: 1.8rem;
@@ -102,17 +185,17 @@ div {
       }
     }
   }
-  .add-item {
+  .add-item-cont {
     @include flex(center, center);
     width: 100%;
-    margin: auto;
-    .add-item-cont {
+    grid-column: 2/3;
+    grid-row: 3/4;
+    .add-item {
       width: $todo-width;
       background: $bar;
       padding: 15px;
       border-radius: 5px;
       color: $todo;
-      margin-top: 20px;
       position: relative;
       box-sizing: border-box;
       @include flex(center, space-around);
@@ -139,37 +222,16 @@ div {
     }
   }
 
-  .sort {
-    width: 60%;
-    height: 40px;
-    text-align: center;
-    margin: auto;
-    color: $side-color;
-    font-size: 1.3rem;
-    @include flex(center, flex-end);
-    select {
-      margin-left: 5px;
-      background: #b8b5ff;
-      border: none;
-      height: 24px;
-      padding: 3px 5px;
-      border-radius: 3px;
-      font-size: 16px;
-      color: $main-color;
-      option {
-        font-size: 16px;
-      }
-    }
-  }
-
   .todos-cont {
     font-family: $task-font;
-    @include flex(center, center);
-    flex-direction: column;
-    height: auto;
-    padding-top: 3%;
+    align-items: start;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    gap: 20px;
+    height: 100%;
     .item-cont {
       width: $todo-width;
+      margin-top: 20px;
       &:hover .top,
       &:hover .expanded-cont {
         box-shadow: 5px 5px 0 rgba(63, 63, 68, 0.3);
@@ -180,7 +242,7 @@ div {
         background: $bar;
         padding: 15px;
         color: $todo;
-        margin-top: 20px;
+
         @include flex(center, space-around);
         box-shadow: none;
         width: 100%;
@@ -350,7 +412,8 @@ div {
     // expanded
   }
   .clear {
-    margin: 30px 0;
+    grid-column: 2/3;
+    grid-row: 4/5;
     .clear-done {
       padding: 7px 30px;
       border-radius: 100px;
@@ -646,7 +709,11 @@ div {
 }
 
 .notes {
-  @extend .main;
+  background: $main-color;
+  width: $main-width;
+  box-sizing: border-box;
+  font-family: $task-font;
+  min-height: 90vh;
   overflow: hidden;
   .note-main-title {
     font-family: $main-font;
@@ -1065,14 +1132,12 @@ div {
   }
 }
 
-// media queries
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
   .side-menu {
-    width: 35%;
+    width: 27%;
   }
-  .item-cont,
-  .add-item-cont {
-    width: 80% !important;
+  .main {
+    grid-template-columns: 7% auto 7%;
   }
 }
 
@@ -1080,7 +1145,6 @@ div {
   .main {
     width: 100%;
     min-height: 92vh;
-    padding: 10% 0;
   }
   label,
   option,
@@ -1116,24 +1180,13 @@ div {
     top: 0;
     left: 0;
     padding-top: 70px;
-    z-index: 3;
+    z-index: 10;
     background: $side-color;
     transition: opacity 0.5s $timing, width 0.5s $timing, top 0.1s 0.4s $timing;
-  }
-  .main {
-    padding-top: 0;
-    hr {
-      display: none;
-    }
   }
 
   .grid-container {
     justify-content: space-between !important;
-  }
-
-  .item-cont,
-  .add-item-cont {
-    width: 85% !important;
   }
 
   .todos-cont {

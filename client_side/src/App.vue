@@ -177,7 +177,7 @@ export default {
 <style scoped>
 .bar-route-container {
   width: inherit;
-  height: inherit;
+  min-height: 100vh;
   position: relative;
 }
 
@@ -198,7 +198,7 @@ export default {
   }
 
   .z-index-2 {
-    z-index: 2;
+    z-index: 9;
   }
 }
 </style>

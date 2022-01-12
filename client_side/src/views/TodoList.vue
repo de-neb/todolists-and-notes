@@ -1,7 +1,18 @@
 <template>
   <div class="main">
     <div class="sort-container">
-      <span class="material-icons"> sort </span>
+      <div class="sort-col">
+        <span class="material-icons sort"> sort </span>
+        <select name="sort" id="sort-by" required>
+          <option value="" disabled selected hidden>Sort by</option>
+          <option value="Priority">Priority</option>
+          <option value="Date">Date</option>
+        </select>
+      </div>
+      <div class="sort-col">
+        <input type="checkbox" name="order" id="order" />
+        <span class="material-icons arrow"> south </span>
+      </div>
     </div>
 
     <div class="todos-cont" v-if="lists.length && !loading">
@@ -86,8 +97,8 @@
       </div>
     </div>
 
-    <div class="add-item" v-if="lists.length && !loading">
-      <div class="add-item-cont">
+    <div class="add-item-cont" v-if="lists.length && !loading">
+      <div class="add-item">
         <span class="material-icons material-icons-outlined" @click="addItem()"
           >add</span
         >
