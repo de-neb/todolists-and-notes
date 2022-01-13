@@ -131,6 +131,26 @@ div {
         &:checked ~ span.arrow {
           transform: rotate(180deg);
         }
+        &:checked ~ span.arrow:before {
+          content: "D";
+          position: absolute;
+          top: 12px;
+          right: 5px;
+          color: inherit;
+          transform: rotate(0deg) scaleX(-1);
+          font-size: 12px;
+          font-weight: bold;
+        }
+        &:not(:checked) ~ span.arrow:after {
+          content: "A";
+          position: absolute;
+          top: 11px;
+          left: 5px;
+          color: inherit;
+          transform: rotate(0deg) scaleX(-1);
+          font-size: 12px;
+          font-weight: bold;
+        }
       }
       span.arrow {
         position: absolute;
@@ -139,6 +159,7 @@ div {
         z-index: 2;
         height: 35px;
         width: 35px;
+
         background: $light-purple;
         padding: 3px;
         transform: rotate(0);
@@ -753,7 +774,7 @@ div {
     width: 100%;
     .grid-container {
       height: inherit;
-      margin: 40px;
+      margin: 5%;
       overflow-x: hidden;
       overflow-y: scroll;
       padding-top: 10px;
@@ -1267,11 +1288,8 @@ div {
 }
 
 @media (max-width: 600px) {
-  .grid-container {
-    padding: 20px;
-    .col {
-      flex: 1 0 auto !important;
-    }
+  .grid-container .col {
+    flex: 1 0 auto !important;
   }
 
   h1.title {

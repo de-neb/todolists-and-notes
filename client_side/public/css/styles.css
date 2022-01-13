@@ -136,6 +136,30 @@ div {
           transform: rotate(180deg);
 }
 
+.main .sort-container .sort-col input[type="checkbox"]:checked ~ span.arrow:before {
+  content: "D";
+  position: absolute;
+  top: 12px;
+  right: 5px;
+  color: inherit;
+  -webkit-transform: rotate(0deg) scaleX(-1);
+          transform: rotate(0deg) scaleX(-1);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.main .sort-container .sort-col input[type="checkbox"]:not(:checked) ~ span.arrow:after {
+  content: "A";
+  position: absolute;
+  top: 11px;
+  left: 5px;
+  color: inherit;
+  -webkit-transform: rotate(0deg) scaleX(-1);
+          transform: rotate(0deg) scaleX(-1);
+  font-size: 12px;
+  font-weight: bold;
+}
+
 .main .sort-container .sort-col span.arrow {
   position: absolute;
   left: 0;
@@ -1022,7 +1046,7 @@ div {
 
 .notes .main-container .grid-container {
   height: inherit;
-  margin: 40px;
+  margin: 5%;
   overflow-x: hidden;
   overflow-y: scroll;
   padding-top: 10px;
@@ -1807,9 +1831,6 @@ div {
 }
 
 @media (max-width: 600px) {
-  .grid-container {
-    padding: 20px;
-  }
   .grid-container .col {
     -webkit-box-flex: 1 !important;
         -ms-flex: 1 0 auto !important;

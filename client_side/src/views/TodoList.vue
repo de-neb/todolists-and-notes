@@ -10,8 +10,8 @@
         </select>
       </div>
       <div class="sort-col">
-        <input type="checkbox" name="order" id="order" v-model="order" />
-        <span class="material-icons arrow"> south </span>
+        <input type="checkbox" name="order" id="order" v-model="toDescend" />
+        <span class="material-icons arrow"> north </span>
       </div>
     </div>
 
@@ -171,7 +171,8 @@ export default {
       loading: false,
       fetchedItems: false,
       sortBy: "",
-      order: "",
+      toDescend: false,
+      wasSorted: false,
     };
   },
   methods: {
@@ -283,22 +284,42 @@ export default {
     sortBy: {
       immediate: true,
       handler: function (newVal) {
-        if (newVal === "Date") {
-          this.items = this.items.sort((a, b) => {
-            if (!a.date) {
-              return -1;
-            } else {
-              return new Date(a.date) - new Date(b.date);
-            }
-          });
-        } else if (newVal === "Priority") {
-          this.items = this.items.sort((a, b) => {
-            const val = { None: -1, Low: 1, Medium: 2, High: 3 };
+        switch (newVal) {
+          case "Date":
+            this.items.sort((a, b) => {
+              if (this.toDescend) {
+                return b.date.localeCompare(a.date);
+              } else {
+                return a.date.localeCompare(b.date);
+              }
+            });
+            break;
 
-            return val[a.priority] - val[b.priority];
-          });
+          case "Priority":
+            this.items.sort((a, b) => {
+              const val = { None: -1, Low: 1, Medium: 2, High: 3 };
+              if (this.toDescend) {
+                return val[b.priority] - val[a.priority];
+              } else {
+                return val[a.priority] - val[b.priority];
+              }
+            });
+            break;
+          default:
+            this.wasSorted = true;
+            break;
         }
-        console.log(newVal);
+      },
+    },
+    toDescend: {
+      immediate: true,
+      handler: function (bool) {
+        if (bool && this.wasSorted) {
+          this.items = this.items.reverse();
+        } else if (!bool && this.wasSorted) {
+          this.items = this.items.reverse();
+        }
+        console.log("toDescend", bool);
       },
     },
   },
