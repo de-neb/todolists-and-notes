@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gw36x.mongodb.net/newTodolistDB?retryWrites=true&w=majority`
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 );
 
 //get models
@@ -18,7 +18,6 @@ const TaskList = require("../modules/taskList");
 router.get("/", async (req, res) => {
   try {
     const listCollection = await TaskList.find({}).exec();
-
     res.send(listCollection);
   } catch (error) {
     console.log(error.message);
@@ -82,7 +81,6 @@ router.put("/:id/update-active-list", async (req, res) => {
       { new: true },
       (err, list) => {
         if (!err) {
-          // console.log(`list: ${list.name}, active: ${list.active}`);
           res.status(200).send();
         }
       }
@@ -109,11 +107,6 @@ router.get("/:id", async (req, res) => {
 router.post("/:id", (req, res) => {
   const newItem = new Item({
     title: req.body.itemTitle,
-    priority: req.body.priority,
-    details: req.body.details,
-    done: req.body.done,
-    expandedItem: req.body.expandedItem,
-    date: req.body.date,
   });
   TaskList.findByIdAndUpdate(
     req.params.id,
@@ -127,11 +120,10 @@ router.post("/:id", (req, res) => {
 });
 
 //delete single item
-router.delete("/:id/delete-item", (req, res) => {
-  const itemId = req.body.itemId;
+router.patch("/:id/delete-item", (req, res) => {
   TaskList.findByIdAndUpdate(
     req.params.id,
-    { $pull: { items: { _id: itemId } } },
+    { $pull: { items: { _id: req.body.itemId } } },
     (err, doc) => {
       if (!err) {
         res.status(200).send();
@@ -141,30 +133,21 @@ router.delete("/:id/delete-item", (req, res) => {
 });
 
 //delete all items
-router.delete("/:id/delete-items", (req, res) => {
-  TaskList.findByIdAndUpdate(
-    req.params.id,
-    { $set: { items: [] } },
-    (err, doc) => {
-      if (!err) {
-        res.status(200).send();
-      }
+router.patch("/:id/delete-items", (req, res) => {
+  TaskList.findByIdAndUpdate(req.params.id, { items: [] }, (err, doc) => {
+    if (!err) {
+      res.status(200).send();
     }
-  );
+  });
 });
 
 //update items arr
-router.put("/:id/update-items", (req, res) => {
-  const updatedItems = req.body.items;
-  TaskList.findByIdAndUpdate(
-    req.params.id,
-    { $set: { items: updatedItems } },
-    (err, doc) => {
-      if (!err) {
-        res.status(200).send();
-      }
+router.patch("/:id/update-items", (req, res) => {
+  TaskList.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
+    if (!err) {
+      res.status(200).send();
     }
-  );
+  });
 });
 
 module.exports = router;
