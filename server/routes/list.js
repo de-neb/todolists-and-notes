@@ -1,18 +1,14 @@
-const path = require("path");
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
-
+//get models
+const Item = require("../modules/item");
+const TaskList = require("../modules/taskList");
 const router = express.Router();
 
 mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 );
-
-//get models
-const Item = require("../modules/item");
-const TaskList = require("../modules/taskList");
 
 //get list
 router.get("/", async (req, res) => {
@@ -44,22 +40,35 @@ router.post("/", async (req, res) => {
 //delete list
 router.delete("/:id/delete-list", async (req, res) => {
   try {
+    const { prevListId } = req.body;
     const listExists = await TaskList.exists({ _id: req.params.id });
-
     if (listExists) {
       await TaskList.deleteOne({ _id: req.params.id });
-      //set last list as active
-      TaskList.countDocuments({}, (err, c) => {
+      TaskList.countDocuments({}, async (err, c) => {
+        //checks if document is not empty
         if (c > 0) {
-          TaskList.findOne()
-            .sort({ field: "asc", _id: -1 })
-            .exec(async (err, list) => {
-              list.active = true;
-              await list.save();
-              //sending updated list instead
-              const updatedList = await TaskList.find({});
-              res.send(updatedList);
-            });
+          //find current active list and set value to false and
+          //set last document as active instead
+          TaskList.bulkWrite(
+            [
+              {
+                updateOne: {
+                  filter: { active: true },
+                  update: { active: false },
+                },
+              },
+              {
+                updateOne: {
+                  filter: { _id: prevListId },
+                  update: { active: true },
+                },
+              },
+            ],
+            { ordered: true }
+          ).then(async () => {
+            const updatedList = await TaskList.find({});
+            res.send(updatedList);
+          });
         } else {
           res.send([]);
         }
@@ -71,23 +80,18 @@ router.delete("/:id/delete-list", async (req, res) => {
 });
 
 //update list
-router.put("/:id/update-active-list", async (req, res) => {
+router.put("/:id/update-active-list", (req, res) => {
   const id = req.params.id;
-  try {
-    await TaskList.updateMany({ _id: { $ne: id } }, { active: false });
-    TaskList.findOneAndUpdate(
-      { _id: id },
-      { active: true },
-      { new: true },
-      (err, list) => {
-        if (!err) {
-          res.status(200).send();
-        }
+
+  TaskList.updateMany({ _id: { $ne: id } }, { active: false }).then(() => {
+    TaskList.findOneAndUpdate({ _id: id }, { active: true }, (err) => {
+      if (err) {
+        res.send(err.message);
+      } else {
+        res.status(200).send();
       }
-    );
-  } catch (error) {
-    console.log(error.message);
-  }
+    });
+  });
 });
 
 //get items
@@ -111,8 +115,10 @@ router.post("/:id", (req, res) => {
   TaskList.findByIdAndUpdate(
     req.params.id,
     { $push: { items: newItem } },
-    (err, doc) => {
-      if (!err) {
+    (err) => {
+      if (err) {
+        res.send(err.message);
+      } else {
         res.status(200).send();
       }
     }
@@ -124,8 +130,10 @@ router.patch("/:id/delete-item", (req, res) => {
   TaskList.findByIdAndUpdate(
     req.params.id,
     { $pull: { items: { _id: req.body.itemId } } },
-    (err, doc) => {
-      if (!err) {
+    (err) => {
+      if (err) {
+        res.send(err.message);
+      } else {
         res.status(200).send();
       }
     }
@@ -134,8 +142,10 @@ router.patch("/:id/delete-item", (req, res) => {
 
 //delete all items
 router.patch("/:id/delete-items", (req, res) => {
-  TaskList.findByIdAndUpdate(req.params.id, { items: [] }, (err, doc) => {
-    if (!err) {
+  TaskList.findByIdAndUpdate(req.params.id, { items: [] }, (err) => {
+    if (err) {
+      res.send(err.message);
+    } else {
       res.status(200).send();
     }
   });
@@ -143,8 +153,10 @@ router.patch("/:id/delete-items", (req, res) => {
 
 //update items arr
 router.patch("/:id/update-items", (req, res) => {
-  TaskList.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
-    if (!err) {
+  TaskList.findByIdAndUpdate(req.params.id, req.body, (err) => {
+    if (err) {
+      res.send(err.message);
+    } else {
       res.status(200).send();
     }
   });

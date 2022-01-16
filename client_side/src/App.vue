@@ -114,7 +114,8 @@ export default {
       this.activeListName = this.lists[listsLen - 1].name;
     },
     async deleteList(id) {
-      const updatedList = await ReqService.deleteList(id);
+      const prevListId = this.lists[this.lists.length - 2]._id;
+      const updatedList = await ReqService.deleteList(id, prevListId);
       this.lists = await updatedList;
 
       const listsLen = this.lists.length;

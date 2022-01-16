@@ -11,7 +11,7 @@
 
     <nav class="side-nav">
       <ul>
-        <li>MY TASK LISTS</li>
+        <li>TO-DO LISTS</li>
         <div class="task-list-cont">
           <ul class="task-list">
             <li
@@ -38,15 +38,17 @@
               >
             </li>
           </ul>
-          <textarea
-            rows="1"
-            type="text"
-            name="list-name"
-            placeholder="Enter task list name"
-            maxlength="15"
-            v-model="listName"
-            @keydown.prevent.enter="addList"
-          ></textarea>
+          <form ref="form">
+            <input
+              type="text"
+              name="list-name"
+              placeholder="Enter a list name"
+              maxlength="13"
+              v-model="listName"
+              @keydown.prevent.enter="addList"
+              required
+            />
+          </form>
         </div>
         <li id="notes-list" :class="{ active: noteActive }">
           <router-link to="/notes" id="notes-tag">NOTES</router-link>
@@ -117,6 +119,7 @@ export default {
     },
     addList() {
       //problem id not captured
+      this.$refs.form.reportValidity();
       this.$emit("addList", this.listName);
       this.listName = "";
     },

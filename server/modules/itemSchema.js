@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-module.exports = mongoose.Schema({
+module.exports = new mongoose.Schema({
   title: String,
   priority: { type: String, default: "None" },
   details: String,

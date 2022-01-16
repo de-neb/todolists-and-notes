@@ -866,7 +866,7 @@ div {
   width: 100%;
 }
 
-.side-nav ul .task-list-cont textarea {
+.side-nav ul .task-list-cont input {
   font-size: 23px;
   font-family: "Nunito", sans-serif;
   overflow: hidden;
@@ -881,25 +881,25 @@ div {
   resize: none;
 }
 
-.side-nav ul .task-list-cont textarea::-webkit-input-placeholder {
+.side-nav ul .task-list-cont input::-webkit-input-placeholder {
   color: #ffff;
   opacity: 0.7;
   font-family: inherit;
 }
 
-.side-nav ul .task-list-cont textarea:-ms-input-placeholder {
+.side-nav ul .task-list-cont input:-ms-input-placeholder {
   color: #ffff;
   opacity: 0.7;
   font-family: inherit;
 }
 
-.side-nav ul .task-list-cont textarea::-ms-input-placeholder {
+.side-nav ul .task-list-cont input::-ms-input-placeholder {
   color: #ffff;
   opacity: 0.7;
   font-family: inherit;
 }
 
-.side-nav ul .task-list-cont textarea::placeholder {
+.side-nav ul .task-list-cont input::placeholder {
   color: #ffff;
   opacity: 0.7;
   font-family: inherit;

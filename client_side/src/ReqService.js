@@ -21,8 +21,10 @@ class ReqService {
   }
 
   //delete list
-  static async deleteList(listId) {
-    const res = await axios.delete(`${url}${listId}/delete-list`);
+  static async deleteList(listId, prevListId) {
+    const res = await axios.delete(`${url}${listId}/delete-list`, {
+      data: { prevListId },
+    });
     const data = await res.data;
     return data;
   }
