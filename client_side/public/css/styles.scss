@@ -769,7 +769,7 @@ div {
 
   .grid-container {
     overflow-x: hidden;
-    padding: 20px;
+    padding: 5%;
     @include flex(flex-start, flex-start);
     flex-wrap: wrap;
     align-content: flex-start;
@@ -797,6 +797,7 @@ div {
   }
 }
 //separated so that it can be applied
+
 .note-cont {
   width: 95%;
   word-wrap: break-word;

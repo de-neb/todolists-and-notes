@@ -1038,7 +1038,7 @@ div {
 
 .notes .grid-container {
   overflow-x: hidden;
-  padding: 20px;
+  padding: 5%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
