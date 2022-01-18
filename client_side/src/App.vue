@@ -1,56 +1,55 @@
 <template>
   <div class="container">
-    <div class="pseudo-cont">
-      <SideMenu
-        :lists="lists"
-        :menuActive="menuActive"
-        :noteActive="noteActive"
-        :listLenRT="listLenRT"
-        @activeList="passActiveListId"
-        @addList="addList"
-        @deleteList="deleteList"
-      ></SideMenu>
-      <div
-        :class="{
-          'blur-bg': menuActive,
-          'z-index-2': menuActive,
-        }"
-      ></div>
-      <div class="bar-route-container">
-        <!-- top bar -->
-        <div class="title-cont">
-          <div class="menu">
-            <input
-              type="checkbox"
-              class="burger-check"
-              v-model="menuActive"
-              @click="burgerClicked"
-            />
-            <div class="burger">
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-            </div>
+    <SideMenu
+      :lists="lists"
+      :menuActive="menuActive"
+      :noteActive="noteActive"
+      :listLenRT="listLenRT"
+      @activeList="passActiveListId"
+      @addList="addList"
+      @deleteList="deleteList"
+    ></SideMenu>
+    <div
+      :class="{
+        'blur-bg': menuActive,
+        'z-index-2': menuActive,
+      }"
+    ></div>
+    <div class="bar-route-container">
+      <!-- top bar -->
+      <div class="title-cont">
+        <div class="menu">
+          <input
+            type="checkbox"
+            class="burger-check"
+            v-model="menuActive"
+            @click="burgerClicked"
+          />
+          <div class="burger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
           </div>
-          <h1 class="title" id="title">
-            {{
-              lists.length && currentRoute == "TodoList"
-                ? activeListName
-                : currentRoute
-            }}
-          </h1>
         </div>
-        <!-- top bar -->
-
-        <router-view
-          v-if="lists"
-          v-bind="todoListProps"
-          @showModal="showConfirmModal"
-          @changeToFalse="(bool) => (toDeleteItems = bool)"
-          @listLen="(len) => (listLenRT = len)"
-        ></router-view>
+        <h1 class="title" id="title">
+          {{
+            lists.length && currentRoute == "TodoList"
+              ? activeListName
+              : currentRoute
+          }}
+        </h1>
       </div>
+      <!-- top bar -->
+
+      <router-view
+        v-if="lists"
+        v-bind="todoListProps"
+        @showModal="showConfirmModal"
+        @changeToFalse="(bool) => (toDeleteItems = bool)"
+        @listLen="(len) => (listLenRT = len)"
+      ></router-view>
     </div>
+
     <div :class="{ 'blur-modal-bg': showModal }"></div>
     <ConfirmModal
       :class="{ show: showModal }"
@@ -178,7 +177,6 @@ export default {
 <style scoped>
 .bar-route-container {
   width: inherit;
-  min-height: 100vh;
   position: relative;
 }
 

@@ -36,9 +36,10 @@ html {
   margin: 0;
   text-align: center;
   overflow-x: hidden;
-  min-height: 100vh;
+  height: 100%;
   padding: 0;
   position: relative;
+  background-color: $main-color;
 }
 
 div {
@@ -46,13 +47,11 @@ div {
 }
 
 #app,
-.pseudo-cont,
 .container {
   @include flex(stretch, stretch);
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
-  position: relative !important;
-  overflow-y: hidden;
+  position: relative;
 }
 .main {
   background: $main-color;
@@ -770,7 +769,7 @@ div {
   }
   .main-container {
     position: relative;
-    height: 70vh;
+    height: 100%;
     width: 100%;
     .grid-container {
       height: inherit;
@@ -984,12 +983,6 @@ div {
 }
 
 //animation classes
-.show-menu {
-  top: 0 !important;
-  width: 300px !important;
-  opacity: 1 !important;
-  transition: opacity 0.5s $timing, width 0.5s $timing !important;
-}
 
 .expanding {
   opacity: 1 !important;
@@ -1210,6 +1203,13 @@ div {
     transition: opacity 0.5s $timing, width 0.5s $timing, top 0.1s 0.4s $timing;
   }
 
+  .show-menu {
+    top: 0 !important;
+    width: 300px !important;
+    opacity: 1 !important;
+    transition: opacity 0.5s $timing, width 0.5s $timing !important;
+  }
+
   .grid-container {
     justify-content: space-between !important;
   }
@@ -1294,5 +1294,13 @@ div {
 
   h1.title {
     font-size: 3rem !important;
+  }
+}
+
+@media (max-width: 450px) {
+  .show-menu {
+    width: 100% !important;
+    height: auto;
+    min-height: 100%;
   }
 }
