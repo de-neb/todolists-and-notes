@@ -737,7 +737,6 @@ div {
   width: $main-width;
   box-sizing: border-box;
   font-family: $task-font;
-  min-height: 90vh;
   overflow: hidden;
   .note-main-title {
     font-family: $main-font;
@@ -767,38 +766,33 @@ div {
       }
     }
   }
-  .main-container {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    .grid-container {
-      height: inherit;
-      margin: 5%;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      padding-top: 10px;
-      @include flex(flex-start, flex-start);
-      flex-wrap: wrap;
-      align-content: flex-start;
-      gap: 10px;
-      .col {
-        flex: 1 0 32%;
-        width: 300px;
-        gap: 10px;
-      }
 
-      .col-0 {
-        @include flex(center, stretch);
-        flex-flow: column wrap;
-      }
-      .col-1 {
-        @include flex(center, stretch);
-        flex-flow: column wrap;
-      }
-      .col-2 {
-        @include flex(center, stretch);
-        flex-flow: column wrap;
-      }
+  .grid-container {
+    overflow-x: hidden;
+    padding: 20px;
+    @include flex(flex-start, flex-start);
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+    height: max-content;
+    width: 100%;
+    .col {
+      flex: 1 0 32%;
+      width: 300px;
+      gap: 10px;
+    }
+
+    .col-0 {
+      @include flex(center, stretch);
+      flex-flow: column wrap;
+    }
+    .col-1 {
+      @include flex(center, stretch);
+      flex-flow: column wrap;
+    }
+    .col-2 {
+      @include flex(center, stretch);
+      flex-flow: column wrap;
     }
   }
 }

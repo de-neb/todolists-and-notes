@@ -985,7 +985,6 @@ div {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-family: "Nunito", sans-serif;
-  min-height: 90vh;
   overflow: hidden;
 }
 
@@ -1037,18 +1036,9 @@ div {
   background: #065380;
 }
 
-.notes .main-container {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.notes .main-container .grid-container {
-  height: inherit;
-  margin: 5%;
+.notes .grid-container {
   overflow-x: hidden;
-  overflow-y: scroll;
-  padding-top: 10px;
+  padding: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1063,9 +1053,13 @@ div {
   -ms-flex-line-pack: start;
       align-content: flex-start;
   gap: 10px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
 }
 
-.notes .main-container .grid-container .col {
+.notes .grid-container .col {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 32%;
           flex: 1 0 32%;
@@ -1073,7 +1067,7 @@ div {
   gap: 10px;
 }
 
-.notes .main-container .grid-container .col-0 {
+.notes .grid-container .col-0 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1089,7 +1083,7 @@ div {
           flex-flow: column wrap;
 }
 
-.notes .main-container .grid-container .col-1 {
+.notes .grid-container .col-1 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1105,7 +1099,7 @@ div {
           flex-flow: column wrap;
 }
 
-.notes .main-container .grid-container .col-2 {
+.notes .grid-container .col-2 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

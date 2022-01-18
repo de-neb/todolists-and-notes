@@ -187,8 +187,8 @@ export default {
 
 @media only screen and (max-width: 800px) {
   .new-note {
-    width: 90%;
-    height: 55%;
+    width: 95%;
+    height: 55vh;
   }
 }
 </style>

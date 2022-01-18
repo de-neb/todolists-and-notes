@@ -27,114 +27,112 @@
     ></NewNote>
     <!-- new note modal end -->
 
-    <div class="main-container">
-      <Loader v-if="loading" class="scale"></Loader>
-      <div v-else-if="!notes.length && !loading" class="no-todo-item">
-        <h2>You don't have any notes added yet :(</h2>
-        <h4>Click button above to create one!</h4>
+    <Loader v-if="loading" class="scale"></Loader>
+    <div v-else-if="!notes.length && !loading" class="no-todo-item">
+      <h2>You don't have any notes added yet :(</h2>
+      <h4>Click button above to create one!</h4>
+    </div>
+    <div v-else class="grid-container">
+      <div class="col col-0">
+        <div
+          class="note-cont"
+          v-for="note in group1"
+          :style="{ background: note.bgColor, color: note.txtColor }"
+          :key="note._id"
+          :id="'note-' + note._id"
+        >
+          <div class="delete-note">
+            <span
+              class="material-icons md-25 material-icons-outlined delete"
+              @click="deleteNote(note._id)"
+            >
+              push_pin
+            </span>
+            <span
+              class="material-icons edit"
+              @click="
+                editNote(
+                  note._id,
+                  note.title,
+                  note.details,
+                  note.bgColor,
+                  note.txtColor
+                )
+              "
+            >
+              edit
+            </span>
+          </div>
+          <div class="note-title" v-html="note.title"></div>
+          <div class="note-details" v-html="note.details"></div>
+        </div>
       </div>
-      <div v-else class="grid-container">
-        <div class="col col-0">
-          <div
-            class="note-cont"
-            v-for="note in group1"
-            :style="{ background: note.bgColor, color: note.txtColor }"
-            :key="note._id"
-            :id="'note-' + note._id"
-          >
-            <div class="delete-note">
-              <span
-                class="material-icons md-25 material-icons-outlined delete"
-                @click="deleteNote(note._id)"
-              >
-                push_pin
-              </span>
-              <span
-                class="material-icons edit"
-                @click="
-                  editNote(
-                    note._id,
-                    note.title,
-                    note.details,
-                    note.bgColor,
-                    note.txtColor
-                  )
-                "
-              >
-                edit
-              </span>
-            </div>
-            <div class="note-title" v-html="note.title"></div>
-            <div class="note-details" v-html="note.details"></div>
+      <div class="col col-1 hide-group2">
+        <div
+          class="note-cont"
+          v-for="note in group2"
+          :style="{ background: note.bgColor, color: note.txtColor }"
+          :key="note._id"
+          :id="'note-' + note._id"
+        >
+          <div class="delete-note">
+            <span
+              class="material-icons md-25 material-icons-outlined delete"
+              @click="deleteNote(note._id)"
+            >
+              push_pin
+            </span>
+            <span
+              class="material-icons edit"
+              @click="
+                editNote(
+                  note._id,
+                  note.title,
+                  note.details,
+                  note.bgColor,
+                  note.txtColor
+                )
+              "
+            >
+              edit
+            </span>
           </div>
+          <div class="note-title" v-html="note.title"></div>
+          <div class="note-details" v-html="note.details"></div>
         </div>
-        <div class="col col-1 hide-group2">
-          <div
-            class="note-cont"
-            v-for="note in group2"
-            :style="{ background: note.bgColor, color: note.txtColor }"
-            :key="note._id"
-            :id="'note-' + note._id"
-          >
-            <div class="delete-note">
-              <span
-                class="material-icons md-25 material-icons-outlined delete"
-                @click="deleteNote(note._id)"
-              >
-                push_pin
-              </span>
-              <span
-                class="material-icons edit"
-                @click="
-                  editNote(
-                    note._id,
-                    note.title,
-                    note.details,
-                    note.bgColor,
-                    note.txtColor
-                  )
-                "
-              >
-                edit
-              </span>
-            </div>
-            <div class="note-title" v-html="note.title"></div>
-            <div class="note-details" v-html="note.details"></div>
+      </div>
+      <div class="col col-2">
+        <div
+          class="note-cont"
+          v-for="note in group3"
+          :style="{ background: note.bgColor, color: note.txtColor }"
+          :key="note._id"
+          :id="'note-' + note._id"
+        >
+          <div class="delete-note">
+            <span
+              class="material-icons md-25 material-icons-outlined delete"
+              @click="deleteNote(note._id)"
+            >
+              push_pin
+            </span>
+            <span
+              class="material-icons edit"
+              @click="
+                editNote(
+                  note._id,
+                  note.title,
+                  note.details,
+                  note.bgColor,
+                  note.txtColor
+                )
+              "
+            >
+              edit
+            </span>
           </div>
-        </div>
-        <div class="col col-2">
-          <div
-            class="note-cont"
-            v-for="note in group3"
-            :style="{ background: note.bgColor, color: note.txtColor }"
-            :key="note._id"
-            :id="'note-' + note._id"
-          >
-            <div class="delete-note">
-              <span
-                class="material-icons md-25 material-icons-outlined delete"
-                @click="deleteNote(note._id)"
-              >
-                push_pin
-              </span>
-              <span
-                class="material-icons edit"
-                @click="
-                  editNote(
-                    note._id,
-                    note.title,
-                    note.details,
-                    note.bgColor,
-                    note.txtColor
-                  )
-                "
-              >
-                edit
-              </span>
-            </div>
-            <div class="note-title" v-html="note.title"></div>
-            <div class="note-details" v-html="note.details"></div>
-          </div>
+          <div class="note-title" v-html="note.title"></div>
+          <div class="note-details" v-html="note.details"></div>
         </div>
       </div>
     </div>
