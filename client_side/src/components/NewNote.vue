@@ -102,11 +102,11 @@ export default {
   },
   methods: {
     exitModal() {
-      this.$emit("exitModal", false);
+      this.$emit("exit-modal", false);
     },
     saveNote() {
       if (this.editContent) {
-        this.$emit("updateNote", {
+        this.$emit("update-note", {
           id: this.noteId,
           title: this.$refs.title.value,
           details: this.$refs.details.value,
@@ -114,7 +114,7 @@ export default {
           txtColor: this.$refs.txtColor.value,
         });
       } else {
-        this.$emit("saveNote", {
+        this.$emit("save-note", {
           title: this.newTitle,
           details: this.newDetails,
           bgColor: this.bgColor,

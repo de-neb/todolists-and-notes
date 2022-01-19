@@ -115,31 +115,37 @@ export default {
     },
     selectList(id, name) {
       this.activeListId = id;
-      this.$emit("activeList", { id, name });
+      this.$emit("active-list", { id, name });
     },
     addList() {
       //problem id not captured
       this.$refs.form.reportValidity();
-      this.$emit("addList", this.listName);
+      this.$emit("add-list", this.listName);
       this.listName = "";
     },
     deleteList(id) {
-      this.$emit("deleteList", id);
+      this.$emit("delete-list", id);
+    },
+    timer() {
+      setInterval(() => {
+        const d = new Date();
+        this.weekday = this.weekDayArr[d.getDay()];
+        this.date = d.getDate();
+        this.month = this.monthArr[d.getMonth()];
+        this.year = d.getFullYear();
+        this.hours = this.padZero(((d.getHours() + 11) % 12) + 1);
+        this.minutes = this.padZero(d.getMinutes());
+        this.period = this.setPeriod(d.getHours());
+      }, 900);
     },
   },
 
   mounted() {
     //set live date and time
-    setInterval(() => {
-      const d = new Date();
-      this.weekday = this.weekDayArr[d.getDay()];
-      this.date = d.getDate();
-      this.month = this.monthArr[d.getMonth()];
-      this.year = d.getFullYear();
-      this.hours = this.padZero(((d.getHours() + 11) % 12) + 1);
-      this.minutes = this.padZero(d.getMinutes());
-      this.period = this.setPeriod(d.getHours());
-    }, 900);
+    this.timer;
+  },
+  unmounted() {
+    clearInterval(this.timer);
   },
 };
 </script>

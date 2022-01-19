@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     confirmDeletion(e) {
-      this.$emit("confirmDeletion", e.target.value);
+      this.$emit("confirm-deletion", e.target.value);
     },
   },
 };

@@ -5,9 +5,9 @@
       :menuActive="menuActive"
       :noteActive="noteActive"
       :listLenRT="listLenRT"
-      @activeList="passActiveListId"
-      @addList="addList"
-      @deleteList="deleteList"
+      @active-list="passActiveListId"
+      @add-list="addList"
+      @delete-list="deleteList"
     ></SideMenu>
     <div
       :class="{
@@ -44,9 +44,9 @@
       <router-view
         v-if="lists"
         v-bind="todoListProps"
-        @showModal="showConfirmModal"
-        @changeToFalse="(bool) => (toDeleteItems = bool)"
-        @listLen="(len) => (listLenRT = len)"
+        @show-modal="showConfirmModal"
+        @change-to-false="(bool) => (toDeleteItems = bool)"
+        @list-len="(len) => (listLenRT = len)"
       ></router-view>
     </div>
 

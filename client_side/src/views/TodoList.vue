@@ -236,7 +236,7 @@ export default {
     },
     deleteAllItems() {
       this.showModal = true;
-      this.$emit("showModal", this.showModal);
+      this.$emit("show-modal", this.showModal);
     },
     async clearDoneItems() {
       const filteredDoneItems = this.items.filter((item) => !item.done);
@@ -246,7 +246,7 @@ export default {
       console.log("clearing done items done");
     },
     burgerClick(menuActive) {
-      this.$emit("burgerClick", menuActive);
+      this.$emit("burger-click", menuActive);
     },
   },
 
@@ -266,18 +266,18 @@ export default {
           await ReqService.deleteAllItems(this.activeListId);
           this.loading = true;
           this.fetchItems();
-          this.$emit("changeToFalse", "false");
+          this.$emit("change-to-false", "false");
           console.log("all items deleted");
         }
         this.showModal = false;
-        this.$emit("showModal", this.showModal);
+        this.$emit("show-modal", this.showModal);
       },
       deep: false,
     },
     "items.length": {
       immediate: true,
       handler: function (newVal) {
-        this.$emit("listLen", newVal);
+        this.$emit("list-len", newVal);
       },
       deep: true,
     },

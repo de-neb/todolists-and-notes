@@ -17,9 +17,9 @@
       :editBgColor="editBgColor"
       :editTxtColor="editTxtColor"
       v-if="showNoteModal"
-      @saveNote="saveNewNote"
-      @updateNote="updateCurrentNote"
-      @exitModal="
+      @save-note="saveNewNote"
+      @update-note="updateCurrentNote"
+      @exit-modal="
         (bool) => {
           showNoteModal = bool;
         }
@@ -226,7 +226,7 @@ export default {
       }
     },
     burgerClick(menuActive) {
-      this.$emit("burgerClick", menuActive);
+      this.$emit("burger-click", menuActive);
     },
   },
   computed: {
