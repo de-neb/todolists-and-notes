@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/api/list/";
-const urlNotes = "http://localhost:5000/api/notes/";
+const url = "api/list/";
+const urlNotes = "api/notes/";
 
 class ReqService {
   //list actions start//
