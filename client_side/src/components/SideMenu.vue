@@ -142,7 +142,7 @@ export default {
 
   mounted() {
     //set live date and time
-    this.timer;
+    this.timer();
   },
   unmounted() {
     clearInterval(this.timer);
