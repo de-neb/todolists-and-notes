@@ -1,5 +1,8 @@
 <template>
-  <div class="container" v-if="currentRoute === 'Login'">
+  <div
+    class="container"
+    v-if="currentRoute === 'Login' || currentRoute === 'Signup'"
+  >
     <router-view> </router-view>
   </div>
   <div
