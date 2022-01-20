@@ -2,8 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 //get models
-const Item = require("../modules/item");
-const TaskList = require("../modules/taskList");
+const { Item } = require("../modules/item");
+const { TaskList } = require("../modules/taskList");
 const router = express.Router();
 
 mongoose.connect(

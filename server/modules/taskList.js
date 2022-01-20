@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const itemSchema = require("./itemSchema");
+const { itemSchema } = require("./item");
 
 const taskListSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -8,4 +8,7 @@ const taskListSchema = new mongoose.Schema({
   done: { type: Boolean, default: false },
 });
 
-module.exports = mongoose.model("taskList", taskListSchema);
+module.exports = {
+  TaskList: mongoose.model("taskList", taskListSchema),
+  taskListSchema,
+};
