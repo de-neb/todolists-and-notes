@@ -1,5 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="currentRoute === 'Login'">
+    <router-view> </router-view>
+  </div>
+  <div
+    class="container"
+    v-else-if="currentRoute === 'Notes' || currentRoute === 'TodoList'"
+  >
     <SideMenu
       :lists="lists"
       :menuActive="menuActive"

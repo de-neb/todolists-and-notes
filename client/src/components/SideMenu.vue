@@ -21,7 +21,7 @@
               :key="list._id"
             >
               <router-link
-                to="/"
+                to="/todolist"
                 class="task-name-link"
                 :class="{ 'notes-tag': list.active && !noteActive }"
                 @click.self="selectList(list._id, list.name)"
