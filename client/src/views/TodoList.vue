@@ -243,7 +243,6 @@ export default {
       await ReqService.updateItems(this.activeListId, filteredDoneItems);
       this.loading = true;
       this.fetchItems();
-      console.log("clearing done items done");
     },
     burgerClick(menuActive) {
       this.$emit("burger-click", menuActive);

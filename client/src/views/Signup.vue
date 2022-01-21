@@ -1,10 +1,8 @@
 <template>
   <div class="container login">
     <LogoBG class="logo-bg"></LogoBG>
-
     <form class="form-card">
       <h2 class="title">SIGN UP</h2>
-
       <div class="input-box">
         <label for="username" class="in-icon"
           ><span class="material-icons in-icon"> person </span></label
@@ -14,7 +12,9 @@
           name="username"
           class="username"
           placeholder="Username"
+          v-model="username"
         />
+        <span class="error">{{ uNameErr }}</span>
       </div>
       <div class="input-box">
         <label for="password" class="in-icon"
@@ -25,10 +25,11 @@
           name="password"
           class="password"
           placeholder="Password"
+          v-model="password"
         />
+        <span class="error">{{ pWordErr }}</span>
       </div>
-
-      <button class="login-btn">SIGN UP</button>
+      <button class="login-btn" @click.prevent="signupPost">SIGN UP</button>
       <p class="member-q">
         Already a member?
         <router-link to="/login" class="sign-in-link">Log In</router-link>
@@ -38,11 +39,39 @@
 </template>
 
 <script>
+import ReqService from "../ReqService";
 import LogoBG from "../components/LogoBG.vue";
 export default {
   name: "Signup",
   components: {
     LogoBG,
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+      uNameErr: "",
+      pWordErr: "",
+    };
+  },
+  methods: {
+    async signupPost() {
+      this.uNameErr = "";
+      this.pWordErr = "";
+      try {
+        const res = await ReqService.signupPost(this.username, this.password);
+        const data = await res.data;
+        if (data.user) {
+          this.$router.push("/todolist");
+        }
+      } catch ({ response }) {
+        const { username, password } = response.data.error;
+        if (response.data.error) {
+          this.uNameErr = username;
+          this.pWordErr = password;
+        }
+      }
+    },
   },
 };
 </script>
@@ -144,6 +173,13 @@ h2.title {
 }
 .sign-in-link:hover {
   color: #9386eb;
+}
+
+.error {
+  color: #e7305b;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 ::placeholder {

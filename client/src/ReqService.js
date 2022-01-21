@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = "api/todolists/";
 const urlNotes = "api/notes/";
-const server = "http://localhost:5000/";
+const server = "api/users/";
 class ReqService {
   //user actions start//
   static loginPost(username, password) {
