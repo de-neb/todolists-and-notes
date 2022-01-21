@@ -1,9 +1,19 @@
 import axios from "axios";
 
-const url = "api/list/";
+const url = "api/todolists/";
 const urlNotes = "api/notes/";
-
+const server = "http://localhost:5000/";
 class ReqService {
+  //user actions start//
+  static loginPost(username, password) {
+    return axios.post(`${server}login`, { username, password });
+  }
+
+  static signupPost(username, password) {
+    return axios.post(`${server}signup`, { username, password });
+  }
+  //user actions end//
+
   //list actions start//
 
   //get List
