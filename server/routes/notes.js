@@ -1,16 +1,8 @@
-const path = require("path");
-require("dotenv").config();
-
 const express = require("express");
-const mongoose = require("mongoose");
 
 const router = express.Router();
 
-mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
-);
-
-const Note = require("../modules/note");
+const Note = require("../models/note");
 
 router.get("/", async (req, res) => {
   try {

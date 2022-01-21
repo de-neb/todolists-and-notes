@@ -14,6 +14,7 @@
           name="username"
           class="username"
           placeholder="Username"
+          v-model="username"
         />
       </div>
       <div class="input-box">
@@ -25,21 +26,36 @@
           name="password"
           class="password"
           placeholder="Password"
+          v-model="password"
         />
       </div>
 
-      <button class="login-btn">LOG IN</button>
+      <button class="login-btn" @click.prevent="loginPost">LOG IN</button>
       <router-link to="/signup" class="sign-in-link">New User?</router-link>
     </form>
   </div>
 </template>
 
 <script>
+import ReqService from "../ReqService";
 import LogoBG from "../components/LogoBG.vue";
 export default {
   name: "Login",
   components: {
     LogoBG,
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    async loginPost() {
+      const res = await ReqService.loginPost(this.username, this.password);
+      const data = await res.data;
+      console.log("responsefrom server:", data);
+    },
   },
 };
 </script>

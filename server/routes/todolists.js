@@ -1,19 +1,14 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 //get models
-const { Item } = require("../modules/item");
-const { TaskList } = require("../modules/taskList");
+const { Item } = require("../models/item");
+const { TodoList } = require("../models/todolist");
 const router = express.Router();
-
-mongoose.connect(
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
-);
 
 //get list
 router.get("/", async (req, res) => {
   try {
-    const listCollection = await TaskList.find({}).exec();
+    const listCollection = await TodoList.find({}).exec();
     res.send(listCollection);
   } catch (error) {
     console.log(error.message);
@@ -23,14 +18,14 @@ router.get("/", async (req, res) => {
 //create list
 router.post("/", async (req, res) => {
   try {
-    const newTaskList = new TaskList({
+    const newTodoList = new TodoList({
       name: req.body.name,
       items: req.body.items,
       active: req.body.isActive,
       done: req.body.isDone,
     });
-    await TaskList.updateMany({}, { active: false });
-    await newTaskList.save();
+    await TodoList.updateMany({}, { active: false });
+    await newTodoList.save();
     res.status(201).send();
   } catch (error) {
     console.log(error.message);
@@ -41,15 +36,15 @@ router.post("/", async (req, res) => {
 router.delete("/:id/delete-list", async (req, res) => {
   try {
     const { prevListId } = req.body;
-    const listExists = await TaskList.exists({ _id: req.params.id });
+    const listExists = await TodoList.exists({ _id: req.params.id });
     if (listExists) {
-      await TaskList.deleteOne({ _id: req.params.id });
-      TaskList.countDocuments({}, async (err, c) => {
+      await TodoList.deleteOne({ _id: req.params.id });
+      TodoList.countDocuments({}, async (err, c) => {
         //checks if document is not empty
         if (c > 0) {
           //find current active list and set value to false and
           //set last document as active instead
-          TaskList.bulkWrite(
+          TodoList.bulkWrite(
             [
               {
                 updateOne: {
@@ -66,7 +61,7 @@ router.delete("/:id/delete-list", async (req, res) => {
             ],
             { ordered: true }
           ).then(async () => {
-            const updatedList = await TaskList.find({});
+            const updatedList = await TodoList.find({});
             res.send(updatedList);
           });
         } else {
@@ -83,8 +78,8 @@ router.delete("/:id/delete-list", async (req, res) => {
 router.put("/:id/update-active-list", (req, res) => {
   const id = req.params.id;
 
-  TaskList.updateMany({ _id: { $ne: id } }, { active: false }).then(() => {
-    TaskList.findOneAndUpdate({ _id: id }, { active: true }, (err) => {
+  TodoList.updateMany({ _id: { $ne: id } }, { active: false }).then(() => {
+    TodoList.findOneAndUpdate({ _id: id }, { active: true }, (err) => {
       if (err) {
         res.send(err.message);
       } else {
@@ -99,7 +94,7 @@ router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     if (mongoose.Types.ObjectId.isValid(id)) {
-      const foundList = await TaskList.findById(id).exec();
+      const foundList = await TodoList.findById(id).exec();
       res.send(foundList);
     }
   } catch (error) {
@@ -112,7 +107,7 @@ router.post("/:id", (req, res) => {
   const newItem = new Item({
     title: req.body.itemTitle,
   });
-  TaskList.findByIdAndUpdate(
+  TodoList.findByIdAndUpdate(
     req.params.id,
     { $push: { items: newItem } },
     (err) => {
@@ -127,7 +122,7 @@ router.post("/:id", (req, res) => {
 
 //delete single item
 router.patch("/:id/delete-item", (req, res) => {
-  TaskList.findByIdAndUpdate(
+  TodoList.findByIdAndUpdate(
     req.params.id,
     { $pull: { items: { _id: req.body.itemId } } },
     (err) => {
@@ -142,7 +137,7 @@ router.patch("/:id/delete-item", (req, res) => {
 
 //delete all items
 router.patch("/:id/delete-items", (req, res) => {
-  TaskList.findByIdAndUpdate(req.params.id, { items: [] }, (err) => {
+  TodoList.findByIdAndUpdate(req.params.id, { items: [] }, (err) => {
     if (err) {
       res.send(err.message);
     } else {
@@ -153,7 +148,7 @@ router.patch("/:id/delete-items", (req, res) => {
 
 //update items arr
 router.patch("/:id/update-items", (req, res) => {
-  TaskList.findByIdAndUpdate(req.params.id, req.body, (err) => {
+  TodoList.findByIdAndUpdate(req.params.id, req.body, (err) => {
     if (err) {
       res.send(err.message);
     } else {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { itemSchema } = require("./item");
 
-const taskListSchema = new mongoose.Schema({
+const todoListSchema = new mongoose.Schema({
   name: { type: String, required: true },
   items: [itemSchema],
   active: { type: Boolean, default: true },
@@ -9,6 +9,6 @@ const taskListSchema = new mongoose.Schema({
 });
 
 module.exports = {
-  TaskList: mongoose.model("taskList", taskListSchema),
-  taskListSchema,
+  TodoList: new mongoose.model("todoList", todoListSchema),
+  todoListSchema,
 };

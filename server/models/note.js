@@ -7,4 +7,4 @@ const notesSchema = new mongoose.Schema({
   txtColor: String,
 });
 
-module.exports = mongoose.model("note", notesSchema);
+module.exports = new mongoose.model("note", notesSchema);
