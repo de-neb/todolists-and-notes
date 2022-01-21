@@ -13,6 +13,7 @@
           class="username"
           placeholder="Username"
           v-model="username"
+          required
         />
         <span class="error">{{ uNameErr }}</span>
       </div>
@@ -26,6 +27,7 @@
           class="password"
           placeholder="Password"
           v-model="password"
+          required
         />
         <span class="error">{{ pWordErr }}</span>
       </div>
