@@ -122,14 +122,19 @@ export default {
       this.activeListName = this.lists[listsLen - 1].name;
     },
     async deleteList(id) {
-      const prevListId = this.lists[this.lists.length - 2]._id;
-      const updatedList = await ReqService.deleteList(id, prevListId);
-      this.lists = await updatedList;
+      if (this.lists.length > 1) {
+        const prevListId = this.lists[this.lists.length - 2]._id;
+        const updatedList = await ReqService.deleteList(id, prevListId);
+        this.lists = await updatedList;
 
-      const listsLen = this.lists.length;
+        const listsLen = this.lists.length;
 
-      this.activeListId = this.lists[listsLen - 1]._id;
-      this.activeListName = this.lists[listsLen - 1].name;
+        this.activeListId = this.lists[listsLen - 1]._id;
+        this.activeListName = this.lists[listsLen - 1].name;
+      } else {
+        const updatedList = await ReqService.deleteList(id);
+        this.lists = await updatedList;
+      }
     },
     showConfirmModal(showModal) {
       this.showModal = showModal;
