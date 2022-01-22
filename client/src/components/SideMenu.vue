@@ -3,12 +3,17 @@
     <div class="time-container">
       <div class="time">
         <h1>{{ hours }}:{{ minutes }}</h1>
-        <span>{{ period }}</span>
+        <div>
+          <h3>{{ period }}</h3>
+          <h3>{{ weekday }}</h3>
+        </div>
       </div>
       <h2>{{ month }} {{ date }} {{ year }}</h2>
-      <h3>{{ weekday }}</h3>
+      <!-- <h3>{{ weekday }}</h3> -->
     </div>
-
+    <div class="welcome-cont">
+      <h3 class="greet">Welcome User</h3>
+    </div>
     <nav class="side-nav">
       <ul>
         <li>TO-DO LISTS</li>
@@ -38,18 +43,19 @@
               >
             </li>
           </ul>
-          <form ref="form">
-            <input
-              type="text"
-              name="list-name"
-              placeholder="Enter a list name"
-              maxlength="13"
-              v-model="listName"
-              @keydown.prevent.enter="addList"
-              required
-            />
-          </form>
         </div>
+        <form ref="form">
+          <input
+            type="text"
+            name="list-name"
+            placeholder="Enter a list name"
+            maxlength="13"
+            v-model="listName"
+            @keydown.prevent.enter="addList"
+            required
+            class="list-name-input"
+          />
+        </form>
         <li id="notes-list" :class="{ active: noteActive }">
           <router-link to="/notes" id="notes-tag">NOTES</router-link>
         </li>
@@ -71,30 +77,22 @@ export default {
     return {
       title: "TO-DO LIST",
       weekday: null,
-      weekDayArr: [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
+      weekDayArr: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       date: null,
       month: null,
       monthArr: [
-        "January",
-        "February",
-        "March",
-        "April",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
         "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
       year: null,
       hours: null,
@@ -152,4 +150,12 @@ export default {
 
 
 <style scoped>
+.welcome-cont {
+  background: #6053b8;
+}
+
+.greet {
+  font-size: 2.3rem;
+  margin: 1rem 0 0 0;
+}
 </style>

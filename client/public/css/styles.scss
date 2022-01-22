@@ -18,7 +18,7 @@ $notepad: #ffe268;
 $main-font: "Saira Condensed", sans-serif;
 $time-font: "Rajdhani", sans-serif;
 $task-font: "Nunito", sans-serif;
-$side-width: 22%;
+$side-width: max-content;
 $main-width: 100%;
 $todo-width: 100%;
 $timing: cubic-bezier(0.39, 0.97, 0, 0.97);
@@ -58,7 +58,7 @@ div {
   width: $main-width;
   box-sizing: border-box;
   font-family: $task-font;
-  min-height: 90vh;
+  min-height: max-content;
   display: grid;
   grid-template-columns: 20% auto 20%;
   grid-auto-rows: minmax(min-content, max-content);
@@ -212,6 +212,7 @@ div {
     grid-row: 3/4;
     .add-item {
       width: $todo-width;
+      height: 6.8vh;
       background: $bar;
       padding: 15px;
       border-radius: 5px;
@@ -219,10 +220,8 @@ div {
       position: relative;
       box-sizing: border-box;
       @include flex(center, space-around);
-
       span.material-icons {
         cursor: pointer;
-
         margin: 0 5px 0 0;
         &:hover {
           border-radius: 50%;
@@ -230,7 +229,6 @@ div {
           color: $main-color;
         }
       }
-
       input[type="text"] {
         font-family: inherit;
         background: none;
@@ -262,11 +260,10 @@ div {
         background: $bar;
         padding: 15px;
         color: $todo;
-
         @include flex(center, space-around);
         box-shadow: none;
         width: 100%;
-        height: 60px;
+        height: 6.8vh;
         justify-content: space-between;
         margin-bottom: 0;
         border-radius: 3px 3px 0 0;
@@ -280,7 +277,7 @@ div {
           width: 100%;
         }
         .priority-flag {
-          height: 60px;
+          height: 6.8vh;
           width: 7px;
           position: absolute;
           left: 0;
@@ -491,14 +488,14 @@ div {
 
 //top bar
 .title-cont {
-  height: 10vh;
+  height: max-content;
   background-color: $main-color;
   .menu {
     display: none;
   }
   .title {
     font-family: $main-font !important;
-    font-size: 60px;
+    font-size: 4rem;
     font-weight: 500;
     text-align: center;
     color: $side-color;
@@ -575,21 +572,20 @@ div {
       @include flex(inherit, inherit);
       h1 {
         display: inline-block;
-        font-size: 80px;
+        font-size: 5rem;
         text-transform: uppercase;
         margin: 0;
-        line-height: 70px;
+        line-height: 5rem;
         font-weight: 300;
       }
       span {
         align-self: flex-start;
         display: inline-block;
-        font-size: 40px;
-        line-height: 40px;
+        font-size: 2.5rem;
       }
     }
     h2 {
-      font-size: 35px;
+      font-size: 2rem;
       font-weight: bold;
       text-transform: uppercase;
       margin: 0;
@@ -597,7 +593,7 @@ div {
     h3 {
       text-transform: uppercase;
       font-weight: bold;
-      font-size: 30px;
+      font-size: 1.8rem;
       margin: 0;
     }
   }
@@ -650,25 +646,9 @@ div {
     }
 
     .task-list-cont {
-      input {
-        font-size: 23px;
-        font-family: $task-font;
-        overflow: hidden;
-        height: 25px;
-        width: 85%;
-        outline: none;
-        border: none;
-        border-bottom: 2px solid $main-color;
-        background: none;
-        color: $task-name-color;
-        margin: 15px 0 20px 0;
-        resize: none;
-        &::placeholder {
-          color: $light-color;
-          opacity: 0.7;
-          font-family: inherit;
-        }
-      }
+      height: 25vh;
+      overflow-y: scroll;
+      width: 85%;
       ul.task-list {
         margin: 0;
         padding: 0;
@@ -727,6 +707,26 @@ div {
             font-weight: bold;
           }
         }
+      }
+    }
+
+    .list-name-input {
+      font-size: 23px;
+      font-family: $task-font;
+      overflow: hidden;
+      height: 25px;
+      width: 95%;
+      outline: none;
+      border: none;
+      border-bottom: 2px solid $main-color;
+      background: none;
+      color: $task-name-color;
+      margin: 15px 0 20px 0;
+      resize: none;
+      &::placeholder {
+        color: $light-color;
+        opacity: 0.7;
+        font-family: inherit;
       }
     }
   }
@@ -1157,7 +1157,6 @@ div {
 @media (max-width: 800px) {
   .main {
     width: 100%;
-    min-height: 92vh;
   }
   label,
   option,
@@ -1216,12 +1215,15 @@ div {
   //top bar
   .title-cont {
     background: $side-color;
-    height: 8vh;
     width: 100%;
     position: relative;
     padding-left: 20px;
     box-shadow: 0px 3px 0px #675f905d;
     @include flex(center, flex-start);
+    .title {
+      font-size: 3.5rem;
+      line-height: 4.8rem;
+    }
     .menu {
       display: inline-block;
       width: 30px;
