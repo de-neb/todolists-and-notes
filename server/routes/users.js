@@ -75,4 +75,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/logout", (req, res) => {
+  res.cookie("todolistJWT", "", { maxAge: 1 });
+  res.send({ redirect: true });
+  // res.redirect("/")
+});
+
 module.exports = router;

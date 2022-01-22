@@ -3,6 +3,7 @@ import axios from "axios";
 const url = "api/todolists/";
 const urlNotes = "api/notes/";
 const server = "api/users/";
+
 class ReqService {
   //user actions start//
   static loginPost(username, password) {
@@ -11,6 +12,10 @@ class ReqService {
 
   static signupPost(username, password) {
     return axios.post(`${server}signup`, { username, password });
+  }
+
+  static logoutPost() {
+    return axios.post(`${server}logout`);
   }
   //user actions end//
 

@@ -14,8 +14,8 @@
       <h3 class="greet">Welcome {{ userInfo[0] }}!</h3>
     </div>
     <div class="log-out-cont">
-      <router-link to="/logout" class="logout"
-        ><span class="material-icons logout"> logout </span>Log Out</router-link
+      <a class="logout" @click="logout"
+        ><span class="material-icons logout"> logout </span>Log Out</a
       >
     </div>
     <nav class="side-nav">
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import ReqService from "../ReqService";
 export default {
   name: "SideMenu",
   props: {
@@ -141,6 +142,13 @@ export default {
         this.period = this.setPeriod(d.getHours());
       }, 900);
     },
+    async logout() {
+      const res = await ReqService.logoutPost();
+      const data = await res.data;
+      if (data.redirect) {
+        this.$router.push("/login");
+      }
+    },
   },
 
   mounted() {
@@ -166,6 +174,7 @@ export default {
 
 .log-out-cont {
   margin-top: 1rem;
+  cursor: pointer;
 }
 
 .logout {
