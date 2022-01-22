@@ -3,17 +3,14 @@
     class="container"
     v-if="currentRoute === 'Login' || currentRoute === 'Signup'"
   >
-    <router-view> </router-view>
+    <router-view @logged-in="getUserInfo"> </router-view>
   </div>
   <div
     class="container"
     v-else-if="currentRoute === 'Notes' || currentRoute === 'TodoList'"
   >
     <SideMenu
-      :lists="lists"
-      :menuActive="menuActive"
-      :noteActive="noteActive"
-      :listLenRT="listLenRT"
+      v-bind="sideMenuProps"
       @active-list="passActiveListId"
       @add-list="addList"
       @delete-list="deleteList"
@@ -90,6 +87,7 @@ export default {
       noteActive: false,
       listLenRT: 0,
       currentRoute: "",
+      userInfo: [],
     };
   },
   methods: {
@@ -145,6 +143,9 @@ export default {
         this.showModal = false;
       }
     },
+    getUserInfo({ username, id }) {
+      this.userInfo = [username, id];
+    },
   },
   computed: {
     todoListProps() {
@@ -154,6 +155,15 @@ export default {
         activeListName: this.activeListName,
         firstPageLanding: this.firstPageLanding,
         toDeleteItems: this.toDeleteItems,
+      };
+    },
+    sideMenuProps() {
+      return {
+        lists: this.lists,
+        menuActive: this.menuActive,
+        noteActive: this.noteActive,
+        listLenRT: this.listLenRT,
+        userInfo: this.userInfo,
       };
     },
   },

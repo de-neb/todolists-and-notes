@@ -50,7 +50,7 @@ router.post("/signup", async (req, res) => {
       httpOnly: true,
       maxAge: maxAge * 1000,
     });
-    res.status(201).send({ user: { id: user._id } });
+    res.status(201).send({ user: { id: user._id, username: user.username } });
   } catch (err) {
     const error = handleError(err);
     console.log(err);
@@ -67,7 +67,7 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       maxAge: maxAge * 1000,
     });
-    res.status(201).send({ user: { id: user._id } });
+    res.status(201).send({ user: { id: user._id, username: user.username } });
   } catch (err) {
     console.log(err);
     const error = handleError(err);

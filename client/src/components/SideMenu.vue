@@ -9,10 +9,14 @@
         </div>
       </div>
       <h2>{{ month }} {{ date }} {{ year }}</h2>
-      <!-- <h3>{{ weekday }}</h3> -->
     </div>
     <div class="welcome-cont">
-      <h3 class="greet">Welcome User</h3>
+      <h3 class="greet">Welcome {{ userInfo[0] }}!</h3>
+    </div>
+    <div class="log-out-cont">
+      <router-link to="/logout" class="logout"
+        ><span class="material-icons logout"> logout </span>Log Out</router-link
+      >
     </div>
     <nav class="side-nav">
       <ul>
@@ -72,6 +76,7 @@ export default {
     menuActive: Boolean,
     noteActive: Boolean,
     listLenRT: Number,
+    userInfo: Array,
   },
   data() {
     return {
@@ -156,6 +161,22 @@ export default {
 
 .greet {
   font-size: 2.3rem;
-  margin: 1rem 0 0 0;
+  margin: 1rem 0.5rem 0 0.5rem;
+}
+
+.log-out-cont {
+  margin-top: 1rem;
+}
+
+.logout {
+  color: #edeef7;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  text-decoration: none;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.log-out-cont:hover {
+  background: #878ed3;
 }
 </style>
