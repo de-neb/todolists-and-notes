@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { todoListSchema } = require("./todolist");
+const { notesSchema } = require("./note");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Password minimum length is 6 characters"],
   },
   todoLists: [todoListSchema],
+  notes: [notesSchema],
 });
 
 userSchema.pre("save", async function (next) {

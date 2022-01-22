@@ -3,16 +3,20 @@ import TodoList from "../views/TodoList.vue";
 import Notes from "../views/Notes.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
+// import Home from "../views/Home.vue";
 
 const routes = [
-  {
-    path: "/",
-    components: {
-      default: Login,
-      notes: Notes,
-      todolist: TodoList,
-    },
-  },
+  // {
+  //   path: "/",
+  //   component: Home,
+  //   children: [
+  //     { path: "/todolist", component: TodoList },
+  //     {
+  //       path: "/notes",
+  //       component: Notes,
+  //     },
+  //   ],
+  // },
   {
     path: "/login",
     name: "Login",

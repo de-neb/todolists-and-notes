@@ -93,8 +93,9 @@ export default {
   methods: {
     async fetchList() {
       const result = await ReqService.getList();
-      const data = await result;
-      this.lists = [...data];
+      console.log("result", result);
+
+      this.lists = [...result];
       return this.lists;
     },
     async passActiveListId({ id, name }) {
