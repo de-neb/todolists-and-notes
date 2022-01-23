@@ -19,12 +19,6 @@ const userSchema = new mongoose.Schema({
   notes: [notesSchema],
 });
 
-userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
 //static method to login user
 userSchema.static("login", async function (username, password) {
   const user = await this.findOne({ username }).exec();
@@ -35,7 +29,7 @@ userSchema.static("login", async function (username, password) {
     throw Error("Blank username");
   }
   //if username is found check if password matches in db
-  else if (user) {
+  if (user) {
     const authRes = await bcrypt.compare(password, user.password);
     if (authRes) {
       return user;
