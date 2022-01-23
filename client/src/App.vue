@@ -6,7 +6,7 @@
     <router-view @logged-in="getUserInfo"> </router-view>
   </div>
   <div class="container" v-else-if="path === '/notes' || path === '/todolist'">
-    <router-view></router-view>
+    <router-view :uid="userId"></router-view>
   </div>
 </template>
 

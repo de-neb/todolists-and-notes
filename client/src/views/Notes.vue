@@ -150,6 +150,9 @@ export default {
     NewNote,
     Loader,
   },
+  props: {
+    uid: String,
+  },
   data() {
     return {
       notes: [],
@@ -169,13 +172,13 @@ export default {
   methods: {
     async getNotes() {
       this.loading = true;
-      const data = await ReqService.getNotes();
+      const data = await ReqService.getNotes(this.uid);
       this.notes = [...(await data)];
       this.loading = false;
       return this.notes;
     },
     async saveNewNote({ title, details, bgColor, txtColor }) {
-      await ReqService.createNote(title, details, bgColor, txtColor);
+      await ReqService.createNote(this.uid, title, details, bgColor, txtColor);
 
       await this.getNotes().then(() => {
         const newNoteId = this.notes[this.notes.length - 1]._id;
@@ -195,7 +198,14 @@ export default {
       this.editContent = true;
     },
     async updateCurrentNote({ id, title, details, bgColor, txtColor }) {
-      await ReqService.udpateNote(id, title, details, bgColor, txtColor);
+      await ReqService.udpateNote(
+        this.uid,
+        id,
+        title,
+        details,
+        bgColor,
+        txtColor
+      );
       this.getNotes().then(() => {
         this.showNoteModal = false;
       });
@@ -205,7 +215,7 @@ export default {
       this.editContent = false;
     },
     async deleteNote(id) {
-      await ReqService.deleteNote(id);
+      await ReqService.deleteNote(this.uid, id);
       const note = document.getElementById(`note-${id}`);
       note.classList.add("remove-note");
       setTimeout(() => {

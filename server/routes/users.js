@@ -37,6 +37,16 @@ const createToken = (id) => {
   });
 };
 
+router.get("/", (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.status(400).send({ error: err });
+    } else {
+      res.status(200).send(users);
+    }
+  });
+});
+
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 

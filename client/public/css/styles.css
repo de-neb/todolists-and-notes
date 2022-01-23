@@ -950,6 +950,8 @@ div {
       -ms-flex-order: 3;
           order: 3;
   font-weight: bold;
+  position: absolute;
+  right: 10px;
 }
 
 .side-nav ul .list-name-input {

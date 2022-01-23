@@ -156,6 +156,7 @@ export default {
     activeListId: String,
     activeListName: String,
     toDeleteItems: Boolean,
+    uid: String,
   },
   components: {
     Loader,
@@ -177,19 +178,19 @@ export default {
   },
   methods: {
     async fetchItems() {
-      const result = await ReqService.getItems(this.activeListId);
+      const result = await ReqService.getItems(this.uid, this.activeListId);
       this.loading = false;
       this.items = await result.items;
     },
 
     async addItem() {
-      await ReqService.addItem(this.activeListId, this.itemTitle);
+      await ReqService.addItem(this.uid, this.activeListId, this.itemTitle);
       //animation wont play if not inside .then
       this.fetchItems().then(() => this.appearItem());
       this.itemTitle = "";
     },
     async deleteItem(itemId) {
-      await ReqService.deleteItem(this.activeListId, itemId);
+      await ReqService.deleteItem(this.uid, this.activeListId, itemId);
       this.animationDelete(itemId);
       setTimeout(() => {
         this.fetchItems();
@@ -203,7 +204,7 @@ export default {
         }
       });
       //upates item in db
-      await ReqService.updateItems(this.activeListId, this.items);
+      await ReqService.updateItems(this.uid, this.activeListId, this.items);
       this.fetchItems();
     },
     animationDelete(itemId) {
@@ -240,7 +241,11 @@ export default {
     },
     async clearDoneItems() {
       const filteredDoneItems = this.items.filter((item) => !item.done);
-      await ReqService.updateItems(this.activeListId, filteredDoneItems);
+      await ReqService.updateItems(
+        this.uid,
+        this.activeListId,
+        filteredDoneItems
+      );
       this.loading = true;
       this.fetchItems();
     },
@@ -262,7 +267,7 @@ export default {
       immediate: true,
       handler: async function (newVal) {
         if (newVal === "true") {
-          await ReqService.deleteAllItems(this.activeListId);
+          await ReqService.deleteAllItems(this.uid, this.activeListId);
           this.loading = true;
           this.fetchItems();
           this.$emit("change-to-false", "false");
@@ -320,6 +325,9 @@ export default {
         }
       },
     },
+  },
+  created() {
+    console.log("check uid: ", this.uid);
   },
 };
 </script>

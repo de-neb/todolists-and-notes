@@ -62,6 +62,7 @@ export default {
     SideMenu,
     ConfirmModal,
   },
+  props: { uid: String },
   data() {
     return {
       lists: [],
@@ -79,7 +80,7 @@ export default {
   },
   methods: {
     async fetchList() {
-      const result = await ReqService.getList();
+      const result = await ReqService.getList(this.uid);
       const data = await result;
       this.lists = [...data];
       return this.lists;
@@ -96,12 +97,11 @@ export default {
           list.active = false;
         }
       });
-      console.log(this.activeListName);
       //update active list in db when selected
-      await ReqService.updateActiveList(id);
+      await ReqService.updateActiveList(this.uid, id);
     },
     async addList(listName) {
-      await ReqService.createList(listName);
+      await ReqService.createList(this.uid, listName);
       await this.fetchList();
       const listsLen = this.lists.length;
       this.activeListId = this.lists[listsLen - 1]._id;
@@ -110,7 +110,11 @@ export default {
     async deleteList(id) {
       if (this.lists.length > 1) {
         const prevListId = this.lists[this.lists.length - 2]._id;
-        const updatedList = await ReqService.deleteList(id, prevListId);
+        const updatedList = await ReqService.deleteList(
+          this.uid,
+          id,
+          prevListId
+        );
         this.lists = await updatedList;
 
         const listsLen = this.lists.length;
@@ -118,7 +122,7 @@ export default {
         this.activeListId = this.lists[listsLen - 1]._id;
         this.activeListName = this.lists[listsLen - 1].name;
       } else {
-        const updatedList = await ReqService.deleteList(id);
+        const updatedList = await ReqService.deleteList(this.uid, id);
         this.lists = await updatedList;
       }
     },
@@ -143,6 +147,7 @@ export default {
         activeListName: this.activeListName,
         firstPageLanding: this.firstPageLanding,
         toDeleteItems: this.toDeleteItems,
+        uid: this.uid,
       };
     },
     sideMenuProps() {
@@ -169,6 +174,7 @@ export default {
     },
   },
   created() {
+    console.log("home created, userId is: ", this.uid);
     this.fetchList().then(() => {
       if (this.lists.length === 1) {
         this.activeListId = this.lists[0]._id;

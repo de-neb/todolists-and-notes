@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const url = "api/todolists/";
-const urlNotes = "api/notes/";
+const baseUrlList = (uid) => `api/${uid}/todolists/`;
+const baseUrlNotes = (uid) => `api/${uid}/notes/`;
 const server = "api/users/";
 
 class ReqService {
@@ -22,22 +22,22 @@ class ReqService {
   //list actions start//
 
   //get List
-  static async getList() {
-    const res = await axios.get(url);
+  static async getList(uid) {
+    const res = await axios.get(baseUrlList(uid));
     const data = await res.data;
     return data;
   }
 
   //create List
-  static async createList(listName) {
-    return axios.post(url, {
+  static async createList(uid, listName) {
+    return axios.post(baseUrlList(uid), {
       name: listName,
     });
   }
 
   //delete list
-  static async deleteList(listId, prevListId) {
-    const res = await axios.delete(`${url}${listId}/delete-list`, {
+  static async deleteList(uid, listId, prevListId) {
+    const res = await axios.delete(`${baseUrlList(uid)}${listId}/delete-list`, {
       data: { prevListId },
     });
     const data = await res.data;
@@ -45,53 +45,53 @@ class ReqService {
   }
 
   //update active list
-  static async updateActiveList(listId) {
-    return axios.put(`${url}${listId}/update-active-list`);
+  static async updateActiveList(uid, listId) {
+    return axios.put(`${baseUrlList(uid)}${listId}/update-active-list`);
   }
 
   //list actions end//
 
   //item actions start//
   //get item
-  static async getItems(listId) {
-    const res = await axios.get(`${url}${listId}`);
+  static async getItems(uid, listId) {
+    const res = await axios.get(`${baseUrlList(uid)}${listId}`);
     const data = await res.data;
     return data;
   }
 
   //add item
-  static addItem(listId, itemTitle) {
-    return axios.post(`${url}${listId}`, {
+  static addItem(uid, listId, itemTitle) {
+    return axios.post(`${baseUrlList(uid)}${listId}`, {
       itemTitle,
     });
   }
 
   //delete item
-  static deleteItem(listId, itemId) {
-    return axios.patch(`${url}${listId}/delete-item`, { itemId });
+  static deleteItem(uid, listId, itemId) {
+    return axios.patch(`${baseUrlList(uid)}${listId}/delete-item`, { itemId });
   }
 
   //delete all items
-  static deleteAllItems(listId) {
-    return axios.patch(`${url}${listId}/delete-items`);
+  static deleteAllItems(uid, listId) {
+    return axios.patch(`${baseUrlList(uid)}${listId}/delete-items`);
   }
 
   //update items arr
-  static updateItems(listId, items) {
-    return axios.patch(`${url}${listId}/update-items`, { items });
+  static updateItems(uid, listId, items) {
+    return axios.patch(`${baseUrlList(uid)}${listId}/update-items`, { items });
   }
 
   //item actions end//
 
   //notes actions start//
-  static async getNotes() {
-    const res = await axios.get(urlNotes);
+  static async getNotes(uid) {
+    const res = await axios.get(baseUrlNotes(uid));
     const data = await res.data;
     return data;
   }
 
-  static createNote(title, details, bgColor, txtColor) {
-    return axios.post(urlNotes, {
+  static createNote(uid, title, details, bgColor, txtColor) {
+    return axios.post(baseUrlNotes(uid), {
       title,
       details,
       bgColor,
@@ -99,8 +99,8 @@ class ReqService {
     });
   }
 
-  static udpateNote(id, title, details, bgColor, txtColor) {
-    return axios.put(`${urlNotes}${id}`, {
+  static udpateNote(uid, id, title, details, bgColor, txtColor) {
+    return axios.put(`${baseUrlNotes(uid)}${id}`, {
       title,
       details,
       bgColor,
@@ -108,8 +108,8 @@ class ReqService {
     });
   }
 
-  static deleteNote(noteId) {
-    return axios.delete(`${urlNotes}${noteId}/delete`);
+  static deleteNote(uid, noteId) {
+    return axios.delete(`${baseUrlNotes(uid)}${noteId}/delete`);
   }
 }
 
