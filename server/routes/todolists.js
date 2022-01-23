@@ -20,9 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const newTodoList = new TodoList({
       name: req.body.name,
-      items: req.body.items,
-      active: req.body.isActive,
-      done: req.body.isDone,
     });
     await TodoList.updateMany({}, { active: false });
     await newTodoList.save();

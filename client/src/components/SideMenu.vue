@@ -14,8 +14,8 @@
       <h3 class="greet">Welcome {{ userInfo[0] }}!</h3>
     </div>
     <div class="log-out-cont">
-      <a class="logout" @click="logout"
-        ><span class="material-icons logout"> logout </span>Log Out</a
+      <router-link class="logout" to="/todolist"
+        ><span class="material-icons logout"> logout </span>Log Out</router-link
       >
     </div>
     <nav class="side-nav">

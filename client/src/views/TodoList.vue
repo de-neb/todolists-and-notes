@@ -318,7 +318,6 @@ export default {
         } else if (!bool && this.wasSorted) {
           this.items = this.items.reverse();
         }
-        console.log("toDescend", bool);
       },
     },
   },

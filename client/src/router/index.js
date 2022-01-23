@@ -3,20 +3,22 @@ import TodoList from "../views/TodoList.vue";
 import Notes from "../views/Notes.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
-// import Home from "../views/Home.vue";
+import Home from "../views/Home.vue";
 
 const routes = [
-  // {
-  //   path: "/",
-  //   component: Home,
-  //   children: [
-  //     { path: "/todolist", component: TodoList },
-  //     {
-  //       path: "/notes",
-  //       component: Notes,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/",
+    component: Home,
+    name: "Home",
+    children: [
+      { path: "/todolist", component: TodoList, name: "Todolist" },
+      {
+        path: "/notes",
+        component: Notes,
+        name: "Notes",
+      },
+    ],
+  },
   {
     path: "/login",
     name: "Login",
@@ -29,18 +31,18 @@ const routes = [
     component: Signup,
     props: true,
   },
-  {
-    path: "/todolist",
-    name: "TodoList",
-    component: TodoList,
-    props: true,
-  },
-  {
-    path: "/notes",
-    name: "Notes",
-    component: Notes,
-    props: true,
-  },
+  // {
+  //   path: "/todolist",
+  //   name: "TodoList",
+  //   component: TodoList,
+  //   props: true,
+  // },
+  // {
+  //   path: "/notes",
+  //   name: "Notes",
+  //   component: Notes,
+  //   props: true,
+  // },
 ];
 
 const router = createRouter({
