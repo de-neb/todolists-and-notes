@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 const handleError = (e) => {
   let err = { username: "", password: "" };
@@ -49,11 +50,12 @@ router.get("/", (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
-
+  const salt = await bcrypt.genSalt();
+  const hashedPW = await bcrypt.hash(password, salt);
   try {
     const user = await User.create({
       username,
-      password,
+      password: hashedPW,
     });
     const token = createToken(user._id);
     res.cookie("todolistJWT", token, {
