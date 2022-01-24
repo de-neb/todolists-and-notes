@@ -188,4 +188,7 @@ export default {
 .log-out-cont:hover {
   background: #878ed3;
 }
+div.task-list-cont::-webkit-scrollbar-thumb {
+  background: #b8b4fc !important;
+}
 </style>

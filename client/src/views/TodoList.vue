@@ -338,10 +338,10 @@ export default {
     },
   },
   mounted() {
-    this.fetchItems();
-  },
-  renderTriggered({ key, target, type }) {
-    console.log("render track: ", { key, target, type });
+    if (this.activeListId) {
+      this.loading = true;
+      this.fetchItems();
+    }
   },
 };
 </script>
