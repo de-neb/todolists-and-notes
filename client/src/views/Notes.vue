@@ -173,20 +173,21 @@ export default {
     async getNotes() {
       this.loading = true;
       const data = await ReqService.getNotes(this.uid);
-      this.notes = [...(await data)];
+      this.notes = data;
       this.loading = false;
       return this.notes;
     },
-    async saveNewNote({ title, details, bgColor, txtColor }) {
-      await ReqService.createNote(this.uid, title, details, bgColor, txtColor);
-
-      await this.getNotes().then(() => {
-        const newNoteId = this.notes[this.notes.length - 1]._id;
-        //add animation
-
-        this.addNoteAnimation(newNoteId);
-      });
-      this.showNoteModal = false;
+    saveNewNote({ title, details, bgColor, txtColor }) {
+      let newNoteId = "";
+      ReqService.createNote(this.uid, title, details, bgColor, txtColor)
+        .then((res) => {
+          this.notes = res.data;
+          newNoteId = this.notes[this.notes.length - 1]._id;
+        })
+        .then(() => {
+          this.addNoteAnimation(newNoteId);
+          this.showNoteModal = false;
+        });
     },
     async editNote(id, title, details, bgColor, txtColor) {
       this.showNoteModal = true;
@@ -197,16 +198,16 @@ export default {
       this.editTxtColor = txtColor;
       this.editContent = true;
     },
-    async updateCurrentNote({ id, title, details, bgColor, txtColor }) {
-      await ReqService.udpateNote(
+    updateCurrentNote({ id, title, details, bgColor, txtColor }) {
+      ReqService.udpateNote(
         this.uid,
         id,
         title,
         details,
         bgColor,
         txtColor
-      );
-      this.getNotes().then(() => {
+      ).then((res) => {
+        this.notes = res.data;
         this.showNoteModal = false;
       });
     },
@@ -214,13 +215,14 @@ export default {
       this.showNoteModal = true;
       this.editContent = false;
     },
-    async deleteNote(id) {
-      await ReqService.deleteNote(this.uid, id);
-      const note = document.getElementById(`note-${id}`);
-      note.classList.add("remove-note");
-      setTimeout(() => {
-        this.getNotes();
-      }, 300);
+    deleteNote(id) {
+      ReqService.deleteNote(this.uid, id).then((res) => {
+        const note = document.getElementById(`note-${id}`);
+        note.classList.add("remove-note");
+        setTimeout(() => {
+          this.notes = res.data;
+        }, 300);
+      });
     },
     addNoteAnimation(id) {
       const newNote = document.getElementById(`note-${id}`);

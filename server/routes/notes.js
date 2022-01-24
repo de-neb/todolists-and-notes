@@ -1,64 +1,69 @@
 const express = require("express");
-
 const router = express.Router();
-
 const { Note } = require("../models/note");
+const User = require("../models/user");
 
-router.get("/", async (req, res) => {
-  try {
-    const notesCollection = await Note.find({}).exec();
-    res.send(notesCollection);
-  } catch (error) {
-    console.log(error.message);
-  }
+const handleError = (err) => {
+  return { error: err.message };
+};
+
+router.get("/:uid", (req, res) => {
+  User.findById(req.params.uid, (err, user) => {
+    if (err) {
+      console.log(err);
+      const error = handleError(err);
+      res.status(400).send(error);
+    } else {
+      res.status(200).send(user.notes);
+    }
+  });
 });
 
 //create note
-router.post("/", async (req, res) => {
+router.post("/:uid", async (req, res) => {
   try {
-    const newNote = new Note({
+    const user = await User.findById(req.params.uid).exec();
+    user.notes.push({
       title: req.body.title,
       details: req.body.details,
       bgColor: req.body.bgColor,
       txtColor: req.body.txtColor,
     });
-    await newNote.save();
-    res.status(201).send();
-  } catch (error) {
-    console.log(error.message);
+    user.save();
+    res.status(201).send(user.notes);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send(error);
   }
 });
 
 //delete note
-router.delete("/:id/delete", async (req, res) => {
+router.delete("/:uid/note/:id", async (req, res) => {
   try {
-    await Note.deleteOne({ _id: req.params.id });
-    res.status(200).send();
-  } catch (error) {
-    console.log(error.message);
+    const user = await User.findById(req.params.uid).exec();
+    user.notes.id(req.params.id).remove();
+    user.save();
+    res.status(200).send(user.notes);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send(error);
   }
 });
 
 //update
-router.put("/:id", (req, res) => {
-  try {
-    Note.findByIdAndUpdate(
-      req.params.id,
-      {
-        title: req.body.title,
-        details: req.body.details,
-        bgColor: req.body.bgColor,
-        txtColor: req.body.txtColor,
-      },
-      (err, doc) => {
-        if (!err) {
-          res.status(200).send();
-        }
-      }
-    );
-  } catch (error) {
-    console.log(error.message);
-  }
+router.patch("/:uid/note/:id", (req, res) => {
+  User.findById(req.params.uid, (err, user) => {
+    if (err) {
+      console.log(err);
+      res.end();
+    } else {
+      const index = user.notes.indexOf(user.notes.id(req.params.id));
+      user.notes[index] = req.body;
+      user.save();
+      console.log("updated", user.notes);
+      res.status(200).send(user.notes);
+    }
+  });
 });
 
 module.exports = router;
