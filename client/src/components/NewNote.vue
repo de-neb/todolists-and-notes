@@ -126,9 +126,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .new-note {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -151,7 +151,7 @@ export default {
 }
 
 .justify-end {
-  justify-content: end;
+  justify-content: end !important;
   gap: 3%;
 }
 
@@ -179,16 +179,40 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  gap: 3%;
 }
 
 .color-picker label {
   color: rgb(116, 116, 116);
 }
 
-@media only screen and (max-width: 800px) {
+::placeholder {
+  color: rgb(131, 118, 214);
+  font-weight: bold;
+}
+
+@media (max-width: 500px) {
+  .btn-save-del {
+    flex-wrap: wrap !important;
+  }
+  .modal-btns {
+    flex-direction: column !important;
+  }
+  .modal-btns button {
+    width: 100% !important;
+    margin-top: 3%;
+  }
+  .color-picker {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 750px) {
   .new-note {
     width: 95%;
-    height: 55vh;
+    height: max-content;
   }
 }
 </style>

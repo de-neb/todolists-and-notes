@@ -337,8 +337,11 @@ export default {
       },
     },
   },
-  created() {
-    console.log("from todolist ", this.uid, this.activeListId);
+  mounted() {
+    this.fetchItems();
+  },
+  renderTriggered({ key, target, type }) {
+    console.log("render track: ", { key, target, type });
   },
 };
 </script>

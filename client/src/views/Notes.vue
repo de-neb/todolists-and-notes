@@ -268,7 +268,7 @@ export default {
     window.addEventListener("resize", this.getWindowSize);
 
     //at reload
-    if (window.innerWidth <= 1200) {
+    if (window.innerWidth <= 1230) {
       this.removeGroup2 = true;
     } else {
       this.removeGroup2 = false;
@@ -296,7 +296,7 @@ span.edit:hover {
   position: relative;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1230px) {
   .hide-group2 {
     display: none !important;
   }

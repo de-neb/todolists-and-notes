@@ -55,11 +55,12 @@ h2.modal-title {
   z-index: 300;
 }
 .modal-btns {
-  width: 80%;
-  height: 50px;
+  width: 100%;
+  height: max-content;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  flex-direction: row;
 }
 
 .modal-btns button {
