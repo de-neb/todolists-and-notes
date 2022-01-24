@@ -29,7 +29,7 @@
           </div>
         </div>
         <h1 class="title" id="title">
-          {{ !noteActive ? activeListName : currentRoute }}
+          {{ showTitle }}
         </h1>
       </div>
       <!-- top bar -->
@@ -74,15 +74,14 @@ export default {
       menuActive: false,
       noteActive: false,
       listLenRT: 0,
-      currentRoute: "",
+      currentRoute: null,
       userInfo: [],
     };
   },
   methods: {
     async fetchList() {
       const result = await ReqService.getList(this.uid);
-      const data = await result;
-      this.lists = [...data];
+      this.lists = await result;
       return this.lists;
     },
     async passActiveListId({ id, name }) {
@@ -101,24 +100,22 @@ export default {
       await ReqService.updateActiveList(this.uid, id);
     },
     async addList(listName) {
-      await ReqService.createList(this.uid, listName);
-      await this.fetchList();
+      const result = await ReqService.createList(this.uid, listName);
+      this.lists = await result;
       const listsLen = this.lists.length;
       this.activeListId = this.lists[listsLen - 1]._id;
       this.activeListName = this.lists[listsLen - 1].name;
     },
     async deleteList(id) {
       if (this.lists.length > 1) {
-        const prevListId = this.lists[this.lists.length - 2]._id;
+        const prevListId = this.lists.length - 2;
         const updatedList = await ReqService.deleteList(
           this.uid,
           id,
           prevListId
         );
         this.lists = await updatedList;
-
         const listsLen = this.lists.length;
-
         this.activeListId = this.lists[listsLen - 1]._id;
         this.activeListName = this.lists[listsLen - 1].name;
       } else {
@@ -140,6 +137,11 @@ export default {
     },
   },
   computed: {
+    showTitle() {
+      return this.noteActive || !this.lists.length
+        ? this.$route.name
+        : this.activeListName;
+    },
     todoListProps() {
       return {
         lists: this.lists,
@@ -175,19 +177,21 @@ export default {
   },
   created() {
     console.log("home created, userId is: ", this.uid);
-    this.fetchList().then(() => {
-      if (this.lists.length === 1) {
-        this.activeListId = this.lists[0]._id;
-        this.activeListName = this.lists[0].name;
-      } else {
-        this.lists.forEach((list) => {
-          if (list.active) {
-            this.activeListId = list._id;
-            this.activeListName = list.name;
-          }
-        });
-      }
-    });
+    if (this.uid) {
+      this.fetchList().then(() => {
+        if (this.lists.length === 1) {
+          this.activeListId = this.lists[0]._id;
+          this.activeListName = this.lists[0].name;
+        } else {
+          this.lists.forEach((list) => {
+            if (list.active) {
+              this.activeListId = list._id;
+              this.activeListName = list.name;
+            }
+          });
+        }
+      });
+    }
   },
 };
 </script>

@@ -180,21 +180,30 @@ export default {
     async fetchItems() {
       const result = await ReqService.getItems(this.uid, this.activeListId);
       this.loading = false;
-      this.items = await result.items;
+      this.items = await result;
     },
 
     async addItem() {
-      await ReqService.addItem(this.uid, this.activeListId, this.itemTitle);
+      const result = await ReqService.addItem(
+        this.uid,
+        this.activeListId,
+        this.itemTitle
+      );
       //animation wont play if not inside .then
-      this.fetchItems().then(() => this.appearItem());
+      this.items = await result;
+      this.appearItem();
       this.itemTitle = "";
     },
     async deleteItem(itemId) {
-      await ReqService.deleteItem(this.uid, this.activeListId, itemId);
+      const result = await ReqService.deleteItem(
+        this.uid,
+        this.activeListId,
+        itemId
+      );
       this.animationDelete(itemId);
       setTimeout(() => {
-        this.fetchItems();
-      }, 700);
+        this.items = result;
+      }, 300);
     },
     async updateItems(itemId) {
       //minimize item after clicking "save"
@@ -205,7 +214,6 @@ export default {
       });
       //upates item in db
       await ReqService.updateItems(this.uid, this.activeListId, this.items);
-      this.fetchItems();
     },
     animationDelete(itemId) {
       const itemBar = document.getElementById("todo-" + itemId);
@@ -240,14 +248,12 @@ export default {
       this.$emit("show-modal", this.showModal);
     },
     async clearDoneItems() {
-      const filteredDoneItems = this.items.filter((item) => !item.done);
-      await ReqService.updateItems(
-        this.uid,
-        this.activeListId,
-        filteredDoneItems
-      );
+      this.items = this.items.filter((item) => !item.done);
+      await ReqService.updateItems(this.uid, this.activeListId, this.items);
       this.loading = true;
-      this.fetchItems();
+      setTimeout(() => {
+        this.loading = false;
+      }, 200);
     },
     burgerClick(menuActive) {
       this.$emit("burger-click", menuActive);
@@ -256,7 +262,7 @@ export default {
 
   watch: {
     activeListId: {
-      immediate: true,
+      immediate: false,
       handler: function () {
         this.loading = true;
         this.fetchItems();
@@ -267,11 +273,16 @@ export default {
       immediate: true,
       handler: async function (newVal) {
         if (newVal === "true") {
-          await ReqService.deleteAllItems(this.uid, this.activeListId);
+          const result = await ReqService.deleteAllItems(
+            this.uid,
+            this.activeListId
+          );
           this.loading = true;
-          this.fetchItems();
+          this.items = result;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
           this.$emit("change-to-false", "false");
-          console.log("all items deleted");
         }
         this.showModal = false;
         this.$emit("show-modal", this.showModal);
@@ -327,7 +338,7 @@ export default {
     },
   },
   created() {
-    console.log("check uid: ", this.uid);
+    console.log("from todolist ", this.uid, this.activeListId);
   },
 };
 </script>

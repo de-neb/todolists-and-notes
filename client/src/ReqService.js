@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseUrlList = (uid) => `api/${uid}/todolists/`;
-const baseUrlNotes = (uid) => `api/${uid}/notes/`;
+const baseUrlList = (uid) => `api/todolists/user/${uid}/`;
+const baseUrlNotes = (uid) => `api/notes/user/${uid}/`;
 const server = "api/users/";
 
 class ReqService {
@@ -30,14 +30,16 @@ class ReqService {
 
   //create List
   static async createList(uid, listName) {
-    return axios.post(baseUrlList(uid), {
+    const res = await axios.post(baseUrlList(uid), {
       name: listName,
     });
+    const data = res.data;
+    return data;
   }
 
   //delete list
   static async deleteList(uid, listId, prevListId) {
-    const res = await axios.delete(`${baseUrlList(uid)}${listId}/delete-list`, {
+    const res = await axios.delete(`${baseUrlList(uid)}list/${listId}`, {
       data: { prevListId },
     });
     const data = await res.data;
@@ -46,7 +48,7 @@ class ReqService {
 
   //update active list
   static async updateActiveList(uid, listId) {
-    return axios.put(`${baseUrlList(uid)}${listId}/update-active-list`);
+    return axios.put(`${baseUrlList(uid)}list/${listId}`);
   }
 
   //list actions end//
@@ -54,31 +56,48 @@ class ReqService {
   //item actions start//
   //get item
   static async getItems(uid, listId) {
-    const res = await axios.get(`${baseUrlList(uid)}${listId}`);
+    const res = await axios.get(`${baseUrlList(uid)}list/${listId}`);
     const data = await res.data;
     return data;
   }
 
   //add item
-  static addItem(uid, listId, itemTitle) {
-    return axios.post(`${baseUrlList(uid)}${listId}`, {
+  static async addItem(uid, listId, itemTitle) {
+    const res = await axios.post(`${baseUrlList(uid)}list/${listId}`, {
       itemTitle,
     });
+    const data = await res.data;
+    return data;
   }
 
   //delete item
-  static deleteItem(uid, listId, itemId) {
-    return axios.patch(`${baseUrlList(uid)}${listId}/delete-item`, { itemId });
+  static async deleteItem(uid, listId, itemId) {
+    const res = await axios.patch(
+      `${baseUrlList(uid)}list/${listId}/delete-item`,
+      {
+        itemId,
+      }
+    );
+    const data = await res.data;
+    return data;
   }
 
   //delete all items
-  static deleteAllItems(uid, listId) {
-    return axios.patch(`${baseUrlList(uid)}${listId}/delete-items`);
+  static async deleteAllItems(uid, listId) {
+    const res = await axios.patch(
+      `${baseUrlList(uid)}list/${listId}/delete-items`
+    );
+    const data = await res.data;
+    return data;
   }
 
   //update items arr
-  static updateItems(uid, listId, items) {
-    return axios.patch(`${baseUrlList(uid)}${listId}/update-items`, { items });
+  static async updateItems(uid, listId, items) {
+    const res = axios.patch(`${baseUrlList(uid)}list/${listId}/update-items`, {
+      items,
+    });
+    const data = await res.data;
+    return data;
   }
 
   //item actions end//

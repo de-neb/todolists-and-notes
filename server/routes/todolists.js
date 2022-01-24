@@ -1,157 +1,153 @@
 const express = require("express");
-const mongoose = require("mongoose");
 //get models
-const { Item } = require("../models/item");
 const { TodoList } = require("../models/todolist");
+const User = require("../models/user");
 const router = express.Router();
 
+const handleError = (err) => {
+  return { error: err.message };
+};
+
 //get list
-router.get("/", async (req, res) => {
-  try {
-    const listCollection = await TodoList.find({}).exec();
-    res.send(listCollection);
-  } catch (error) {
-    console.log(error.message);
-  }
+router.get("/:uid", (req, res) => {
+  User.findById(req.params.uid, (err, user) => {
+    if (err) {
+      const error = handleError(err);
+      res.status(400).send({ error });
+    } else {
+      res.status(200).send(user.todoLists);
+    }
+  });
 });
 
 //create list
-router.post("/", async (req, res) => {
+router.post("/:uid", async (req, res) => {
   try {
-    const newTodoList = new TodoList({
-      name: req.body.name,
+    const user = await User.findById(req.params.uid).exec();
+    user.todoLists.forEach((list) => {
+      list.active = false;
     });
-    await TodoList.updateMany({}, { active: false });
-    await newTodoList.save();
-    res.status(201).send();
-  } catch (error) {
-    console.log(error.message);
+    user.todoLists.push({ name: req.body.name });
+    await user.save();
+    res.status(201).send(user.todoLists);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
   }
 });
 
 //delete list
-router.delete("/:id/delete-list", async (req, res) => {
+router.delete("/:uid/list/:id", async (req, res) => {
   try {
+    const user = await User.findById(req.params.uid).exec();
+    //previd is index
     const { prevListId } = req.body;
-    const listExists = await TodoList.exists({ _id: req.params.id });
-    if (listExists) {
-      await TodoList.deleteOne({ _id: req.params.id });
-      TodoList.countDocuments({}, async (err, c) => {
-        //checks if document is not empty
-        if (c > 0) {
-          //find current active list and set value to false and
-          //set last document as active instead
-          TodoList.bulkWrite(
-            [
-              {
-                updateOne: {
-                  filter: { active: true },
-                  update: { active: false },
-                },
-              },
-              {
-                updateOne: {
-                  filter: { _id: prevListId },
-                  update: { active: true },
-                },
-              },
-            ],
-            { ordered: true }
-          ).then(async () => {
-            const updatedList = await TodoList.find({});
-            res.send(updatedList);
-          });
-        } else {
-          res.send([]);
+
+    if (user.todoLists.length === 1) {
+      user.todoLists.id(req.params.id).remove();
+      user.save();
+      res.send([]);
+    } else if (user.todoLists.length > 1) {
+      user.todoLists.id(req.params.id).remove();
+      user.todoLists.forEach((list) => {
+        if (list.active) {
+          list.active = false;
         }
       });
+      user.todoLists[prevListId].active = true;
+      user.save();
+      res.status(200).send(user.todoLists);
     }
-  } catch (error) {
-    console.log(error.message);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
   }
 });
 
 //update list
-router.put("/:id/update-active-list", (req, res) => {
-  const id = req.params.id;
-
-  TodoList.updateMany({ _id: { $ne: id } }, { active: false }).then(() => {
-    TodoList.findOneAndUpdate({ _id: id }, { active: true }, (err) => {
-      if (err) {
-        res.send(err.message);
+router.put("/:uid/list/:id", async (req, res) => {
+  const { uid, id } = req.params;
+  try {
+    const user = await User.findById(uid).exec();
+    user.todoLists.forEach((list) => {
+      if (list._id != id) {
+        list.active = false;
       } else {
-        res.status(200).send();
+        list.active = true;
       }
     });
-  });
+    user.save();
+    res.status(200).send(user.todoLists);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
+  }
 });
 
 //get items
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
+router.get("/:uid/list/:id", async (req, res) => {
   try {
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      const foundList = await TodoList.findById(id).exec();
-      res.send(foundList);
-    }
-  } catch (error) {
-    console.log(error.message);
+    const user = await User.findById(req.params.uid).exec();
+    const items = user.todoLists.id(req.params.id).items;
+    res.status(200).send(items);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
   }
 });
 
 //add items
-router.post("/:id", (req, res) => {
-  const newItem = new Item({
-    title: req.body.itemTitle,
-  });
-  TodoList.findByIdAndUpdate(
-    req.params.id,
-    { $push: { items: newItem } },
-    (err) => {
-      if (err) {
-        res.send(err.message);
-      } else {
-        res.status(200).send();
-      }
-    }
-  );
+router.post("/:uid/list/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.uid).exec();
+    const items = user.todoLists.id(req.params.id).items;
+    items.push({ title: req.body.itemTitle });
+    user.save();
+    res.status(201).send(items);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
+  }
 });
 
 //delete single item
-router.patch("/:id/delete-item", (req, res) => {
-  TodoList.findByIdAndUpdate(
-    req.params.id,
-    { $pull: { items: { _id: req.body.itemId } } },
-    (err) => {
-      if (err) {
-        res.send(err.message);
-      } else {
-        res.status(200).send();
-      }
-    }
-  );
+router.patch("/:uid/list/:id/delete-item", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.uid).exec();
+    const items = user.todoLists.id(req.params.id).items;
+    items.id(req.body.itemId).remove();
+    user.save();
+    res.status(200).send(items);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
+  }
 });
 
 //delete all items
-router.patch("/:id/delete-items", (req, res) => {
-  TodoList.findByIdAndUpdate(req.params.id, { items: [] }, (err) => {
-    if (err) {
-      res.send(err.message);
-    } else {
-      res.status(200).send();
-    }
-  });
+router.patch("/:uid/list/:id/delete-items", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.uid).exec();
+    user.todoLists.id(req.params.id).items = [];
+    user.save();
+    res.status(200).send([]);
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
+  }
 });
 
 //update items arr
-router.patch("/:id/update-items", (req, res) => {
-  TodoList.findByIdAndUpdate(req.params.id, req.body, (err) => {
-    if (err) {
-      res.send(err.message);
-    } else {
-      res.status(200).send();
-    }
-  });
+router.patch("/:uid/list/:id/update-items", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.uid).exec();
+    user.todoLists.id(req.params.id).items = req.body.items;
+    await user.save();
+    res.status(200).send("items updated successfully!");
+  } catch (err) {
+    const error = handleError(err);
+    res.status(400).send({ error });
+  }
 });
 
 module.exports = router;

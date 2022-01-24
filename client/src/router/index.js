@@ -11,7 +11,7 @@ const routes = [
     component: Home,
     name: "Home",
     children: [
-      { path: "/todolist", component: TodoList, name: "Todolist" },
+      { path: "/todolist", component: TodoList, name: "To-Do List" },
       {
         path: "/notes",
         component: Notes,

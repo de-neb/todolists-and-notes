@@ -23,8 +23,8 @@ app.use(cors());
 app.use(cookieParser());
 
 //api route
-app.use("/api/:uid/todolists", todolists);
-app.use("/api/:uid/notes", notes);
+app.use("/api/todolists/user", todolists);
+app.use("/api/notes/user", notes);
 app.use("/api/users", users);
 
 const port = process.env.PORT || 5000;
