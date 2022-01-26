@@ -2,20 +2,19 @@ import axios from "axios";
 
 const baseUrlList = (uid) => `api/todolists/user/${uid}/`;
 const baseUrlNotes = (uid) => `api/notes/user/${uid}/`;
-const server = "api/users/";
 
 class ReqService {
   //user actions start//
   static loginPost(username, password) {
-    return axios.post(`${server}login`, { username, password });
+    return axios.post(`/login`, { username, password });
   }
 
   static signupPost(username, password) {
-    return axios.post(`${server}signup`, { username, password });
+    return axios.post(`/signup`, { username, password });
   }
 
   static logoutPost() {
-    return axios.post(`${server}logout`);
+    return axios.post(`/logout`);
   }
   //user actions end//
 
