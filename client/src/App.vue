@@ -6,7 +6,7 @@
     <router-view @logged-in="getUserInfo"> </router-view>
   </div>
   <div class="container" v-else-if="path === '/notes' || path === '/todolist'">
-    <router-view :uid="userId"></router-view>
+    <router-view :uid="userId" :user="user"></router-view>
   </div>
 </template>
 
@@ -17,18 +17,15 @@ export default {
   data() {
     return {
       currentRoute: "",
-      userInfo: [],
+      userId: "",
       path: "",
+      user: "",
     };
   },
   methods: {
     getUserInfo({ username, id }) {
-      this.userInfo = [username, id];
-    },
-  },
-  computed: {
-    userId() {
-      return this.userInfo[1];
+      this.user = username;
+      this.userId = id;
     },
   },
   watch: {
