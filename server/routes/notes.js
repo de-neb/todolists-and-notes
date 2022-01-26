@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { Note } = require("../models/note");
 const User = require("../models/user");
 
 const handleError = (err) => {
@@ -10,7 +9,6 @@ const handleError = (err) => {
 router.get("/:uid", (req, res) => {
   User.findById(req.params.uid, (err, user) => {
     if (err) {
-      console.log(err);
       const error = handleError(err);
       res.status(400).send(error);
     } else {
@@ -54,13 +52,12 @@ router.delete("/:uid/note/:id", async (req, res) => {
 router.patch("/:uid/note/:id", (req, res) => {
   User.findById(req.params.uid, (err, user) => {
     if (err) {
-      console.log(err);
-      res.end();
+      const error = handleError(err);
+      res.status(400).send(error);
     } else {
       const index = user.notes.indexOf(user.notes.id(req.params.id));
       user.notes[index] = req.body;
       user.save();
-      console.log("updated", user.notes);
       res.status(200).send(user.notes);
     }
   });
