@@ -10,7 +10,7 @@
         <input
           type="text"
           name="username"
-          class="username"
+          class="username user-input"
           placeholder="Username"
           v-model="username"
           required
@@ -24,14 +24,22 @@
         <input
           type="password"
           name="password"
-          class="password"
+          class="user-input"
           placeholder="Password"
           v-model="password"
           required
         />
         <span class="error">{{ pWordErr }}</span>
       </div>
-      <button class="login-btn" @click.prevent="signupPost">SIGN UP</button>
+      <vue-recaptcha
+        v-if="!isVerified"
+        @verify="verifyBot"
+        class="recaptcha"
+        sitekey="6Le9oToeAAAAAEgFJVHVkXY9yy_G-xrhMMX_wmHa"
+      ></vue-recaptcha>
+      <button v-else class="login-btn" @click.prevent="signupPost">
+        SIGN UP
+      </button>
       <p class="member-q">
         Already a member?
         <router-link to="/login" class="sign-in-link">Log In</router-link>
@@ -43,10 +51,13 @@
 <script>
 import ReqService from "../ReqService";
 import LogoBG from "../components/LogoBG.vue";
+import { VueRecaptcha } from "vue-recaptcha";
+
 export default {
   name: "Signup",
   components: {
     LogoBG,
+    VueRecaptcha,
   },
   data() {
     return {
@@ -54,6 +65,7 @@ export default {
       password: "",
       uNameErr: "",
       pWordErr: "",
+      isVerified: null,
     };
   },
   methods: {
@@ -78,11 +90,19 @@ export default {
         }
       }
     },
+    verifyBot(result) {
+      this.isVerified = result;
+    },
   },
 };
 </script>
 
 <style>
+.recaptcha {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 .container .login {
   background: #7868e6;
 }
@@ -133,8 +153,7 @@ h2.title {
   line-height: 51px;
 }
 
-.username,
-.password {
+.user-input {
   height: 100%;
   width: 100%;
   border: none;
@@ -148,6 +167,10 @@ h2.title {
 }
 .username {
   font-family: "Rajdhani", sans-serif;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #b4aaf6 inset;
 }
 
 .login-btn {

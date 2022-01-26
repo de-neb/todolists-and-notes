@@ -1,8 +1,8 @@
 <template>
   <svg
-    width="500"
-    height="782"
-    viewBox="0 0 539 782"
+    width="519"
+    height="821"
+    viewBox="0 0 539 821"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -23,16 +23,16 @@
       x="30"
       y="160.951"
       width="462.963"
-      height="578.705"
-      rx="12"
+      height="615.046"
+      rx="20"
       fill="#EDEEF7"
     />
     <rect
       x="67.037"
-      y="203.295"
+      y="205.954"
       width="462.963"
-      height="578.705"
-      rx="12"
+      height="615.046"
+      rx="20"
       fill="#EDEEF7"
       fill-opacity="0.5"
     />

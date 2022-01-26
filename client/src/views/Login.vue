@@ -12,7 +12,7 @@
         <input
           type="text"
           name="username"
-          class="username"
+          class="username user-input"
           placeholder="Username"
           v-model="username"
           required
@@ -26,14 +26,13 @@
         <input
           type="password"
           name="password"
-          class="password"
+          class="user-input"
           placeholder="Password"
           v-model="password"
           required
         />
         <span class="error">{{ pWordErr }}</span>
       </div>
-
       <button class="login-btn" @click.prevent="loginPost">LOG IN</button>
       <router-link to="/signup" class="sign-in-link">New User?</router-link>
     </form>
@@ -43,6 +42,7 @@
 <script>
 import ReqService from "../ReqService";
 import LogoBG from "../components/LogoBG.vue";
+
 export default {
   name: "Login",
   components: {

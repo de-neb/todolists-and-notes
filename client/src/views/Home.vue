@@ -113,7 +113,7 @@ export default {
       if (this.lists.length > 1) {
         const prevListId = this.lists.length - 2;
         const updatedList = await ReqService.deleteList(
-          this.uid,
+          this.uidCopy,
           id,
           prevListId
         );
