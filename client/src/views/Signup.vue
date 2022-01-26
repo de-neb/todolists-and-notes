@@ -65,6 +65,10 @@ export default {
         const data = await res.data;
         if (data.user) {
           this.$router.push("/todolist");
+          this.$emit("logged-in", {
+            username: data.user.username,
+            id: data.user.id,
+          });
         }
       } catch ({ response }) {
         const { username, password } = response.data.error;
