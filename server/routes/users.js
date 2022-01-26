@@ -31,22 +31,12 @@ const handleError = (e) => {
 };
 
 //set max age and create token
-const maxAge = 60 * 60;
+const maxAge = 15 * 60;
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.SECRET_KEY, {
     expiresIn: maxAge,
   });
 };
-
-router.get("/", (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      res.status(400).send({ error: err });
-    } else {
-      res.status(200).send(users);
-    }
-  });
-});
 
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
@@ -89,8 +79,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   res.cookie("todolistJWT", "", { maxAge: 1 });
-  res.send({ redirect: true });
-  // res.redirect("/")
+  res.send({ logout: true });
 });
 
 module.exports = router;
