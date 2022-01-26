@@ -11,7 +11,7 @@
       <h2>{{ month }} {{ date }} {{ year }}</h2>
     </div>
     <div class="welcome-cont">
-      <h3 class="greet">Welcome {{ userInfo[0] }}!</h3>
+      <h3 class="greet">Welcome {{ user }}!</h3>
     </div>
     <div class="log-out-cont">
       <a class="logout" @click="logout"
@@ -26,19 +26,23 @@
             <li
               class="task-names"
               v-for="list in lists"
-              :class="{ active: list.active && !noteActive }"
+              :class="{ active: list.active && inTodolistRoute }"
               :key="list._id"
             >
               <router-link
                 to="/todolist"
                 class="task-name-link"
-                :class="{ 'notes-tag': list.active && !noteActive }"
+                :class="{ 'notes-tag': list.active && inTodolistRoute }"
                 @click.self="selectList(list._id, list.name)"
                 :contenteditable="list.isEditable"
               >
                 {{ list.name.toUpperCase() }}
               </router-link>
-              <span v-if="list.active" class="todo-num">{{ listLenRT }}</span>
+              <span
+                v-if="list.active && $route.path == '/todolist'"
+                class="todo-num"
+                >{{ listLenRT }}</span
+              >
               <span
                 type="button"
                 @click.self="deleteList(list._id)"
@@ -60,7 +64,7 @@
             class="list-name-input"
           />
         </form>
-        <li id="notes-list" :class="{ active: noteActive }">
+        <li id="notes-list" :class="{ active: checkNoteActive }">
           <router-link to="/notes" id="notes-tag">NOTES</router-link>
         </li>
       </ul>
@@ -77,7 +81,7 @@ export default {
     menuActive: Boolean,
     noteActive: Boolean,
     listLenRT: Number,
-    userInfo: Array,
+    user: String,
   },
   data() {
     return {
@@ -145,12 +149,21 @@ export default {
     async logout() {
       const res = await ReqService.logoutPost();
       const data = await res.data;
-      if (data.redirect) {
+      //remove cookie id in client
+      if (data.logout) {
         this.$router.push("/login");
       }
+      document.cookie += "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     },
   },
-
+  computed: {
+    checkNoteActive() {
+      return this.$route.path == "/notes";
+    },
+    inTodolistRoute() {
+      return this.$route.path == "/todolist";
+    },
+  },
   mounted() {
     //set live date and time
     this.timer();
