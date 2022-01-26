@@ -70,6 +70,10 @@ export default {
             username: data.user.username,
             id: data.user.id,
           });
+          //set cookie uid at 1st log in
+          if (!document.cookie) {
+            document.cookie = `uid=${data.user.id}`;
+          }
         }
       } catch ({ response }) {
         const { username, password } = response.data.error;

@@ -11,7 +11,7 @@
       <h2>{{ month }} {{ date }} {{ year }}</h2>
     </div>
     <div class="welcome-cont">
-      <h3 class="greet">Welcome {{ user }}!</h3>
+      <h3 class="greet">Welcome {{ userCopy }}!</h3>
     </div>
     <div class="log-out-cont">
       <a class="logout" @click="logout"
@@ -149,11 +149,9 @@ export default {
     async logout() {
       const res = await ReqService.logoutPost();
       const data = await res.data;
-      //remove cookie id in client
       if (data.logout) {
         this.$router.push("/login");
       }
-      document.cookie += "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     },
   },
   computed: {
@@ -162,6 +160,15 @@ export default {
     },
     inTodolistRoute() {
       return this.$route.path == "/todolist";
+    },
+    userCopy() {
+      if (!this.user) {
+        //get uid saved in cookie created from the client
+        const uname = document.cookie.split(";")[1].split("=")[1];
+        return uname;
+      } else {
+        return this.user;
+      }
     },
   },
   mounted() {

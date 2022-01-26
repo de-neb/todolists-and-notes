@@ -37,6 +37,7 @@
       <router-view
         v-if="lists"
         v-bind="todoListProps"
+        :uid="uidCopy"
         @show-modal="showConfirmModal"
         @change-to-false="(bool) => (toDeleteItems = bool)"
         @list-len="(len) => (listLenRT = len)"
@@ -62,7 +63,10 @@ export default {
     SideMenu,
     ConfirmModal,
   },
-  props: { uid: String },
+  props: {
+    uid: String,
+    user: String,
+  },
   data() {
     return {
       lists: [],
@@ -75,12 +79,11 @@ export default {
       noteActive: false,
       listLenRT: 0,
       currentRoute: null,
-      userInfo: [],
     };
   },
   methods: {
     async fetchList() {
-      const result = await ReqService.getList(this.uid);
+      const result = await ReqService.getList(this.uidCopy);
       this.lists = await result;
       return this.lists;
     },
@@ -97,10 +100,10 @@ export default {
         }
       });
       //update active list in db when selected
-      await ReqService.updateActiveList(this.uid, id);
+      await ReqService.updateActiveList(this.uidCopy, id);
     },
     async addList(listName) {
-      const result = await ReqService.createList(this.uid, listName);
+      const result = await ReqService.createList(this.uidCopy, listName);
       this.lists = await result;
       const listsLen = this.lists.length;
       this.activeListId = this.lists[listsLen - 1]._id;
@@ -119,7 +122,7 @@ export default {
         this.activeListId = this.lists[listsLen - 1]._id;
         this.activeListName = this.lists[listsLen - 1].name;
       } else {
-        const updatedList = await ReqService.deleteList(this.uid, id);
+        const updatedList = await ReqService.deleteList(this.uidCopy, id);
         this.lists = await updatedList;
       }
     },
@@ -132,15 +135,24 @@ export default {
         this.showModal = false;
       }
     },
-    getUserInfo({ username, id }) {
-      this.userInfo = [username, id];
-    },
   },
   computed: {
+    uidCopy() {
+      if (!this.uid) {
+        //get uid saved in cookie created from the client
+        let uid = document.cookie.split(";")[0];
+        return decodeURIComponent(uid).split(":")[1].replace(/"/g, "");
+      } else {
+        return this.uid;
+      }
+    },
     showTitle() {
-      return this.noteActive || !this.lists.length
-        ? this.$route.name
-        : this.activeListName;
+      if (
+        (this.$route.path == "/todolist" && !this.lists.length) ||
+        this.$route.path == "/notes"
+      )
+        return this.$route.name;
+      else return this.activeListName;
     },
     todoListProps() {
       return {
@@ -149,7 +161,6 @@ export default {
         activeListName: this.activeListName,
         firstPageLanding: this.firstPageLanding,
         toDeleteItems: this.toDeleteItems,
-        uid: this.uid,
       };
     },
     sideMenuProps() {
@@ -158,7 +169,7 @@ export default {
         menuActive: this.menuActive,
         noteActive: this.noteActive,
         listLenRT: this.listLenRT,
-        userInfo: this.userInfo,
+        user: this.user,
       };
     },
   },
@@ -176,8 +187,7 @@ export default {
     },
   },
   created() {
-    console.log("home created, userId is: ", this.uid);
-    if (this.uid) {
+    if (this.uidCopy) {
       this.fetchList().then(() => {
         if (this.lists.length === 1) {
           this.activeListId = this.lists[0]._id;
