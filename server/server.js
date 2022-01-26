@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const todolists = require("./routes/todolists");
 const notes = require("./routes/notes");
 const users = require("./routes/users");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 
 const app = express();
 
@@ -15,6 +16,8 @@ const app = express();
 mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 );
+
+const indexHTML = __dirname + "/public/index.html";
 
 //middleware
 app.use(urlencoded({ extended: true }));
@@ -25,8 +28,23 @@ app.use(cookieParser());
 //api route
 app.use("/api/todolists/user", todolists);
 app.use("/api/notes/user", notes);
-app.use("/api/users", users);
 
+app.use(express.static(__dirname + "/public"));
+
+app.get("*", checkUser);
+app.get("/todolist", requireAuth, (req, res) => {
+  res.sendFile(indexHTML);
+});
+app.get("/notes", requireAuth, (req, res) => {
+  res.sendFile(indexHTML);
+});
+app.get("/login", (req, res) => {
+  res.sendFile(indexHTML);
+});
+app.get("/signup", (req, res) => {
+  res.sendFile(indexHTML);
+});
+app.use(users);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
