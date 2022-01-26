@@ -79,6 +79,8 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   res.cookie("todolistJWT", "", { maxAge: 1 });
+  res.cookie("uid", "", { maxAge: 1 });
+  res.cookie("uname", "", { maxAge: 1 });
   res.send({ logout: true });
 });
 
