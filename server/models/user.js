@@ -3,12 +3,19 @@ const { todoListSchema } = require("./todolist");
 const { notesSchema } = require("./note");
 const bcrypt = require("bcrypt");
 
+//username validator
+const isAlphaNumeric = (username) => {
+  const reg = /^[0-9a-zA-Z]+$/;
+  return reg.test(username);
+};
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, "Please enter a username"],
     unique: [true, "Username was already taken"],
     minlength: [4, "Username minimum length is 4 characters"],
+    validate: [isAlphaNumeric, "Username must be in alphanumeric only"],
   },
   password: {
     type: String,
