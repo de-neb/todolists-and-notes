@@ -17,6 +17,7 @@ const routes = [
         component: Notes,
         name: "Notes",
       },
+      { path: "", component: TodoList },
     ],
   },
   {
@@ -31,23 +32,23 @@ const routes = [
     component: Signup,
     props: true,
   },
-  // {
-  //   path: "/todolist",
-  //   name: "TodoList",
-  //   component: TodoList,
-  //   props: true,
-  // },
-  // {
-  //   path: "/notes",
-  //   name: "Notes",
-  //   component: Notes,
-  //   props: true,
-  // },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (document.cookie) {
+    if (to.path == "/login" || to.path == "/signup") {
+      return router.push("/todolist");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
