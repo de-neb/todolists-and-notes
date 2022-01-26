@@ -35,6 +35,9 @@ function checkUser(req, res, next) {
         res.cookie("uid", user._id, {
           maxAge: maxAge * 1000,
         });
+        res.cookie("uname", user.username, {
+          maxAge: maxAge * 1000,
+        });
         next();
       }
     });
