@@ -217,17 +217,4 @@ export default {
 div.task-list-cont::-webkit-scrollbar-thumb {
   background: #b8b4fc !important;
 }
-
-.credit {
-  display: flex;
-  place-content: center;
-  align-items: center;
-  gap: 5px;
-  font-weight: bold;
-  text-decoration: none;
-  color: inherit;
-  position: absolute;
-  width: 100%;
-  bottom: 3%;
-}
 </style>
