@@ -4,6 +4,10 @@
     v-if="currentRoute === 'Login' || currentRoute === 'Signup'"
   >
     <router-view @logged-in="getUserInfo"> </router-view>
+    <a href="https://github.com/denksy" class="credit">
+      <span>Created by</span>
+      <img src="~@/assets/den.png" alt="den" width="30" />
+    </a>
   </div>
   <div class="container" v-else-if="path === '/notes' || path === '/todolist'">
     <router-view :uid="userId" :user="user"></router-view>
