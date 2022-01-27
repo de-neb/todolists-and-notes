@@ -8,6 +8,23 @@ const handleError = (err) => {
   return { error: err.message };
 };
 
+const starterList = new TodoList({
+  name: "My First List",
+  isActive: true,
+  items: [
+    {
+      title: "Your to-do items are listed here",
+    },
+    {
+      title: "Click the add button or hit Enter to add an item",
+    },
+    {
+      title: "Remember to click Save when making changes!",
+    },
+  ],
+  done: false,
+});
+
 //get list
 router.get("/:uid", (req, res) => {
   User.findById(req.params.uid, (err, user) => {
@@ -15,6 +32,10 @@ router.get("/:uid", (req, res) => {
       const error = handleError(err);
       res.status(400).send({ error });
     } else {
+      if (user.todoLists.length === 0) {
+        user.todoLists.push(starterList);
+        user.save();
+      }
       res.status(200).send(user.todoLists);
     }
   });
