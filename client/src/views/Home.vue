@@ -141,7 +141,11 @@ export default {
       if (!this.uid) {
         //get uid saved in cookie created from the client
         let uid = document.cookie.split(";")[0];
-        return decodeURIComponent(uid).split(":")[1].replace(/"/g, "");
+        if (document.cookie.includes("uid=j%3A%22")) {
+          return decodeURIComponent(uid).split(":")[1].replace(/"/g, "");
+        } else {
+          return uid.split("=")[1];
+        }
       } else {
         return this.uid;
       }

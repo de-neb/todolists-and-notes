@@ -72,7 +72,7 @@ export default {
           });
           //set cookie uid at 1st log in
           if (!document.cookie) {
-            document.cookie = `uid=${data.user.id}`;
+            document.cookie = `uid=${data.user.id}; uname=${data.user.username}`;
           }
         }
       } catch ({ response }) {
