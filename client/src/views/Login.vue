@@ -70,9 +70,11 @@ export default {
             username: data.user.username,
             id: data.user.id,
           });
-          //set cookie uid at 1st log in
+          //set cookie user info at 1st log in
           if (!document.cookie) {
-            document.cookie = `uid=${data.user.id}; uname=${data.user.username}`;
+            const maxAge = new Date(Date.now() + 15 * 60 * 1000).toUTCString();
+            document.cookie = `uid=${data.user.id}; expires=${maxAge}; path=/`;
+            document.cookie = `uname=${data.user.username}; expires=${maxAge}; path=/`;
           }
         }
       } catch ({ response }) {
