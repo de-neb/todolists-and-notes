@@ -32,12 +32,17 @@
         <span class="error">{{ pWordErr }}</span>
       </div>
       <vue-recaptcha
-        v-if="!isVerified"
+        ref="recaptcha"
+        v-if="!isVerified && username && password"
         @verify="verifyBot"
         class="recaptcha"
-        sitekey="6Le9oToeAAAAAEgFJVHVkXY9yy_G-xrhMMX_wmHa"
+        :sitekey="sitekey"
       ></vue-recaptcha>
-      <button v-else class="login-btn" @click.prevent="signupPost">
+      <button
+        v-else-if="isVerified"
+        class="login-btn"
+        @click.prevent="signupPost"
+      >
         SIGN UP
       </button>
       <p class="member-q">
@@ -65,7 +70,8 @@ export default {
       password: "",
       uNameErr: "",
       pWordErr: "",
-      isVerified: null,
+      isVerified: false,
+      sitekey: "6Le9oToeAAAAAEgFJVHVkXY9yy_G-xrhMMX_wmHa",
     };
   },
   methods: {
@@ -88,7 +94,12 @@ export default {
           this.uNameErr = username;
           this.pWordErr = password;
         }
+        this.resetRecaptcha();
       }
+    },
+    resetRecaptcha() {
+      this.isVerified = false;
+      this.$refs.recaptcha.reset();
     },
     verifyBot(result) {
       this.isVerified = result;

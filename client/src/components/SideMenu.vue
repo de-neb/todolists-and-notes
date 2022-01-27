@@ -164,7 +164,9 @@ export default {
     userCopy() {
       if (!this.user) {
         //get uid saved in cookie created from the client
-        const uname = document.cookie.split(";")[1];
+        const uname = document.cookie
+          .split(";")
+          .filter((el) => el.includes("uname"))[0];
         return uname.split("=")[1];
       } else {
         return this.user;

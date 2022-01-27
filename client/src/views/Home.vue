@@ -140,8 +140,10 @@ export default {
     uidCopy() {
       if (!this.uid) {
         //get uid saved in cookie created from the client
-        let uid = document.cookie.split(";")[0];
-        if (document.cookie.includes("uid=j%3A%22")) {
+        const uid = document.cookie
+          .split(";")
+          .filter((el) => el.includes("uid"))[0];
+        if (uid.includes("uid=j%3A%22")) {
           return decodeURIComponent(uid).split(":")[1].replace(/"/g, "");
         } else {
           return uid.split("=")[1];
