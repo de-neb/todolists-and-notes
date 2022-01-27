@@ -564,6 +564,7 @@ div {
   width: $side-width;
   box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
   z-index: 2;
+  position: relative;
   .time-container {
     padding: 0 10px;
     @include flex(center, flex-end);
@@ -960,6 +961,20 @@ div {
 }
 
 //additional classes
+.credit {
+  display: flex;
+  place-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: $time-font;
+  color: $main-color;
+  position: absolute;
+  width: 100%;
+  bottom: 3%;
+}
+
 .active {
   background: #b8b5ff;
   color: $side-color !important;
