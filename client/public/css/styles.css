@@ -748,6 +748,7 @@ div {
   -webkit-box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
           box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
   z-index: 2;
+  position: relative;
 }
 
 .side-menu .time-container {
