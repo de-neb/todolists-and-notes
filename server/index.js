@@ -17,7 +17,9 @@ mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 );
 
-const indexHTML = __dirname + "/public/index.html";
+const directToIndexHTML = (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+};
 
 //middleware
 app.use(urlencoded({ extended: true }));
@@ -32,18 +34,11 @@ app.use("/api/notes/user", notes);
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", checkUser);
-app.get("/todolist", requireAuth, (req, res) => {
-  res.sendFile(indexHTML);
-});
-app.get("/notes", requireAuth, (req, res) => {
-  res.sendFile(indexHTML);
-});
-app.get("/login", (req, res) => {
-  res.sendFile(indexHTML);
-});
-app.get("/signup", (req, res) => {
-  res.sendFile(indexHTML);
-});
+app.get("/", directToIndexHTML);
+app.get("/todolist", requireAuth, directToIndexHTML);
+app.get("/notes", requireAuth, directToIndexHTML);
+app.get("/login", directToIndexHTML);
+app.get("/signup", directToIndexHTML);
 app.use(users);
 const port = process.env.PORT || 5000;
 
