@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/denksy/todolists-and-notes">
-    <img src="client/src/assets/todo.png" alt="Logo" width="80" height="80">
+    <img src="client/src/assets/todo.png" alt="Logo" width="80">
   </a>
 
 <h3 align="center">To-do Lists and Notes</h3>
@@ -20,9 +20,6 @@
 
 This is my second version of To-do List as well as my first fullstack application with user authentication. This version uses mongoDB for storing the data. Aside from using database and user authentication, it pretty much has the same functionalities with the frist version and additional functionality such as editing and saving a note. I've also tweaked the style for mobile optimization.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -31,7 +28,3 @@ This is my second version of To-do List as well as my first fullstack applicatio
 * [Node.js](https://nodejs.org/en/)
 * [MongoDB](https://www.mongodb.com/)
 * [Mongoose](https://mongoosejs.com/)
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
