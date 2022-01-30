@@ -47,7 +47,7 @@
       </button>
       <p class="member-q">
         Already a member?
-        <router-link to="/login" class="sign-in-link">Log In</router-link>
+        <router-link to="/login" class="in-link">Log In</router-link>
       </p>
     </form>
   </div>
@@ -202,7 +202,7 @@ input:-webkit-autofill {
   background: #3c3473;
 }
 
-.sign-in-link,
+.in-link,
 .member-q {
   text-align: center;
   text-decoration: none;
@@ -211,7 +211,7 @@ input:-webkit-autofill {
   font-weight: bold;
   margin: 0;
 }
-.sign-in-link:hover {
+.in-link:hover {
   color: #9386eb;
 }
 

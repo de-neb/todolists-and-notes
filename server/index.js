@@ -20,7 +20,6 @@ mongoose.connect(
 const directToIndexHTML = (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 };
-
 //middleware
 app.use(urlencoded({ extended: true }));
 app.use(express.json());

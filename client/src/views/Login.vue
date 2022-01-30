@@ -33,8 +33,15 @@
         />
         <span class="error">{{ pWordErr }}</span>
       </div>
-      <button class="login-btn" @click.prevent="loginPost">LOG IN</button>
-      <router-link to="/signup" class="sign-in-link">New User?</router-link>
+      <button class="login-btn" @click.prevent="loginPost(username, password)">
+        LOG IN
+      </button>
+      <div class="login-options">
+        <button class="guest-login in-link" @click.prevent="loginAsGuest">
+          Log in as Guest
+        </button>
+        <router-link to="/signup" class="in-link"> New User?</router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -57,12 +64,12 @@ export default {
     };
   },
   methods: {
-    async loginPost() {
+    async loginPost(username, password) {
       this.uNameErr = "";
       this.pWordErr = "";
       this.isEmpty = false;
       try {
-        const res = await ReqService.loginPost(this.username, this.password);
+        const res = await ReqService.loginPost(username, password);
         const data = await res.data;
         if (data.user) {
           this.$router.push("/todolist");
@@ -85,9 +92,23 @@ export default {
         }
       }
     },
+    loginAsGuest() {
+      this.loginPost("guest", "jan302022");
+    },
   },
 };
 </script>
 
 <style>
+.login-options {
+  font-family: "Rajdhani", sans-serif;
+}
+
+.guest-login {
+  cursor: pointer;
+  color: #6159b8;
+  background-color: #d0cafb;
+  border: none;
+  border-radius: 5px;
+}
 </style>
