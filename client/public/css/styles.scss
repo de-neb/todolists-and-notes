@@ -51,6 +51,7 @@ div {
 .container {
   @include flex(stretch, stretch);
   width: 100%;
+  height: 100%;
 }
 .main {
   background: $main-color;
