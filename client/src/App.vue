@@ -4,7 +4,7 @@
     v-if="currentRoute === 'Login' || currentRoute === 'Signup'"
   >
     <router-view @logged-in="getUserInfo"> </router-view>
-    <a href="https://github.com/denksy" class="credit">
+    <a href="https://github.com/de-neb" class="credit">
       <span>Created by</span>
       <img src="~@/assets/den.png" alt="den" width="24" />
     </a>
