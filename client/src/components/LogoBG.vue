@@ -1,6 +1,6 @@
 <template>
   <svg
-    width="519"
+    width="410"
     height="821"
     viewBox="0 0 539 821"
     fill="none"
@@ -73,8 +73,12 @@ export default {};
 <style>
 @media (max-width: 500px) {
   svg {
+    width: 85%;
+  }
+}
+@media (max-width: 350px) {
+  svg {
     width: 100%;
-    height: 100%;
   }
 }
 </style>

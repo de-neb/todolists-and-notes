@@ -1,5 +1,4 @@
 <template>
-  <div class="container">
     <SideMenu
       v-bind="sideMenuProps"
       @active-list="passActiveListId"
@@ -33,7 +32,6 @@
         </h1>
       </div>
       <!-- top bar -->
-
       <router-view
         v-if="lists"
         v-bind="todoListProps"
@@ -50,7 +48,6 @@
       :activeListName="activeListName"
       @confirmDeletion="confirmDeletion"
     ></ConfirmModal>
-  </div>
 </template>
 
 <script>

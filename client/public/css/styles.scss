@@ -18,7 +18,7 @@ $notepad: #ffe268;
 $main-font: "Saira Condensed", sans-serif;
 $time-font: "Rajdhani", sans-serif;
 $task-font: "Nunito", sans-serif;
-$side-width: max-content;
+$side-width: 23%;
 $main-width: 100%;
 $todo-width: 100%;
 $timing: cubic-bezier(0.39, 0.97, 0, 0.97);
@@ -29,6 +29,7 @@ $timing: cubic-bezier(0.39, 0.97, 0, 0.97);
   display: flex;
   align-items: $align;
   justify-content: $justify;
+  position: relative;
 }
 // functions-end
 body,
@@ -49,9 +50,7 @@ div {
 #app,
 .container {
   @include flex(stretch, stretch);
-  min-height: 100vh;
   width: 100%;
-  position: relative;
 }
 .main {
   background: $main-color;
@@ -272,7 +271,6 @@ div {
           font-family: inherit;
           background: none;
           border: none;
-          font-size: 20px;
           outline: none;
           width: 100%;
         }
@@ -323,7 +321,7 @@ div {
         }
         .item {
           margin: 0;
-          font-size: 20px;
+          font-size: 1.1rem;
           color: $todo;
           font-weight: 400;
         }
@@ -495,7 +493,7 @@ div {
   }
   .title {
     font-family: $main-font !important;
-    font-size: 4rem;
+    font-size: 3.2rem;
     font-weight: 500;
     text-align: center;
     color: $side-color;
@@ -573,20 +571,20 @@ div {
       @include flex(inherit, inherit);
       h1 {
         display: inline-block;
-        font-size: 5rem;
+        font-size: 4rem;
         text-transform: uppercase;
         margin: 0;
-        line-height: 5rem;
+        line-height: 4rem;
         font-weight: 300;
       }
       span {
         align-self: flex-start;
         display: inline-block;
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
     h2 {
-      font-size: 2rem;
+      font-size: 1.7rem;
       font-weight: bold;
       text-transform: uppercase;
       margin: 0;
@@ -594,7 +592,7 @@ div {
     h3 {
       text-transform: uppercase;
       font-weight: bold;
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       margin: 0;
     }
   }
@@ -662,7 +660,7 @@ div {
           border-radius: 5px;
           list-style-type: none;
           margin: 0;
-          font-size: 1.2vmax;
+          font-size: 1.3rem;
           font-family: $task-font;
           font-weight: 200;
           color: $task-name-color;
@@ -671,7 +669,7 @@ div {
           @include flex(center, space-around);
           a.task-name-link {
             text-decoration: none;
-            font-size: 23px;
+            font-size: 1.1rem;
             font-weight: 400;
             color: $task-name-color;
             display: inline-block;
@@ -716,7 +714,7 @@ div {
     }
 
     .list-name-input {
-      font-size: 23px;
+      font-size: 1.1rem;
       font-family: $task-font;
       overflow: hidden;
       height: 25px;
@@ -1173,6 +1171,8 @@ div {
 @media (max-width: 800px) {
   .main {
     width: 100%;
+    min-height: 100vh;
+    position: relative;
   }
   label,
   option,
@@ -1192,12 +1192,6 @@ div {
   .task-list-cont textarea {
     font-size: 1.2rem !important;
     padding: 10px;
-  }
-
-  .notes-tag,
-  .task-name-link {
-    font-size: 1.6rem !important;
-    line-height: 2rem !important;
   }
 
   .side-menu {
@@ -1236,10 +1230,7 @@ div {
     padding-left: 20px;
     box-shadow: 0px 3px 0px #675f905d;
     @include flex(center, flex-start);
-    .title {
-      font-size: 3.5rem;
-      line-height: 4.8rem;
-    }
+    
     .menu {
       display: inline-block;
       width: 30px;

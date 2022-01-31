@@ -1,5 +1,5 @@
 <template>
-  <div class="container login">
+  <div class="auth-container">
     <LogoBG class="logo-bg"></LogoBG>
     <form class="form-card">
       <h2 class="title">SIGN UP</h2>
@@ -114,15 +114,19 @@ export default {
   justify-content: center;
   width: 100%;
 }
-.container .login {
+.auth-container {
   background: #7868e6;
+  display: block;
+  position: fixed;
+  height: 100%;
+  width: 100%;
 }
 .form-card {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-52%, -30%);
-  width: 400px;
+  width: 350px;
   height: max-content;
   display: flex;
   flex-direction: column;
@@ -137,7 +141,7 @@ export default {
 h2.title {
   margin: 0;
   font-family: "Saira Condensed", sans-serif;
-  font-size: 2.7rem;
+  font-size: 2.3rem;
   font-weight: bold;
   color: #6053b8;
 }
@@ -150,18 +154,17 @@ h2.title {
 }
 .input-box {
   position: relative;
-  height: 55px;
+  height: 8%;
 }
 .input-box label {
   position: absolute;
   left: 0;
   top: 0;
+  height: 100%;
   width: 45px;
   color: #edeef7;
-}
-
-.in-icon {
-  line-height: 51px;
+  display: grid;
+  place-items: center;
 }
 
 .user-input {
@@ -185,7 +188,7 @@ input:-webkit-autofill {
 }
 
 .login-btn {
-  height: 2.4em;
+  height: 3rem;
   border-radius: 5px;
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
@@ -195,7 +198,6 @@ input:-webkit-autofill {
   font-size: 1.5rem;
   font-weight: bold;
   color: #edeef7;
-  margin-top: 1rem;
 }
 
 .login-btn:hover {
@@ -229,7 +231,7 @@ input:-webkit-autofill {
 
 @media (max-width: 500px) {
   .form-card {
-    width: 80%;
+    width: 65%;
     gap: 1rem;
   }
   .input-box,
@@ -239,7 +241,13 @@ input:-webkit-autofill {
   }
   .login-btn {
     margin-top: 5%;
-    height: 7vh;
+    height: 6vh;
+  }
+}
+
+@media (max-width: 350px) {
+ .form-card {
+    width: 80%;
   }
 }
 </style>

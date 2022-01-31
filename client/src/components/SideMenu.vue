@@ -194,7 +194,7 @@ export default {
 }
 
 .greet {
-  font-size: 2.3rem;
+  font-size: 2rem;
   margin: 1rem 0.5rem 0 0.5rem;
 }
 

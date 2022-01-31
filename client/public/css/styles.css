@@ -27,9 +27,8 @@ div {
   -webkit-box-pack: stretch;
       -ms-flex-pack: stretch;
           justify-content: stretch;
-  min-height: 100vh;
-  width: 100%;
   position: relative;
+  width: 100%;
 }
 
 .main {
@@ -231,6 +230,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   width: 100%;
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
@@ -258,6 +258,7 @@ div {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  position: relative;
 }
 
 .main .add-item-cont .add-item span.material-icons {
@@ -324,6 +325,7 @@ div {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  position: relative;
   -webkit-box-shadow: none;
           box-shadow: none;
   width: 100%;
@@ -340,7 +342,6 @@ div {
   font-family: inherit;
   background: none;
   border: none;
-  font-size: 20px;
   outline: none;
   width: 100%;
 }
@@ -395,6 +396,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
 }
 
 .main .todos-cont .item-cont .top .checkbox:checked ~ .check::after {
@@ -409,7 +411,7 @@ div {
 
 .main .todos-cont .item-cont .top .item {
   margin: 0;
-  font-size: 20px;
+  font-size: 1.1rem;
   color: #7868e6;
   font-weight: 400;
 }
@@ -429,6 +431,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   border-radius: 3px;
 }
 
@@ -485,6 +488,7 @@ div {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -504,6 +508,7 @@ div {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -553,6 +558,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -653,7 +659,7 @@ div {
 
 .title-cont .title {
   font-family: "Saira Condensed", sans-serif !important;
-  font-size: 4rem;
+  font-size: 3.2rem;
   font-weight: 500;
   text-align: center;
   color: #7868e6;
@@ -680,6 +686,7 @@ div {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  position: relative;
 }
 
 .btn-save-del .del, .btn-save-del .save {
@@ -694,6 +701,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   padding: 7px 15px;
   margin-right: 0;
   background: none;
@@ -742,9 +750,7 @@ div {
   padding: 20px 0;
   color: #edeef7;
   font-family: "Rajdhani", sans-serif;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
+  width: 23%;
   -webkit-box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
           box-shadow: -5px 0px 0px 0px #675f905d, 5px 0px 0px 0px #675f905d;
   z-index: 2;
@@ -762,6 +768,7 @@ div {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -778,14 +785,15 @@ div {
   -webkit-box-pack: inherit;
       -ms-flex-pack: inherit;
           justify-content: inherit;
+  position: relative;
 }
 
 .side-menu .time-container .time h1 {
   display: inline-block;
-  font-size: 5rem;
+  font-size: 4rem;
   text-transform: uppercase;
   margin: 0;
-  line-height: 5rem;
+  line-height: 4rem;
   font-weight: 300;
 }
 
@@ -793,11 +801,11 @@ div {
   -ms-flex-item-align: start;
       align-self: flex-start;
   display: inline-block;
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 .side-menu .time-container h2 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: bold;
   text-transform: uppercase;
   margin: 0;
@@ -806,7 +814,7 @@ div {
 .side-menu .time-container h3 {
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   margin: 0;
 }
 
@@ -826,6 +834,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -891,7 +900,7 @@ div {
   border-radius: 5px;
   list-style-type: none;
   margin: 0;
-  font-size: 1.2vmax;
+  font-size: 1.3rem;
   font-family: "Nunito", sans-serif;
   font-weight: 200;
   color: #f6f6f6;
@@ -905,11 +914,12 @@ div {
           align-items: center;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  position: relative;
 }
 
 .side-nav ul .task-list-cont ul.task-list li.task-names a.task-name-link {
   text-decoration: none;
-  font-size: 23px;
+  font-size: 1.1rem;
   font-weight: 400;
   color: #f6f6f6;
   display: inline-block;
@@ -958,7 +968,7 @@ div {
 }
 
 .side-nav ul .list-name-input {
-  font-size: 23px;
+  font-size: 1.1rem;
   font-family: "Nunito", sans-serif;
   overflow: hidden;
   height: 25px;
@@ -1026,6 +1036,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   margin-top: 3%;
 }
 
@@ -1039,6 +1050,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
   padding: 7px 15px;
   border-radius: 100px;
   border: 1px solid #07689f;
@@ -1065,6 +1077,7 @@ div {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  position: relative;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   -ms-flex-line-pack: start;
@@ -1094,6 +1107,7 @@ div {
   -webkit-box-pack: stretch;
       -ms-flex-pack: stretch;
           justify-content: stretch;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-flow: column wrap;
@@ -1110,6 +1124,7 @@ div {
   -webkit-box-pack: stretch;
       -ms-flex-pack: stretch;
           justify-content: stretch;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-flow: column wrap;
@@ -1126,6 +1141,7 @@ div {
   -webkit-box-pack: stretch;
       -ms-flex-pack: stretch;
           justify-content: stretch;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-flow: column wrap;
@@ -1227,6 +1243,7 @@ div {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  position: relative;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -1292,6 +1309,7 @@ div {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  position: relative;
 }
 
 .bg-modal .modal .save button:hover {
@@ -1314,6 +1332,7 @@ div {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  position: relative;
   border-bottom: 1px solid #edeef7;
 }
 
@@ -1725,6 +1744,8 @@ div {
 @media (max-width: 800px) {
   .main {
     width: 100%;
+    min-height: 100vh;
+    position: relative;
   }
   label,
   option,
@@ -1743,11 +1764,6 @@ div {
   .task-list-cont textarea {
     font-size: 1.2rem !important;
     padding: 10px;
-  }
-  .notes-tag,
-  .task-name-link {
-    font-size: 1.6rem !important;
-    line-height: 2rem !important;
   }
   .side-menu {
     opacity: 0;
@@ -1793,10 +1809,7 @@ div {
     -webkit-box-pack: start;
         -ms-flex-pack: start;
             justify-content: flex-start;
-  }
-  .title-cont .title {
-    font-size: 3.5rem;
-    line-height: 4.8rem;
+    position: relative;
   }
   .title-cont .menu {
     display: inline-block;

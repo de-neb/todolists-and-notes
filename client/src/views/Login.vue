@@ -1,5 +1,5 @@
 <template>
-  <div class="container login">
+  <div class="auth-container">
     <LogoBG class="logo-bg"></LogoBG>
 
     <form class="form-card">
