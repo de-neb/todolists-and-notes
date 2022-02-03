@@ -50,7 +50,8 @@ div {
 #app,
 .container {
   @include flex(stretch, stretch);
-  width: 100%;
+  width: 100%;  
+  min-height: 100%;
 }
 .main {
   background: $main-color;

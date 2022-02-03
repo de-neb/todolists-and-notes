@@ -29,6 +29,7 @@ div {
           justify-content: stretch;
   position: relative;
   width: 100%;
+  min-height: 100%;
 }
 
 .main {
