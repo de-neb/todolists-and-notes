@@ -1,8 +1,7 @@
 <template>
   <div class="modal-confirmation">
-    <h2 class="modal-title">
-      Delete all items in {{ activeListName.toUpperCase() }}?
-    </h2>
+    <h3 class="modal-title">Delete all items in</h3>
+    <h2 class="modal-title">{{ activeListName.toUpperCase() }}?</h2>
     <div class="modal-btns">
       <button class="yes" value="true" @click="confirmDeletion($event)">
         Yes
@@ -30,11 +29,10 @@ export default {
 </script>
 
 <style>
-h2.modal-title {
+h2.modal-title,
+h3.modal-title {
   color: #7868e6;
   margin: 0;
-  height: 50px;
-  line-height: 3rem;
 }
 .modal-confirmation {
   display: none !important;

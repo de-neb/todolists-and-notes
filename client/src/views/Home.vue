@@ -1,53 +1,53 @@
 <template>
-    <SideMenu
-      v-bind="sideMenuProps"
-      @active-list="passActiveListId"
-      @add-list="addList"
-      @delete-list="deleteList"
-    ></SideMenu>
-    <div
-      :class="{
-        'blur-bg': menuActive,
-        'z-index-2': menuActive,
-      }"
-    ></div>
-    <div class="bar-route-container">
-      <!-- top bar -->
-      <div class="title-cont">
-        <div class="menu">
-          <input
-            type="checkbox"
-            class="burger-check"
-            v-model="menuActive"
-            @click="burgerClicked"
-          />
-          <div class="burger">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
+  <SideMenu
+    v-bind="sideMenuProps"
+    @active-list="passActiveListId"
+    @add-list="addList"
+    @delete-list="deleteList"
+  ></SideMenu>
+  <div
+    :class="{
+      'blur-bg': menuActive,
+      'z-index-2': menuActive,
+    }"
+  ></div>
+  <div class="bar-route-container">
+    <!-- top bar -->
+    <div class="title-cont">
+      <div class="menu">
+        <input
+          type="checkbox"
+          class="burger-check"
+          v-model="menuActive"
+          @click="burgerClicked"
+        />
+        <div class="burger">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
         </div>
-        <h1 class="title" id="title">
-          {{ showTitle }}
-        </h1>
       </div>
-      <!-- top bar -->
-      <router-view
-        v-if="lists"
-        v-bind="todoListProps"
-        :uid="uidCopy"
-        @show-modal="showConfirmModal"
-        @change-to-false="(bool) => (toDeleteItems = bool)"
-        @list-len="(len) => (listLenRT = len)"
-      ></router-view>
+      <h1 class="title" id="title">
+        {{ showTitle }}
+      </h1>
     </div>
+    <!-- top bar -->
+    <router-view
+      v-if="lists"
+      v-bind="todoListProps"
+      :uid="uidCopy"
+      @show-modal="showConfirmModal"
+      @change-to-false="(bool) => (toDeleteItems = bool)"
+      @list-len="(len) => (listLenRT = len)"
+    ></router-view>
+  </div>
 
-    <div :class="{ 'blur-modal-bg': showModal }"></div>
-    <ConfirmModal
-      :class="{ show: showModal }"
-      :activeListName="activeListName"
-      @confirmDeletion="confirmDeletion"
-    ></ConfirmModal>
+  <div :class="{ 'blur-modal-bg': showModal }"></div>
+  <ConfirmModal
+    :class="{ show: showModal }"
+    :activeListName="activeListName"
+    @confirmDeletion="confirmDeletion"
+  ></ConfirmModal>
 </template>
 
 <script>

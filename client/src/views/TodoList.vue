@@ -2,12 +2,7 @@
   <div class="main">
     <div class="sort-container">
       <div class="sort-col">
-        <span class="material-icons sort"> sort </span>
-        <select name="sort" id="sort-by" v-model="sortBy" required>
-          <option value="" disabled selected hidden>Sort by</option>
-          <option value="Priority">Priority</option>
-          <option value="Date">Date</option>
-        </select>
+        <Select @sort-by="(val) => (sortBy = val)" />
       </div>
       <div class="sort-col">
         <input type="checkbox" name="order" id="order" v-model="toDescend" />
@@ -149,6 +144,7 @@
 <script>
 import ReqService from "../ReqService";
 import Loader from "../components/Loader.vue";
+import Select from "../components/Select.vue";
 export default {
   name: "TodoList",
   props: {
@@ -160,6 +156,7 @@ export default {
   },
   components: {
     Loader,
+    Select,
   },
   data() {
     return {

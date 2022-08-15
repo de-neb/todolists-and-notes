@@ -151,7 +151,7 @@ export default {
 }
 
 .justify-end {
-  justify-content: end !important;
+  justify-content: flex-end !important;
   gap: 3%;
 }
 
