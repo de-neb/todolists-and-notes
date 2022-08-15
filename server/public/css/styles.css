@@ -29,7 +29,7 @@ div {
           justify-content: stretch;
   position: relative;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
 
 .main {
@@ -73,29 +73,9 @@ div {
   margin-left: 10px;
 }
 
-.main .sort-container .sort-col span {
-  font-size: 25px;
-  border-radius: 50%;
-  background: #d7d2f8;
-  padding: 3px;
-  vertical-align: middle;
-  text-align: center;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.main .sort-container .sort-col span.sort {
-  height: 35px;
-  width: 35px;
-  margin: 0;
-  border-radius: 100px 0 0 100px !important;
-  position: absolute;
-  left: -30px;
-}
-
 .main .sort-container .sort-col select {
   height: inherit;
-  width: 110px;
+  width: 150px;
   font-size: inherit;
   font-family: inherit;
   outline: none;
@@ -137,31 +117,15 @@ div {
           transform: rotate(180deg);
 }
 
-.main .sort-container .sort-col input[type="checkbox"]:checked ~ span.arrow:before {
-  content: "D";
-  position: absolute;
-  top: 12px;
-  right: 5px;
-  color: inherit;
-  -webkit-transform: rotate(0deg) scaleX(-1);
-          transform: rotate(0deg) scaleX(-1);
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.main .sort-container .sort-col input[type="checkbox"]:not(:checked) ~ span.arrow:after {
-  content: "A";
-  position: absolute;
-  top: 11px;
-  left: 5px;
-  color: inherit;
-  -webkit-transform: rotate(0deg) scaleX(-1);
-          transform: rotate(0deg) scaleX(-1);
-  font-size: 12px;
-  font-weight: bold;
-}
-
 .main .sort-container .sort-col span.arrow {
+  font-size: 25px;
+  border-radius: 50%;
+  background: #d7d2f8;
+  padding: 3px;
+  vertical-align: middle;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   position: absolute;
   left: 0;
   top: 0;

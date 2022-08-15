@@ -50,8 +50,8 @@ div {
 #app,
 .container {
   @include flex(stretch, stretch);
-  width: 100%;  
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 .main {
   background: $main-color;
@@ -78,26 +78,9 @@ div {
       color: $side-color;
       position: relative;
       margin-left: 10px;
-      span {
-        font-size: 25px;
-        border-radius: 50%;
-        background: $light-purple;
-        padding: 3px;
-        vertical-align: middle;
-        text-align: center;
-        box-sizing: border-box;
-      }
-      span.sort {
-        height: 35px;
-        width: 35px;
-        margin: 0;
-        border-radius: 100px 0 0 100px !important;
-        position: absolute;
-        left: -30px;
-      }
       select {
         height: inherit;
-        width: 110px;
+        width: 150px;
         font-size: inherit;
         font-family: inherit;
         outline: none;
@@ -130,35 +113,21 @@ div {
         &:checked ~ span.arrow {
           transform: rotate(180deg);
         }
-        &:checked ~ span.arrow:before {
-          content: "D";
-          position: absolute;
-          top: 12px;
-          right: 5px;
-          color: inherit;
-          transform: rotate(0deg) scaleX(-1);
-          font-size: 12px;
-          font-weight: bold;
-        }
-        &:not(:checked) ~ span.arrow:after {
-          content: "A";
-          position: absolute;
-          top: 11px;
-          left: 5px;
-          color: inherit;
-          transform: rotate(0deg) scaleX(-1);
-          font-size: 12px;
-          font-weight: bold;
-        }
       }
       span.arrow {
+        font-size: 25px;
+        border-radius: 50%;
+        background: $light-purple;
+        padding: 3px;
+        vertical-align: middle;
+        text-align: center;
+        box-sizing: border-box;
         position: absolute;
         left: 0;
         top: 0;
         z-index: 2;
         height: 35px;
         width: 35px;
-
         background: $light-purple;
         padding: 3px;
         transform: rotate(0);
@@ -1231,7 +1200,7 @@ div {
     padding-left: 20px;
     box-shadow: 0px 3px 0px #675f905d;
     @include flex(center, flex-start);
-    
+
     .menu {
       display: inline-block;
       width: 30px;
