@@ -11,7 +11,7 @@
     The fullstack web application version of my first To-do List.
     <br />
     <br />
-    <a href="https://todolists-and-notes.herokuapp.com/">View Demo</a>
+    <a href="https://todolists-and-notes.onrender.com/">View Demo</a>
   </p>
 </div>
 
